@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.params=httpRequest
+comment0.target=java.lang.String\ sendRespond(java.lang.String)
+comment0.text=\ \r\n\ Signatures\ of\ the\ methods\ that\ our\ remote\ calculator\ \r\n\ will\ offer\ to\ a\ client.\r\n\ All\ remote\ methods\ must\ indicate\ they\ they\ may\ throw\ a\r\n\ java.rmi.RemoteException\ which\ may\ occur\ due\ to\ a\ \r\n\ networking\ problem.\r\n
+numComments=1
