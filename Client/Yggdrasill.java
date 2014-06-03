@@ -2,7 +2,7 @@
  	Yggdrasill
  	RMI-based distributted HTTP.
 
- 	Copyright (c) Sam Saint-Pettersen.
+ 	Copyright (c) 2014 Sam Saint-Pettersen.
 */
 
 /** Interface for remote object on a server.
