@@ -1,6 +1,6 @@
 /*
  	Yggdrasill
- 	RMI-based distributted HTTP.
+ 	RMI-based distributed HTTP.
 
  	Copyright (c) Sam Saint-Pettersen.
 */

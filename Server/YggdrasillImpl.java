@@ -1,89 +1,59 @@
 /*
     Yggdrasill
-    RMI-based distributted HTTP.
+    RMI-based distributed HTTP.
 
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.*;
 
 /** Yggdrasill implementation **/
 public class YggdrasillImpl implements Yggdrasill 
-{
-    
-    private enum HTTP {
-        GET, HEAD, POST, PUT
-    }
-    
-    private String handleRequest(String http, String param1)
+{  
+    private List handleRequest(String http, String param1, String param2, boolean binary)
     {
-        System.out.println(http);
-        System.out.println(param1);
-        return "HTTP/1.1 200 OK";
+        List bytes = new ArrayList();
+        switch(http) {
+            case "GET":
+                try {
+                    Reader reader = new FileReader("c:\\www\\" + param1.substring(1));
+                    int data = reader.read();
+                    while(data != -1) {
+                        bytes.add(data);
+                        data = reader.read();
+                    }
+                    reader.close();
+                }
+                catch(IOException e) {
+                    bytes.add(0, "HTTP/1.1 404 NOT FOUND");
+                    return bytes;
+                }
+                break;
+        }
+        bytes.add(0, "HTTP/1.1 200 OK");
+        bytes.add(1, binary);
+        return bytes;
     }
     
     /** Handle an HTTP request and respond to it **/
-    public String sendRespond(String httpRequest)
+    public List sendRespond(String httpRequest, boolean binary)
     {
         System.out.println(httpRequest);
         
-        String httpCommand = "(^\\w{3,4}) (\\/{0,1}\\w*\\.{0,1}\\w{3,4})";
+        String httpCommand = "(^\\w{3,4}) (\\/{0,1}\\w*\\.{0,1}\\w{3,4}) (HTTP/1.1)";
         
         Pattern pattern = Pattern.compile(httpCommand);
         Matcher matcher = pattern.matcher(httpRequest);
         
-        String http = ""; String param1 = "";
+        String http = ""; String param1 = ""; String param2 = "";
         while(matcher.find()) {
             http = matcher.group(1);
             param1 = matcher.group(2);
+            param2 = matcher.group(3);
         }
-        return handleRequest(http, param1);
+        return handleRequest(http, param1, param2, binary);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,9 +1,10 @@
 /*
  	Yggdrasill
- 	RMI-based distributted HTTP.
+ 	RMI-based distributed HTTP.
 
  	Copyright (c) 2014 Sam Saint-Pettersen.
 */
+import java.util.List;
 
 /** Interface for remote object on a server.
   * All remote objects must implement an interface
@@ -17,5 +18,5 @@ public interface Yggdrasill extends java.rmi.Remote {
 	 * java.rmi.RemoteException which may occur due to a 
 	 * networking problem.
 	 */
-	public String sendRespond(String httpRequest) throws java.rmi.RemoteException;
+	public List sendRespond(String httpRequest, boolean binary) throws java.rmi.RemoteException;
 }

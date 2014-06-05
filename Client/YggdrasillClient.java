@@ -1,10 +1,11 @@
 /*
  	Yggdrasill
- 	RMI-based distributted HTTP.
+ 	RMI-based distributed HTTP.
 
  	Copyright (c) 2014 Sam Saint-Pettersen.
 */
 import java.rmi.registry.LocateRegistry;
+import java.util.List;
 
 public class YggdrasillClient {
 
@@ -16,8 +17,10 @@ public class YggdrasillClient {
 			Yggdrasill yProxy = (Yggdrasill) LocateRegistry.getRegistry().lookup("YggdrasillService");
 
 			System.out.println("\nYggdrasill client started...");
-			String response = yProxy.sendRespond("GET /index.html HTTP/1.1");
-			System.out.println(response);
+			List response = yProxy.sendRespond("GET /index.html HTTP/1.1", false);
+			System.out.println(response.get(0));
+			YggrasillDecoder yDecoder = new YggrasillDecoder();
+			yDecoder.decodeResponse(response);
 		}
 		catch (Exception e) {
 			System.out.println("\nClient problem: " + e);			
