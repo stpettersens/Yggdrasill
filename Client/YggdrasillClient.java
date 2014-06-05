@@ -20,7 +20,8 @@ public class YggdrasillClient {
 			List response = yProxy.sendRespond("GET /index.html HTTP/1.1", false);
 			System.out.println(response.get(0));
 			YggrasillDecoder yDecoder = new YggrasillDecoder();
-			yDecoder.decodeResponse(response);
+			System.out.println(yDecoder.decodeResponse(response));
+			
 		}
 		catch (Exception e) {
 			System.out.println("\nClient problem: " + e);			
