@@ -19,7 +19,7 @@ public class YggdrasillClient {
 			System.out.println("\nYggdrasill client started...");
 			List response = yProxy.sendRespond("GET /index.html HTTP/1.1", false);
 			System.out.println(response.get(0));
-			YggrasillDecoder yDecoder = new YggrasillDecoder();
+			YggdrasillDecoder yDecoder = new YggdrasillDecoder();
 			System.out.println(yDecoder.decodeResponse(response));
 			
 		}

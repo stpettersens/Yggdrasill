@@ -6,9 +6,9 @@
 */
 import java.util.List;
 
-public class YggrasillDecoder {
+public class YggdrasillDecoder {
 
-    public YggrasillDecoder()
+    public YggdrasillDecoder()
     {
     }
     public String decodeResponse(List response)
