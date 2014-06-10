@@ -66,7 +66,7 @@ public class YggdrasillClient {
             
         }
         catch (Exception e) {
-            //System.out.println("\nClien+t problem: " + e);           
+            //System.out.println("\nClient problem: " + e);           
         }
         //System.out.println("Client terminated");
     }
