@@ -5,6 +5,7 @@
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
 import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
 import java.util.List;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
@@ -18,7 +19,7 @@ public class YggdrasillClient {
     {    
         try {
             Display display = new Display();
-            Shell shell = new Shell(display);
+            final Shell shell = new Shell(display);
             shell.setText("Yggdrasill Client");
             shell.setSize(680, 520);
             
@@ -34,29 +35,37 @@ public class YggdrasillClient {
             
             /* # Use the network name established in YggdrasillServer to get a
             proxy to an object implementing the Yggdrasill interface. */
-            Yggdrasill yProxy = (Yggdrasill) LocateRegistry.getRegistry().lookup("YggdrasillService");
+            final Yggdrasill yProxy = (Yggdrasill) LocateRegistry.getRegistry().lookup("YggdrasillService");
 
             //System.out.println("\nYggdrasill client started...");
             List response = yProxy.sendRespond("GET " + defaultPage + " HTTP/1.1", false);
             //System.out.println(response.get(0));
-            YggdrasillDecoder yDecoder = new YggdrasillDecoder();
+            final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
             String output = yDecoder.decodeResponse(response);
             //System.out.println(output);
             
-            Browser browser;
-            try {
-                browser = new Browser(shell, SWT.BORDER);
-                browser.setText(output);
-                browser.setBounds(5, 75, 640, 400);
-            }
-            catch(SWTError e) {
-                MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
-                messageBox.setMessage("Browser cannot be initialized.");
-                messageBox.setText("Exit");
-                messageBox.open();
-                System.exit(-1);
-            }
+            final Browser browser;
+            browser = new Browser(shell, SWT.BORDER);
+            browser.setText(output);
+            browser.setBounds(5, 75, 640, 400);
             
+            Listener listener = new Listener() {
+                public void handleEvent(Event event) {
+                    ToolItem item = (ToolItem) event.widget;
+                    String string = item.getText();
+                    if (string.equals("Go")) {
+                        try {              
+                            List response = yProxy.sendRespond("GET " + text.getText() + " HTTP/1.1", false);
+                            browser.setText(yDecoder.decodeResponse(response));
+                        }
+                        catch(RemoteException e) {
+                            System.out.println("An error occurred whilst retrieving HTTP resource:");
+                            System.out.println(e);
+                        }  
+                    }
+                }
+            };
+            goButton.addListener(SWT.Selection, listener);
             shell.open();
             
             while(!shell.isDisposed()) 

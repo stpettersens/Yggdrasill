@@ -28,13 +28,31 @@ public class YggdrasillImpl implements Yggdrasill
                     reader.close();
                 }
                 catch(IOException e) {
-                    bytes.add(0, "HTTP/1.1 404 NOT FOUND");
-                    return bytes;
+                    // ...
                 }
-                break;
+             break;
         }
-        bytes.add(0, "HTTP/1.1 200 OK");
-        bytes.add(1, binary);
+        if(bytes.size() <= 2) {
+            try {
+                Reader reader = new FileReader("c:\\www\\notfound.html");
+                int data = reader.read();
+                while(data != -1) {
+                    bytes.add(data);
+                    data = reader.read();
+                }
+                reader.close();
+            }
+            catch(IOException e) {
+                // ...
+            }
+            bytes.add(0, "HTTP/1.1 404 NOT FOUND");
+            bytes.add(1, binary);
+        }
+        else {
+            bytes.add(0, "HTTP/1.1 200 OK");
+            bytes.add(1, binary);
+        }
+        System.out.println(bytes.get(0));
         return bytes;
     }
     
