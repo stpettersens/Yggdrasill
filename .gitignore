@@ -2,3 +2,5 @@
 /Server/doc
 /Client/*.class
 /Server/*.class
+*.jar
+
