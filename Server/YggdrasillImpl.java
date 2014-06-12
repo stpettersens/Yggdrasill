@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
+import org.apache.commons.codec.binary.Base64;
 
 /** Yggdrasill implementation **/
 public class YggdrasillImpl implements Yggdrasill 

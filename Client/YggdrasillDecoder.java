@@ -5,6 +5,8 @@
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
 import java.util.List;
+import org.apache.commons.codec.binary.Base64;
+import com.google.common.primitives.*;
 
 public class YggdrasillDecoder {
 
@@ -23,6 +25,12 @@ public class YggdrasillDecoder {
             }
             return decoded;
         }
-        return "binary not implemented.";
+        else {
+            List<Byte> list = response;
+            byte[] decodedBytes = Bytes.toArray(list);
+            byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
+            System.out.println(new String(decodedBytes));
+            return new String("<img src=\"data:image/jpg;base64," + new String(encodedBytes) + "\"/>");
+        }
     }
 }
