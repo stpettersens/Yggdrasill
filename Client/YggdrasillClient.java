@@ -55,7 +55,7 @@ public class YggdrasillClient {
                     String string = item.getText();
                     if (string.equals("Go")) {
                         try {              
-                            List response = yProxy.sendRespond("GET " + text.getText() + " HTTP/1.1", false);
+                            List response = yProxy.sendRespond("GET " + text.getText() + " HTTP/1.1", true);
                             browser.setText(yDecoder.decodeResponse(response));
                         }
                         catch(RemoteException e) {

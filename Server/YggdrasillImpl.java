@@ -10,35 +10,49 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
 import org.apache.commons.codec.binary.Base64;
+import com.google.common.io.*;
 
 /** Yggdrasill implementation **/
 public class YggdrasillImpl implements Yggdrasill 
 {  
     private List handleRequest(String http, String param1, String param2, boolean binary)
     {
-        List bytes = new ArrayList();
+        List bytesList = new ArrayList();
         switch(http) {
             case "GET":
-                try {
-                    Reader reader = new FileReader("c:\\www\\" + param1.substring(1));
-                    int data = reader.read();
-                    while(data != -1) {
-                        bytes.add(data);
-                        data = reader.read();
+                if(!binary) {
+                    try {
+                        Reader reader = new FileReader("c:\\www\\" + param1.substring(1));
+                        int data = reader.read();
+                        while(data != -1) {
+                            bytesList.add(data);
+                            data = reader.read();
+                        }
+                        reader.close();
                     }
-                    reader.close();
+                    catch(IOException e) {
+                        // ...
+                    }
                 }
-                catch(IOException e) {
-                    // ...
+                else {
+                   try {
+                       byte[] bytes = Files.toByteArray(new File("c:\\www\\" + param1.substring(1)));
+                       for(int i = 0; i < bytes.length; i++) {
+                           bytesList.add(bytes[i]);
+                       }
+                    }
+                    catch(IOException e) {
+                        // ...
+                    }
                 }
              break;
         }
-        if(bytes.size() <= 2) {
+        if(bytesList.size() <= 2) {
             try {
                 Reader reader = new FileReader("c:\\www\\notfound.html");
                 int data = reader.read();
                 while(data != -1) {
-                    bytes.add(data);
+                    bytesList.add(data);
                     data = reader.read();
                 }
                 reader.close();
@@ -46,15 +60,14 @@ public class YggdrasillImpl implements Yggdrasill
             catch(IOException e) {
                 // ...
             }
-            bytes.add(0, "HTTP/1.1 404 NOT FOUND");
-            bytes.add(1, binary);
+            bytesList.add(0, "HTTP/1.1 404 NOT FOUND");
+            bytesList.add(1, binary);
         }
         else {
-            bytes.add(0, "HTTP/1.1 200 OK");
-            bytes.add(1, binary);
+            bytesList.add(0, "HTTP/1.1 200 OK");
+            bytesList.add(1, binary);
         }
-        System.out.println(bytes.get(0));
-        return bytes;
+        return bytesList;
     }
     
     /** Handle an HTTP request and respond to it **/
