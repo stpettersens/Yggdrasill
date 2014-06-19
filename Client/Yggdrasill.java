@@ -18,5 +18,5 @@ public interface Yggdrasill extends java.rmi.Remote {
 	 * java.rmi.RemoteException which may occur due to a 
 	 * networking problem.
 	 */
-	public List sendRespond(String httpRequest, boolean binary) throws RemoteException;
+	public List sendRespond(String httpRequest) throws RemoteException;
 }

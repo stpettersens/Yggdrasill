@@ -1,7 +1,7 @@
 #BlueJ class context
-comment0.params=http\ param1\ param2\ binary
-comment0.target=java.util.List\ handleRequest(java.lang.String,\ java.lang.String,\ java.lang.String,\ boolean)
-comment1.params=httpRequest\ binary
-comment1.target=java.util.List\ sendRespond(java.lang.String,\ boolean)
+comment0.params=http\ params
+comment0.target=java.util.List\ handleRequest(java.lang.String,\ java.lang.String[])
+comment1.params=httpRequest
+comment1.target=java.util.List\ sendRespond(java.lang.String)
 comment1.text=Handle\ an\ HTTP\ request\ and\ respond\ to\ it\ *
 numComments=2

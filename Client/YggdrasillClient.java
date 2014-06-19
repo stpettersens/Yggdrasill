@@ -21,7 +21,7 @@ public class YggdrasillClient {
             Display display = new Display();
             final Shell shell = new Shell(display);
             shell.setText("Yggdrasill Client");
-            shell.setSize(680, 520);
+            shell.setSize(700, 550);
             
             ToolBar toolbar = new ToolBar(shell, SWT.NONE);
             toolbar.setBounds(5, 5, 200, 30);
@@ -38,7 +38,7 @@ public class YggdrasillClient {
             final Yggdrasill yProxy = (Yggdrasill) LocateRegistry.getRegistry().lookup("YggdrasillService");
 
             //System.out.println("\nYggdrasill client started...");
-            List response = yProxy.sendRespond("GET " + defaultPage + " HTTP/1.1", false);
+            List response = yProxy.sendRespond("GET " + defaultPage + " HTTP/1.1");
             //System.out.println(response.get(0));
             final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
             String output = yDecoder.decodeResponse(response);
@@ -55,7 +55,7 @@ public class YggdrasillClient {
                     String string = item.getText();
                     if (string.equals("Go")) {
                         try {              
-                            List response = yProxy.sendRespond("GET " + text.getText() + " HTTP/1.1", true);
+                            List response = yProxy.sendRespond("GET " + text.getText() + " HTTP/1.1");
                             browser.setText(yDecoder.decodeResponse(response));
                         }
                         catch(RemoteException e) {

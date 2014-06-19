@@ -14,6 +14,7 @@ public class YggdrasillDecoder {
     public YggdrasillDecoder()
     {
     }
+    
     public String decodeResponse(List response)
     {
         boolean binary = (boolean)response.get(1);
