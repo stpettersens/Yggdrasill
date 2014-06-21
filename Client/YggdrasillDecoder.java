@@ -10,10 +10,6 @@ import org.apache.commons.codec.binary.Base64;
 import com.google.common.primitives.*;
 
 public class YggdrasillDecoder {
-
-    public YggdrasillDecoder()
-    {
-    }
     
     public String decodeResponse(List response)
     {

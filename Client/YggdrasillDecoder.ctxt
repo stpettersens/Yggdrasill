@@ -1,6 +1,4 @@
 #BlueJ class context
-comment0.params=
-comment0.target=YggdrasillDecoder()
-comment1.params=response
-comment1.target=java.lang.String\ decodeResponse(java.util.List)
-numComments=2
+comment0.params=response
+comment0.target=java.lang.String\ decodeResponse(java.util.List)
+numComments=1

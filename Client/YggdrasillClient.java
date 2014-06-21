@@ -29,6 +29,9 @@ public class YggdrasillClient {
             ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
             goButton.setText("Go");
             
+            ToolItem viewSourceButton = new ToolItem(toolbar, SWT.PUSH);
+            viewSourceButton.setText("View Source");
+            
             final Text text = new Text(shell, SWT.BORDER);
             text.setBounds(5, 35, 400, 25);
             text.setText(defaultPage);
@@ -57,6 +60,7 @@ public class YggdrasillClient {
                         try {              
                             List response = yProxy.sendRespond("GET " + text.getText() + " HTTP/1.1");
                             browser.setText(yDecoder.decodeResponse(response));
+                            //System.out.println(response.get(0));
                         }
                         catch(RemoteException e) {
                             System.out.println("An error occurred whilst retrieving HTTP resource:");

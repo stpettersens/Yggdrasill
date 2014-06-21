@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
 import com.google.common.io.*;
+import org.apache.commons.codec.binary.Base64;
+import org.jsoup.*;
+import org.jsoup.nodes.*;
+import org.jsoup.select.*;
+import org.jsoup.parser.*;
 
 /** Yggdrasill implementation **/
 public class YggdrasillImpl implements Yggdrasill 
@@ -25,16 +30,30 @@ public class YggdrasillImpl implements Yggdrasill
             case "GET":
                 if(!binary) {
                     try {
-                        Reader reader = new FileReader("c:\\www\\" + request);
-                        int data = reader.read();
-                        while(data != -1) {
-                            bytesList.add(data);
-                            data = reader.read();
-                        }
-                        reader.close();
+                       File html = new File("c:\\www\\" + request);    
+                       Document doc = Jsoup.parse(html, "UTF-8", "");
+                       String img = doc.select("img").attr("src");
+                       byte[] imgBytes = Files.toByteArray(new File("c:\\www\\" + img));
+                       byte[] encImage = Base64.encodeBase64(imgBytes);
+                       doc.select("img").attr("src", "data:image/jpg;base64," + new String(encImage));
+                       String strDoc = doc.html();
+                       byte[] bytes = strDoc.getBytes();
+                       if(bytes.length > 0) {
+                           Files.write(bytes, new File("c:\\www\\_parsed_.html"));        
+                           Reader reader = new FileReader("c:\\www\\_parsed_.html");
+                           int data = reader.read();
+                           while(data != -1) {
+                               bytesList.add(data);
+                               data = reader.read();
+                           }
+                           reader.close();
+                           bytesList.add(0, "HTTP/1.1 200 OK\n");
+                           bytesList.add(1, binary);
+                       }
                     }
                     catch(IOException e) {
-                        // ...
+                      //System.out.println("Exception non-binary");
+                      //System.out.println(e);
                     }
                 }
                 else {
@@ -43,9 +62,12 @@ public class YggdrasillImpl implements Yggdrasill
                        for(int i = 0; i < bytes.length; i++) {
                            bytesList.add(bytes[i]);
                        }
+                       bytesList.add(0, "HTTP/1.1 200 OK\n");
+                       bytesList.add(1, binary);
                     }
                     catch(IOException e) {
-                        // ...
+                       //System.out.println("Exception binary");
+                       //System.out.println(e);
                     }
                 }
              break;
@@ -61,15 +83,14 @@ public class YggdrasillImpl implements Yggdrasill
                 reader.close();
             }
             catch(IOException e) {
-                // ...
+                //System.out.println("Exception bytesList <= 2");
+                //System.out.println(e);
             }
-            bytesList.add(0, "HTTP/1.1 404 NOT FOUND");
-            bytesList.add(1, binary);
+            bytesList.add(0, "HTTP/1.1 404 NOT FOUND\n");
+            bytesList.add(1, false);
         }
-        else {
-            bytesList.add(0, "HTTP/1.1 200 OK");
-            bytesList.add(1, binary);
-        }
+        System.out.println(bytesList.get(0));
+        
         return bytesList;
     }
     
@@ -78,7 +99,7 @@ public class YggdrasillImpl implements Yggdrasill
     {
         System.out.println(httpRequest);
         
-        String httpCommand = "(^\\w{3,4}) (\\/{0,1}\\w*\\.{0,1})(\\w{3,4}) (HTTP/1.1)";
+        String httpCommand = "(^\\w{3,4}) (\\/{0,1}\\w*\\.{0,1})(\\w{3,20}) (HTTP/1.1)";
         
         Pattern pattern = Pattern.compile(httpCommand);
         Matcher matcher = pattern.matcher(httpRequest);
