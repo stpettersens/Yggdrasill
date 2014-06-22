@@ -13,14 +13,16 @@ import org.eclipse.swt.browser.*;
 
 public class YggdrasillClient {
     
+    private static String title = "Yggdrasill Client - ";
     private static String defaultPage = "/index.html";
+    private static String html = "";
 
     public static void main(String args[]) 
     {    
         try {
             Display display = new Display();
             final Shell shell = new Shell(display);
-            shell.setText("Yggdrasill Client");
+            shell.setText(title);
             shell.setSize(700, 550);
             
             ToolBar toolbar = new ToolBar(shell, SWT.NONE);
@@ -38,28 +40,31 @@ public class YggdrasillClient {
             
             /* # Use the network name established in YggdrasillServer to get a
             proxy to an object implementing the Yggdrasill interface. */
-            final Yggdrasill yProxy = (Yggdrasill) LocateRegistry.getRegistry().lookup("YggdrasillService");
+            final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
 
             //System.out.println("\nYggdrasill client started...");
             List response = yProxy.sendRespond("GET " + defaultPage + " HTTP/1.1");
             //System.out.println(response.get(0));
             final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
-            String output = yDecoder.decodeResponse(response);
+            html = yDecoder.decodeResponse(response);
+            shell.setText(title + response.get(2));
             //System.out.println(output);
             
             final Browser browser;
             browser = new Browser(shell, SWT.BORDER);
-            browser.setText(output);
-            browser.setBounds(5, 75, 640, 400);
+            browser.setText(html);
+            browser.setBounds(5, 75, 670, 420);
             
             Listener listener = new Listener() {
                 public void handleEvent(Event event) {
-                    ToolItem item = (ToolItem) event.widget;
+                    ToolItem item = (ToolItem)event.widget;
                     String string = item.getText();
                     if (string.equals("Go")) {
                         try {              
                             List response = yProxy.sendRespond("GET " + text.getText() + " HTTP/1.1");
-                            browser.setText(yDecoder.decodeResponse(response));
+                            html = yDecoder.decodeResponse(response);
+                            shell.setText(title + response.get(2));
+                            browser.setText(html);
                             //System.out.println(response.get(0));
                         }
                         catch(RemoteException e) {
@@ -67,9 +72,14 @@ public class YggdrasillClient {
                             System.out.println(e);
                         }  
                     }
+                    else if(string.equals("View Source")) {
+                        YggdrasillSourceDialog ysd = new YggdrasillSourceDialog(shell); 
+                        ysd.open(html);
+                    }
                 }
             };
             goButton.addListener(SWT.Selection, listener);
+            viewSourceButton.addListener(SWT.Selection, listener);
             shell.open();
             
             while(!shell.isDisposed()) 

@@ -24,14 +24,19 @@ public class YggdrasillImpl implements Yggdrasill
         List bytesList = new ArrayList();
         String request = params[0].substring(1) + params[1];
         String ext = params[1];
+        String title = "";
         boolean binary = false;
-        if(ext.equals("jpg")) { binary = true; }
+        if(ext.equals("jpg")) {
+            title = "[JPEG Image]";
+            binary = true; 
+        }
         switch(http) {
             case "GET":
                 if(!binary) {
                     try {
                        File html = new File("c:\\www\\" + request);    
                        Document doc = Jsoup.parse(html, "UTF-8", "");
+                       title = "[" + doc.title() + "]";
                        String img = doc.select("img").attr("src");
                        byte[] imgBytes = Files.toByteArray(new File("c:\\www\\" + img));
                        byte[] encImage = Base64.encodeBase64(imgBytes);
@@ -49,6 +54,7 @@ public class YggdrasillImpl implements Yggdrasill
                            reader.close();
                            bytesList.add(0, "HTTP/1.1 200 OK\n");
                            bytesList.add(1, binary);
+                           bytesList.add(2, title);
                        }
                     }
                     catch(IOException e) {
@@ -64,6 +70,7 @@ public class YggdrasillImpl implements Yggdrasill
                        }
                        bytesList.add(0, "HTTP/1.1 200 OK\n");
                        bytesList.add(1, binary);
+                       bytesList.add(2, title);
                     }
                     catch(IOException e) {
                        //System.out.println("Exception binary");
@@ -74,6 +81,8 @@ public class YggdrasillImpl implements Yggdrasill
         }
         if(bytesList.size() <= 2) {
             try {
+                title = "[404: Not Found]";
+                binary = false;
                 Reader reader = new FileReader("c:\\www\\notfound.html");
                 int data = reader.read();
                 while(data != -1) {
@@ -87,7 +96,8 @@ public class YggdrasillImpl implements Yggdrasill
                 //System.out.println(e);
             }
             bytesList.add(0, "HTTP/1.1 404 NOT FOUND\n");
-            bytesList.add(1, false);
+            bytesList.add(1, binary);
+            bytesList.add(2, title);
         }
         System.out.println(bytesList.get(0));
         

@@ -16,7 +16,7 @@ public class YggdrasillDecoder {
         boolean binary = (boolean)response.get(1);
         if(!binary) {
             String decoded = "";
-            for(int i = 2; i < response.size(); i++) {
+            for(int i = 3; i < response.size(); i++) {
                 int b = (int)response.get(i);
                 char c = (char)b;
                 decoded += c;
@@ -25,7 +25,7 @@ public class YggdrasillDecoder {
         }
         else {           
             List bytes = new ArrayList();
-            for(int i = 2; i < response.size(); i++) {
+            for(int i = 3; i < response.size(); i++) {
                 bytes.add(response.get(i));
             }
             List<Byte> bytesList = bytes;
