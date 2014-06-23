@@ -4,6 +4,7 @@
 
  	Copyright (c) Sam Saint-Pettersen.
 */
+//package io.stpettersen.yggdrasill.server;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.Remote;
 import java.rmi.server.UnicastRemoteObject;

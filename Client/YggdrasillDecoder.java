@@ -4,11 +4,13 @@
 
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
+//package io.stpettersen.yggdrasill.client;
 import java.util.List;
 import java.util.ArrayList;
 import org.apache.commons.codec.binary.Base64;
 import com.google.common.primitives.*;
 
+@SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
     
     public String decodeResponse(List response)

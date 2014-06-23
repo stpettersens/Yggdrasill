@@ -4,6 +4,7 @@
 
  	Copyright (c) 2014 Sam Saint-Pettersen.
 */
+//package io.stpettersen.yggdrasill.client;
 import java.util.List;
 import java.rmi.RemoteException;
 

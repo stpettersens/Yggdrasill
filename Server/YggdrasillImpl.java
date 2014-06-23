@@ -4,6 +4,7 @@
 
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
+//package io.stpettersen.yggdrasill.server;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.jsoup.select.*;
 import org.jsoup.parser.*;
 
 /** Yggdrasill implementation **/
+@SuppressWarnings("unchecked")
 public class YggdrasillImpl implements Yggdrasill 
 {  
     private List handleRequest(String http, String[] params)

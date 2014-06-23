@@ -4,22 +4,33 @@
 
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
+//package io.stpettersen.yggdrasill.client;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.ArrayList;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.browser.*;
 
 public class YggdrasillClient {
     
-    private static String title = "Yggdrasill Client - ";
-    private static String defaultPage = "/index.html";
-    private static String html = "";
+    private static String title;
+    private static String defaultPage;
+    private static String html;
+    private static List history;
+    private static int pointer;
 
+    @SuppressWarnings("unchecked")
     public static void main(String args[]) 
-    {    
-        try {
+    {  
+        try {   
+            title = "Yggdrasill Client - ";
+            defaultPage = "/index.html";
+            html = "";
+            history = new ArrayList();
+            pointer = -1;
+            
             Display display = new Display();
             final Shell shell = new Shell(display);
             shell.setText(title);
@@ -28,8 +39,14 @@ public class YggdrasillClient {
             ToolBar toolbar = new ToolBar(shell, SWT.NONE);
             toolbar.setBounds(5, 5, 200, 30);
             
+            ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
+            backButton.setText("<");
+            
             ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
             goButton.setText("Go");
+            
+            ToolItem fwdButton = new ToolItem(toolbar, SWT.PUSH);
+            fwdButton.setText(">");
             
             ToolItem viewSourceButton = new ToolItem(toolbar, SWT.PUSH);
             viewSourceButton.setText("View Source");
@@ -43,7 +60,11 @@ public class YggdrasillClient {
             final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
 
             //System.out.println("\nYggdrasill client started...");
-            List response = yProxy.sendRespond("GET " + defaultPage + " HTTP/1.1");
+            List response = yProxy.sendRespond(String.format("GET %s HTTP/1.1", defaultPage));
+            history.add(defaultPage);
+            pointer++;
+            System.out.println(pointer);
+            
             //System.out.println(response.get(0));
             final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
             html = yDecoder.decodeResponse(response);
@@ -59,12 +80,32 @@ public class YggdrasillClient {
                 public void handleEvent(Event event) {
                     ToolItem item = (ToolItem)event.widget;
                     String string = item.getText();
-                    if (string.equals("Go")) {
-                        try {              
-                            List response = yProxy.sendRespond("GET " + text.getText() + " HTTP/1.1");
+                    if (string.equals("<")) {
+                        try {
+                            pointer--;
+                            String page = (String)history.get(pointer);
+                            text.setText(page);
+                            List response = yProxy.sendRespond(String.format("GET %s HTTP/1.1", page));
                             html = yDecoder.decodeResponse(response);
                             shell.setText(title + response.get(2));
                             browser.setText(html);
+                            history.add(page);
+                            pointer++;
+                        }
+                        catch(RemoteException e)  {
+                            //...
+                        }
+                    }
+                    else if (string.equals("Go")) {
+                        try { 
+                            String page = text.getText();
+                            List response = yProxy.sendRespond(String.format("GET %s HTTP/1.1", page));
+                            html = yDecoder.decodeResponse(response);
+                            shell.setText(title + response.get(2));
+                            browser.setText(html);
+                            history.add(page);
+                            pointer++;
+                            System.out.println(pointer);
                             //System.out.println(response.get(0));
                         }
                         catch(RemoteException e) {
@@ -78,7 +119,9 @@ public class YggdrasillClient {
                     }
                 }
             };
+            backButton.addListener(SWT.Selection, listener);
             goButton.addListener(SWT.Selection, listener);
+            fwdButton.addListener(SWT.Selection, listener);
             viewSourceButton.addListener(SWT.Selection, listener);
             shell.open();
             

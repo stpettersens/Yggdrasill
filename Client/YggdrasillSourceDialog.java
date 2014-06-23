@@ -4,6 +4,7 @@
 
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
+//package io.stpettersen.yggdrasill.client;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
