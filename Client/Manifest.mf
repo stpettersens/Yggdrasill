@@ -1,0 +1,2 @@
+Main-Class: io.stpettersen.yggdrasill.client.YggdrasillClient
+Class-Path: libs/commons-codec-1.9.jar libs/guava-17.0.jar libs/jsoup-1.7.3.jar libs/swt.jar 

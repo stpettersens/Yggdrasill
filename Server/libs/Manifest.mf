@@ -1,0 +1,1 @@
+Main-Class: io.stpettersen.yggdrasill.client.YggdrasillClientClass-Path: {0}

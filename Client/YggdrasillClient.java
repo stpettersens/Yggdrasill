@@ -1,10 +1,10 @@
+//package
 /*
     Yggdrasill
     RMI-based distributed HTTP.
 
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
-//package io.stpettersen.yggdrasill.client;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.util.List;
