@@ -1,0 +1,21 @@
+{
+	"preamble": {
+
+		"source": "*",
+		"target": "Yggdrasill",
+		"cc": "*"
+	},
+
+	"build": [
+
+		{ "echo": "Compiling Yggdrasill Client..." },
+		{ "exec": "packager -p io.stpettersen.yggdrasill.client -m YggdrasillClient -cp libs -r Client" },
+	],
+
+	"clean": [
+
+		{ "echo": "Erasing Hello World program and log file..." },
+		{ "erasex": "hw" },
+		{ "erase": "output.log" }
+	]
+}
