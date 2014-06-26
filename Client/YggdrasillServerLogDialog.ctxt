@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.params=parent
+comment0.target=YggdrasillServerLogDialog(org.eclipse.swt.widgets.Shell)
+comment1.params=serverLog
+comment1.target=void\ open(java.util.List)
+numComments=2

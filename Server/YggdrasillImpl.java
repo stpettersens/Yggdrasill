@@ -85,7 +85,7 @@ public class YggdrasillImpl implements Yggdrasill
             try {
                 title = "[404: Not Found]";
                 binary = false;
-                Reader reader = new FileReader("c:\\www\\notfound.html");
+                Reader reader = new FileReader("c:\\www\\_notfound_.html");
                 int data = reader.read();
                 while(data != -1) {
                     bytesList.add(data);

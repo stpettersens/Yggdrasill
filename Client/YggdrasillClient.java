@@ -19,6 +19,7 @@ public class YggdrasillClient {
     private static String defaultPage;
     private static String html;
     private static List history;
+    private static List serverLog;
     private static int pointer;
 
     @SuppressWarnings("unchecked")
@@ -29,6 +30,7 @@ public class YggdrasillClient {
             defaultPage = "/index.html";
             html = "";
             history = new ArrayList();
+            serverLog = new ArrayList();
             pointer = -1;
             
             Display display = new Display();
@@ -37,7 +39,7 @@ public class YggdrasillClient {
             shell.setSize(700, 550);
             
             ToolBar toolbar = new ToolBar(shell, SWT.NONE);
-            toolbar.setBounds(5, 5, 200, 30);
+            toolbar.setBounds(5, 5, 300, 30);
             
             ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
             backButton.setText("<");
@@ -51,6 +53,9 @@ public class YggdrasillClient {
             ToolItem viewSourceButton = new ToolItem(toolbar, SWT.PUSH);
             viewSourceButton.setText("View Source");
             
+            ToolItem serverLogButton = new ToolItem(toolbar, SWT.PUSH);
+            serverLogButton.setText("Server Log");
+            
             final Text text = new Text(shell, SWT.BORDER);
             text.setBounds(5, 35, 400, 25);
             text.setText(defaultPage);
@@ -60,8 +65,11 @@ public class YggdrasillClient {
             final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
 
             //System.out.println("\nYggdrasill client started...");
-            List response = yProxy.sendRespond(String.format("GET %s HTTP/1.1", defaultPage));
+            String request = String.format("GET %s HTTP/1.1", defaultPage);
+            List response = yProxy.sendRespond(request);
             history.add(defaultPage);
+            serverLog.add("\n"+request+"\n");
+            serverLog.add(response.get(0));
             pointer++;
             System.out.println(pointer);
             
@@ -85,7 +93,10 @@ public class YggdrasillClient {
                             pointer--;
                             String page = (String)history.get(pointer);
                             text.setText(page);
-                            List response = yProxy.sendRespond(String.format("GET %s HTTP/1.1", page));
+                            String request = String.format("GET %s HTTP/1.1", page);
+                            List response = yProxy.sendRespond(request);
+                            serverLog.add("\n"+request+"\n");
+                            serverLog.add(response.get(0));
                             html = yDecoder.decodeResponse(response);
                             shell.setText(title + response.get(2));
                             browser.setText(html);
@@ -99,7 +110,10 @@ public class YggdrasillClient {
                     else if (string.equals("Go")) {
                         try { 
                             String page = text.getText();
-                            List response = yProxy.sendRespond(String.format("GET %s HTTP/1.1", page));
+                            String request = String.format("GET %s HTTP/1.1", page);
+                            List response = yProxy.sendRespond(request);
+                            serverLog.add("\n"+request+"\n");
+                            serverLog.add(response.get(0));
                             html = yDecoder.decodeResponse(response);
                             shell.setText(title + response.get(2));
                             browser.setText(html);
@@ -117,12 +131,17 @@ public class YggdrasillClient {
                         YggdrasillSourceDialog ysd = new YggdrasillSourceDialog(shell); 
                         ysd.open(html);
                     }
+                    else if(string.equals("Server Log")) {
+                        YggdrasillServerLogDialog ysld = new YggdrasillServerLogDialog(shell);
+                        ysld.open(serverLog);
+                    }
                 }
             };
             backButton.addListener(SWT.Selection, listener);
             goButton.addListener(SWT.Selection, listener);
             fwdButton.addListener(SWT.Selection, listener);
             viewSourceButton.addListener(SWT.Selection, listener);
+            serverLogButton.addListener(SWT.Selection, listener);
             shell.open();
             
             while(!shell.isDisposed()) 
