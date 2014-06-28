@@ -9,6 +9,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.browser.*;
@@ -18,9 +21,10 @@ public class YggdrasillClient {
     private static String title;
     private static String defaultPage;
     private static String html;
-    private static List history;
+    //private static List history;
+    private static Queue<String> history;
     private static List serverLog;
-    private static int pointer;
+    //private static int pointer;
 
     @SuppressWarnings("unchecked")
     public static void main(String args[]) 
@@ -29,9 +33,10 @@ public class YggdrasillClient {
             title = "Yggdrasill Client - ";
             defaultPage = "/index.html";
             html = "";
-            history = new ArrayList();
+            //history = new ArrayList();
+            history = new LinkedList<String>();
             serverLog = new ArrayList();
-            pointer = -1;
+            //pointer = -1;
             
             Display display = new Display();
             final Shell shell = new Shell(display);
@@ -70,8 +75,8 @@ public class YggdrasillClient {
             history.add(defaultPage);
             serverLog.add("\n"+request+"\n");
             serverLog.add(response.get(0));
-            pointer++;
-            System.out.println(pointer);
+            //pointer++;
+            //System.out.println(pointer);
             
             //System.out.println(response.get(0));
             final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
@@ -90,8 +95,7 @@ public class YggdrasillClient {
                     String string = item.getText();
                     if (string.equals("<")) {
                         try {
-                            pointer--;
-                            String page = (String)history.get(pointer);
+                            String page = history.remove();
                             text.setText(page);
                             String request = String.format("GET %s HTTP/1.1", page);
                             List response = yProxy.sendRespond(request);
@@ -100,11 +104,10 @@ public class YggdrasillClient {
                             html = yDecoder.decodeResponse(response);
                             shell.setText(title + response.get(2));
                             browser.setText(html);
-                            history.add(page);
-                            pointer++;
                         }
                         catch(RemoteException e)  {
-                            //...
+                            System.out.println("An error occurred whilst retrieving HTTP resource:");
+                            System.out.println(e);
                         }
                     }
                     else if (string.equals("Go")) {
@@ -118,14 +121,34 @@ public class YggdrasillClient {
                             shell.setText(title + response.get(2));
                             browser.setText(html);
                             history.add(page);
-                            pointer++;
-                            System.out.println(pointer);
+                            System.out.println(history);
+                            //pointer++;
+                            //System.out.println(pointer);
                             //System.out.println(response.get(0));
                         }
                         catch(RemoteException e) {
                             System.out.println("An error occurred whilst retrieving HTTP resource:");
                             System.out.println(e);
                         }  
+                    }
+                    else if (string.equals(">")) {
+                        try {
+                            //pointer++;
+                            String page = history.peek();
+                            text.setText(page);
+                            String request = String.format("GET %s HTTP/1.1", page);
+                            List response = yProxy.sendRespond(request);
+                            serverLog.add("\n"+request+"\n");
+                            serverLog.add(response.get(0));
+                            html = yDecoder.decodeResponse(response);
+                            shell.setText(title + response.get(2));
+                            browser.setText(html);
+                            history.add(page);
+                        }
+                        catch(RemoteException e)  {
+                            System.out.println("An error occurred whilst retrieving HTTP resource:");
+                            System.out.println(e);
+                        }
                     }
                     else if(string.equals("View Source")) {
                         YggdrasillSourceDialog ysd = new YggdrasillSourceDialog(shell); 
@@ -134,7 +157,7 @@ public class YggdrasillClient {
                     else if(string.equals("Server Log")) {
                         YggdrasillServerLogDialog ysld = new YggdrasillServerLogDialog(shell);
                         ysld.open(serverLog);
-                    }
+                    }  
                 }
             };
             backButton.addListener(SWT.Selection, listener);

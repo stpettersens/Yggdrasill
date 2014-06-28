@@ -3,7 +3,7 @@
 Packager
 Utility to morph a BlueJ project into a proper Java package.
 
-Depends on txtrevise utility and Java compiler (javac).
+Depends on txtrevise utility and Java compiler (javac) and Java archiver (jar).
 """
 import sys
 import re
@@ -26,7 +26,7 @@ def package(package, mainClass, classPath, rootFolder, verbose):
 	for jar in glob.glob('*.jar'):
 		if verbose: print(jar)
 		jars += '{0}/{1} '.format(classPath, jar)
-		jarsArray.append('{0}/{1}/{2};'.format(rootFolder, classPath, jar))
+		jarsArray.append('../{0}/{1}/{2};'.format(rootFolder, classPath, jar))
 
 	os.chdir('..')
 
@@ -70,7 +70,9 @@ def package(package, mainClass, classPath, rootFolder, verbose):
 
 	for java in glob.glob('*.java'):
 		if verbose: print('Compiling {0}'.format(java))
-		os.system('javac -cp {0} {1}\{2}'.format(cp[:-1], path, java))
+		os.system('javac -cp {0} {1}/{2}'.format(cp[:-1], path, java))
+
+	#shutil.rmtree('../packager')
 
 # Handle any command line arguments
 parser = argparse.ArgumentParser(description='Utility to morph a BlueJ project into proper Java package.')
