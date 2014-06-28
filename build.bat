@@ -1,1 +1,1 @@
-packager.py -p io.stpettersen.yggdrasill.client -m YggdrasillClient -cp libs -r Client -v
+packager -p io.stpettersen.yggdrasill.server -m YggdrasillServer -cp libs -r Server -v
