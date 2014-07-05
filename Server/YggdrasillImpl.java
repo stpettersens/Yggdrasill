@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
-import com.google.common.io.*;
+import com.google.common.io.Files;
 import org.apache.commons.codec.binary.Base64;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
@@ -26,15 +26,16 @@ public class YggdrasillImpl implements Yggdrasill
         List bytesList = new ArrayList();
         String request = params[0].substring(1) + params[1];
         String ext = params[1];
-        String title = "";
-        boolean binary = false;
-        if(ext.equals("jpg")) {
-            title = "[JPEG Image]";
-            binary = true; 
-        }
+        
+        YggdrasillMimes yMimes = new YggdrasillMimes(ext);
+        String mime = yMimes.getMime();
+        String title = yMimes.getName();
+        String type = yMimes.getType();
+        boolean binary = yMimes.getBinary();
+        
         switch(http) {
             case "GET":
-                if(!binary) {
+                if(!binary && mime.equals("text/html")) {
                     try {
                        File html = new File("c:\\www\\" + request);    
                        Document doc = Jsoup.parse(html, "UTF-8", "");
@@ -42,7 +43,13 @@ public class YggdrasillImpl implements Yggdrasill
                        String img = doc.select("img").attr("src");
                        byte[] imgBytes = Files.toByteArray(new File("c:\\www\\" + img));
                        byte[] encImage = Base64.encodeBase64(imgBytes);
-                       doc.select("img").attr("src", "data:image/jpg;base64," + new String(encImage));
+                       
+                       String iExt = Files.getFileExtension("c:\\www\\" + img);
+                       yMimes.setExt(iExt);
+                       String iMime = yMimes.getMime();
+                       String iImg = new String(encImage);
+                       
+                       doc.select("img").attr("src", String.format("data:%s;base64,%s", iMime, iImg));
                        String strDoc = doc.html();
                        byte[] bytes = strDoc.getBytes();
                        if(bytes.length > 0) {
@@ -57,11 +64,34 @@ public class YggdrasillImpl implements Yggdrasill
                            bytesList.add(0, "HTTP/1.1 200 OK\n");
                            bytesList.add(1, binary);
                            bytesList.add(2, title);
+                           bytesList.add(3, mime);
+                           bytesList.add(4, type);
                        }
                     }
                     catch(IOException e) {
-                      //System.out.println("Exception non-binary");
+                      //System.out.println("Exception non-binary 1");
                       //System.out.println(e);
+                    }
+                }
+                else if(!binary && !mime.equals("text/html"))
+                {
+                    try {
+                        Reader reader = new FileReader("c:\\www\\" + request);
+                        int data = reader.read();
+                        while(data != -1) {
+                            bytesList.add(data);
+                            data = reader.read();
+                        }
+                        reader.close();
+                        bytesList.add(0, "HTTP/1.1 200 OK\n");
+                        bytesList.add(1, binary);
+                        bytesList.add(2, title);
+                        bytesList.add(3, mime);
+                        bytesList.add(4, type);
+                    }
+                    catch(IOException e) {
+                        //System.out.println("Exception non-binary 1");
+                        //System.out.println(e);
                     }
                 }
                 else {
@@ -73,6 +103,8 @@ public class YggdrasillImpl implements Yggdrasill
                        bytesList.add(0, "HTTP/1.1 200 OK\n");
                        bytesList.add(1, binary);
                        bytesList.add(2, title);
+                       bytesList.add(3, mime);
+                       bytesList.add(4, type);
                     }
                     catch(IOException e) {
                        //System.out.println("Exception binary");
@@ -83,8 +115,12 @@ public class YggdrasillImpl implements Yggdrasill
         }
         if(bytesList.size() <= 2) {
             try {
+                yMimes.setExt("html");
                 title = "[404: Not Found]";
-                binary = false;
+                mime = yMimes.getMime();
+                type = yMimes.getType();
+                binary = yMimes.getBinary();
+                
                 Reader reader = new FileReader("c:\\www\\_notfound_.html");
                 int data = reader.read();
                 while(data != -1) {
@@ -100,6 +136,8 @@ public class YggdrasillImpl implements Yggdrasill
             bytesList.add(0, "HTTP/1.1 404 NOT FOUND\n");
             bytesList.add(1, binary);
             bytesList.add(2, title);
+            bytesList.add(3, mime);
+            bytesList.add(4, type);
         }
         System.out.println(bytesList.get(0));
         
