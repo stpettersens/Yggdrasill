@@ -142,7 +142,7 @@ public class YggdrasillClient {
                             fileProperties.add(response.get(4));
                             
                             html = yDecoder.decodeResponse(response);
-                            shell.setText(title + response.get(2));
+                            shell.setText(title + response.get(2));  
                             browser.setText(html);
                             history.add(page);
                             //System.out.println(history);

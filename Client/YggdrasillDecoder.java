@@ -16,6 +16,7 @@ public class YggdrasillDecoder {
     public String decodeResponse(List response)
     {
         boolean binary = (boolean)response.get(1);
+        String mimeType = (String)response.get(3);
         if(!binary) {
             String decoded = "";
             for(int i = 5; i < response.size(); i++) {
@@ -33,7 +34,6 @@ public class YggdrasillDecoder {
             List<Byte> bytesList = bytes;
             byte[] decodedBytes = Bytes.toArray(bytesList);
             byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
-            String mimeType = (String)response.get(3);
             String img = new String(encodedBytes);
             return String.format("<img src=\"data:%s;base64,%s\"/>", mimeType, img);
         }

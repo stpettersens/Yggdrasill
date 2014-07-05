@@ -7,6 +7,14 @@
 		"binary": false
 	},
 	
+	"xml": {
+	
+		"mime": "application/xml",
+		"name": "[XML Document]",
+		"type": "document",
+		"binary": false
+	},
+
 	"txt": {
 	
 		"mime": "text/plain",

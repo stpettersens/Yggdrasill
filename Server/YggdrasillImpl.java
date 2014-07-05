@@ -10,8 +10,10 @@ import java.util.regex.Pattern;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
+import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import org.apache.commons.codec.binary.Base64;
+import static org.apache.commons.lang.StringEscapeUtils.escapeXml;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
@@ -27,6 +29,10 @@ public class YggdrasillImpl implements Yggdrasill
         String request = params[0].substring(1) + params[1];
         String ext = params[1];
         
+        if(ext == "") ext = "html";
+        
+        System.out.println("Extension is " + ext); // !
+   
         YggdrasillMimes yMimes = new YggdrasillMimes(ext);
         String mime = yMimes.getMime();
         String title = yMimes.getName();
@@ -73,7 +79,38 @@ public class YggdrasillImpl implements Yggdrasill
                       //System.out.println(e);
                     }
                 }
-                else if(!binary && !mime.equals("text/html"))
+                else if(!binary && (mime.equals("application/json") || mime.equals("application/xml"))) {
+                    try {
+                        String document = "";  
+                        List<String> file = Files.readLines(new File("c:\\www\\" + request), Charsets.UTF_8);     
+                        for(int i = 0; i < file.size(); i++) {
+                            document += escapeXml(file.get(i)) + "\n";
+                        }    
+                        String output = String.format("<script src=\"https://google-code-prettify.googlecode.com/svn/loader/"
+                        + "run_prettify.js\"></script>\n<pre class=\"prettyprint linenums\">%s</pre>", document);
+                        byte[] bytes = output.getBytes();
+                        if(bytes.length > 0) {
+                           Files.write(bytes, new File("c:\\www\\_parsed_.html"));        
+                           Reader reader = new FileReader("c:\\www\\_parsed_.html");
+                           int data = reader.read();
+                           while(data != -1) {
+                               bytesList.add(data);
+                               data = reader.read();
+                           }
+                           reader.close();
+                           bytesList.add(0, "HTTP/1.1 200 OK\n");
+                           bytesList.add(1, binary);
+                           bytesList.add(2, title);
+                           bytesList.add(3, mime);
+                           bytesList.add(4, type);
+                        }
+                    }
+                    catch(IOException e)
+                    {
+                        // ...
+                    }
+                }
+                else if(!binary && !mime.equals("text/html") && !mime.equals("application/json"))
                 {
                     try {
                         Reader reader = new FileReader("c:\\www\\" + request);
@@ -149,7 +186,7 @@ public class YggdrasillImpl implements Yggdrasill
     {
         System.out.println(httpRequest);
         
-        String httpCommand = "(^\\w{3,4}) (\\/{0,1}\\w*\\.{0,1})(\\w{3,20}) (HTTP/1.1)";
+        String httpCommand = "(^\\w{3,4}) (\\/{0,1}\\w*\\.{0,1})(\\w{0,20}) (HTTP/1.1)";
         
         Pattern pattern = Pattern.compile(httpCommand);
         Matcher matcher = pattern.matcher(httpRequest);
