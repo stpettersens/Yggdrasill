@@ -17,7 +17,8 @@ public class YggdrasillDecoder {
     {
         boolean binary = (boolean)response.get(1);
         String mimeType = (String)response.get(3);
-        if(!binary) {
+        String type = (String)response.get(4);
+        if(!binary && type.equals("document")) {
             String decoded = "";
             for(int i = 5; i < response.size(); i++) {
                 int b = (int)response.get(i);
@@ -25,8 +26,8 @@ public class YggdrasillDecoder {
                 decoded += c;
             }
             return decoded;
-        }
-        else {           
+        }    
+        else if(binary && type.equals("image")) {
             List bytes = new ArrayList();
             for(int i = 5; i < response.size(); i++) {
                 bytes.add(response.get(i));
@@ -36,6 +37,9 @@ public class YggdrasillDecoder {
             byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
             String img = new String(encodedBytes);
             return String.format("<img src=\"data:%s;base64,%s\"/>", mimeType, img);
+        }    
+        else {           
+            return "fuck off!";
         }
     }
 }

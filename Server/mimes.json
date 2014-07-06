@@ -1,9 +1,27 @@
 {
+	"*": {
+		
+		"mime": "unknown",
+		"name": "[Unknown File]",
+		"type": "document",
+		"parse": "pretty",
+		"binary": false
+	},
+	
 	"html": {
 	
 		"mime": "text/html",
 		"name": "[HTML Document]",
 		"type": "document",
+		"parse": "markup",
+		"binary": false
+	},
+	
+	"xhtml": {
+		"mime": "application/xhtml+xml",
+		"name": "[XHTML Document]",
+		"type": "document",
+		"parse": "markup",
 		"binary": false
 	},
 	
@@ -12,6 +30,7 @@
 		"mime": "application/xml",
 		"name": "[XML Document]",
 		"type": "document",
+		"parse": "pretty",
 		"binary": false
 	},
 
@@ -20,6 +39,7 @@
 		"mime": "text/plain",
 		"name": "[Text Document]",
 		"type": "document",
+		"parse": "text",
 		"binary": false
 	},
 	
@@ -28,6 +48,7 @@
 		"mime": "application/json",
 		"name": "[JSON Document]",
 		"type": "document",
+		"parse": "pretty",
 		"binary": false
 	},
 	
@@ -36,6 +57,7 @@
 		"mime": "image/jpg",
 		"name": "[JPEG Image]",
 		"type": "image",
+		"parse": "binary",
 		"binary": true
 	},
 	
@@ -44,6 +66,7 @@
 		"mime": "image/png",
 		"name": "[PNG Image]",
 		"type": "image",
+		"parse": "binary",
 		"binary": true
 	},
 	
@@ -52,6 +75,16 @@
 		"mime": "image/gif",
 		"name": "[GIF Image]",
 		"type": "image",
+		"parse": "binary",
+		"binary": true
+	},
+	
+	"mp3": {
+	
+		"mime": "audio/mpeg",
+		"name": "[MP3 Audio File]",
+		"type": "audio",
+		"parse": "binary",
 		"binary": true
 	}
 }

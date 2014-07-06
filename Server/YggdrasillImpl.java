@@ -28,20 +28,18 @@ public class YggdrasillImpl implements Yggdrasill
         List bytesList = new ArrayList();
         String request = params[0].substring(1) + params[1];
         String ext = params[1];
-        
-        if(ext == "") ext = "html";
-        
-        System.out.println("Extension is " + ext); // !
+
    
         YggdrasillMimes yMimes = new YggdrasillMimes(ext);
         String mime = yMimes.getMime();
         String title = yMimes.getName();
         String type = yMimes.getType();
+        String parse = yMimes.getParse();
         boolean binary = yMimes.getBinary();
         
         switch(http) {
             case "GET":
-                if(!binary && mime.equals("text/html")) {
+                if(!binary && parse.equals("markup")) {
                     try {
                        File html = new File("c:\\www\\" + request);    
                        Document doc = Jsoup.parse(html, "UTF-8", "");
@@ -79,7 +77,7 @@ public class YggdrasillImpl implements Yggdrasill
                       //System.out.println(e);
                     }
                 }
-                else if(!binary && (mime.equals("application/json") || mime.equals("application/xml"))) {
+                else if(!binary && parse.equals("pretty")) {
                     try {
                         String document = "";  
                         List<String> file = Files.readLines(new File("c:\\www\\" + request), Charsets.UTF_8);     
@@ -110,7 +108,7 @@ public class YggdrasillImpl implements Yggdrasill
                         // ...
                     }
                 }
-                else if(!binary && !mime.equals("text/html") && !mime.equals("application/json"))
+                else if(!binary)
                 {
                     try {
                         Reader reader = new FileReader("c:\\www\\" + request);
@@ -156,6 +154,7 @@ public class YggdrasillImpl implements Yggdrasill
                 title = "[404: Not Found]";
                 mime = yMimes.getMime();
                 type = yMimes.getType();
+                parse = yMimes.getParse();
                 binary = yMimes.getBinary();
                 
                 Reader reader = new FileReader("c:\\www\\_notfound_.html");
