@@ -2,5 +2,7 @@
 comment0.params=args
 comment0.target=void\ main(java.lang.String[])
 comment1.params=event
-comment1.target=void\ handleEvent(org.eclipse.swt.widgets.Event)
-numComments=2
+comment1.target=void\ keyTraversed(org.eclipse.swt.events.TraverseEvent)
+comment2.params=event
+comment2.target=void\ handleEvent(org.eclipse.swt.widgets.Event)
+numComments=3

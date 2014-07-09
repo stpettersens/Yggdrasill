@@ -43,6 +43,24 @@
 		"binary": false
 	},
 	
+	"java": {
+		
+		"mime": "text/x-java-source",
+		"name": "[Java Source File]",
+		"type": "document",
+		"parse": "pretty",
+		"binary": false
+	},
+	
+	"js": {
+		
+		"mime": "application/javascript",
+		"name": "[JavaScript File]",
+		"type": "document",
+		"parse": "pretty",
+		"binary": false
+	},
+	
 	"json": {
 		
 		"mime": "application/json",

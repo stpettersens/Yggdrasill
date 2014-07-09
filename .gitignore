@@ -2,5 +2,6 @@
 /Server/doc
 /Client/*.class
 /Server/*.class
+/Server/www/_parsed_.html
 *.jar
 

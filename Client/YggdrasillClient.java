@@ -15,6 +15,8 @@ import java.util.LinkedList;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.browser.*;
+import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.events.TraverseEvent;
 
 public class YggdrasillClient {
     
@@ -30,6 +32,7 @@ public class YggdrasillClient {
     @SuppressWarnings("unchecked")
     public static void main(String args[]) 
     {  
+        
         try {   
             title = "Yggdrasill Client - ";
             defaultPage = "/index.html";
@@ -98,7 +101,37 @@ public class YggdrasillClient {
             browser = new Browser(shell, SWT.BORDER);
             browser.setText(html);
             browser.setBounds(5, 75, 670, 420);
-            
+           
+            text.addTraverseListener(new TraverseListener() {
+                public void keyTraversed(TraverseEvent event) {
+                    if(event.detail == SWT.TRAVERSE_RETURN) {                     
+                       try {
+                            //pointer++;
+                            String page = text.getText();                       
+                            String request = String.format("GET %s HTTP/1.1", page);
+                            List response = yProxy.sendRespond(request);
+                            serverLog.add("\n"+request+"\n");
+                            serverLog.add(response.get(0));
+                            
+                            fileProperties.clear();
+                            fileProperties.add(response.get(1));
+                            fileProperties.add(response.get(2));
+                            fileProperties.add(response.get(3));
+                            fileProperties.add(response.get(4));
+                            
+                            html = yDecoder.decodeResponse(response);
+                            shell.setText(title + response.get(2));
+                            browser.setText(html);
+                            history.add(page);
+                        }
+                        catch(RemoteException e)  {
+                            System.out.println("An error occurred whilst retrieving HTTP resource:");
+                            System.out.println(e);
+                        }
+                    }
+                }
+            });
+          
             Listener listener = new Listener() {
                 public void handleEvent(Event event) {
                     ToolItem item = (ToolItem)event.widget;

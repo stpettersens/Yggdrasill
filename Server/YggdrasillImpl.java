@@ -41,14 +41,14 @@ public class YggdrasillImpl implements Yggdrasill
             case "GET":
                 if(!binary && parse.equals("markup")) {
                     try {
-                       File html = new File("c:\\www\\" + request);    
+                       File html = new File("www//" + request);    
                        Document doc = Jsoup.parse(html, "UTF-8", "");
                        title = "[" + doc.title() + "]";
                        String img = doc.select("img").attr("src");
-                       byte[] imgBytes = Files.toByteArray(new File("c:\\www\\" + img));
+                       byte[] imgBytes = Files.toByteArray(new File("www//" + img));
                        byte[] encImage = Base64.encodeBase64(imgBytes);
                        
-                       String iExt = Files.getFileExtension("c:\\www\\" + img);
+                       String iExt = Files.getFileExtension("www//" + img);
                        yMimes.setExt(iExt);
                        String iMime = yMimes.getMime();
                        String iImg = new String(encImage);
@@ -57,8 +57,8 @@ public class YggdrasillImpl implements Yggdrasill
                        String strDoc = doc.html();
                        byte[] bytes = strDoc.getBytes();
                        if(bytes.length > 0) {
-                           Files.write(bytes, new File("c:\\www\\_parsed_.html"));        
-                           Reader reader = new FileReader("c:\\www\\_parsed_.html");
+                           Files.write(bytes, new File("www//_parsed_.html"));        
+                           Reader reader = new FileReader("www//_parsed_.html");
                            int data = reader.read();
                            while(data != -1) {
                                bytesList.add(data);
@@ -80,7 +80,7 @@ public class YggdrasillImpl implements Yggdrasill
                 else if(!binary && parse.equals("pretty")) {
                     try {
                         String document = "";  
-                        List<String> file = Files.readLines(new File("c:\\www\\" + request), Charsets.UTF_8);     
+                        List<String> file = Files.readLines(new File("www//" + request), Charsets.UTF_8);     
                         for(int i = 0; i < file.size(); i++) {
                             document += escapeXml(file.get(i)) + "\n";
                         }    
@@ -88,8 +88,8 @@ public class YggdrasillImpl implements Yggdrasill
                         + "run_prettify.js\"></script>\n<pre class=\"prettyprint linenums\">%s</pre>", document);
                         byte[] bytes = output.getBytes();
                         if(bytes.length > 0) {
-                           Files.write(bytes, new File("c:\\www\\_parsed_.html"));        
-                           Reader reader = new FileReader("c:\\www\\_parsed_.html");
+                           Files.write(bytes, new File("www//_parsed_.html"));        
+                           Reader reader = new FileReader("www//_parsed_.html");
                            int data = reader.read();
                            while(data != -1) {
                                bytesList.add(data);
@@ -111,7 +111,7 @@ public class YggdrasillImpl implements Yggdrasill
                 else if(!binary)
                 {
                     try {
-                        Reader reader = new FileReader("c:\\www\\" + request);
+                        Reader reader = new FileReader("www//" + request);
                         int data = reader.read();
                         while(data != -1) {
                             bytesList.add(data);
@@ -131,7 +131,7 @@ public class YggdrasillImpl implements Yggdrasill
                 }
                 else {
                    try {
-                       byte[] bytes = Files.toByteArray(new File("c:\\www\\" + request));
+                       byte[] bytes = Files.toByteArray(new File("www//" + request));
                        for(int i = 0; i < bytes.length; i++) {
                            bytesList.add(bytes[i]);
                        }
@@ -157,7 +157,7 @@ public class YggdrasillImpl implements Yggdrasill
                 parse = yMimes.getParse();
                 binary = yMimes.getBinary();
                 
-                Reader reader = new FileReader("c:\\www\\_notfound_.html");
+                Reader reader = new FileReader("www//_notfound_.html");
                 int data = reader.read();
                 while(data != -1) {
                     bytesList.add(data);
