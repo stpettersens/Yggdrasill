@@ -39,7 +39,7 @@ public class YggdrasillDecoder {
             return String.format("<img src=\"data:%s;base64,%s\"/>", mimeType, img);
         }    
         else {           
-            return "fuck off!";
+            return "not implemented!";
         }
     }
 }

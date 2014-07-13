@@ -49,7 +49,7 @@ public class YggdrasillClient {
             shell.setSize(700, 550);
             
             ToolBar toolbar = new ToolBar(shell, SWT.NONE);
-            toolbar.setBounds(5, 5, 300, 30);
+            toolbar.setBounds(5, 5, 350, 30);
             
             ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
             backButton.setText("<");
@@ -69,8 +69,11 @@ public class YggdrasillClient {
             ToolItem serverLogButton = new ToolItem(toolbar, SWT.PUSH);
             serverLogButton.setText("Server Log");
             
+            ToolItem aboutButton = new ToolItem(toolbar, SWT.PUSH);
+            aboutButton.setText("About");
+            
             final Text text = new Text(shell, SWT.BORDER);
-            text.setBounds(5, 35, 400, 25);
+            text.setBounds(5, 35, 400, 25); // 5, 35, 400, 25
             text.setText(defaultPage);
             
             /* # Use the network name established in YggdrasillServer to get a
@@ -225,7 +228,11 @@ public class YggdrasillClient {
                     else if(string.equals("Server Log")) {
                         YggdrasillServerLogDialog ysld = new YggdrasillServerLogDialog(shell);
                         ysld.open(serverLog);
-                    }  
+                    }
+                    else if(string.equals("About")) {
+                        YggdrasillAboutDialog yad = new YggdrasillAboutDialog(shell);
+                        yad.open();
+                    }
                 }
             };
             backButton.addListener(SWT.Selection, listener);
@@ -234,6 +241,7 @@ public class YggdrasillClient {
             viewSourceButton.addListener(SWT.Selection, listener);
             filePropsButton.addListener(SWT.Selection, listener);
             serverLogButton.addListener(SWT.Selection, listener);
+            aboutButton.addListener(SWT.Selection, listener);
             shell.open();
             
             while(!shell.isDisposed()) 
