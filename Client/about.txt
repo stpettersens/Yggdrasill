@@ -5,7 +5,7 @@ RMI-based distributed HTTP.
 
 Copyright (c) 2014 Sam Saint-Pettersen.
 
-http://github.com/stpettersens/Yggdrasill
+https://github.com/stpettersens/Yggdrasill
 
 *************************************************************
 
@@ -26,6 +26,10 @@ http://commons.apache.org/proper/commons-lang/
 Guava: Google Core Libraries for Java 1.6+
 Copyright (c) 2014 Google, Inc.
 https://code.google.com/p/guava-libraries/
+
+google-code-prettify
+Copyright (c) 2014 Google, Inc.
+https://code.google.com/p/google-code-prettify/
 
 JSON.simple: A simple Java toolkit for JSON
 Copyright (c) 2014 Yidong Fang et al
