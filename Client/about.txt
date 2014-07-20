@@ -13,7 +13,7 @@ Yggdrasill makes use of the following third-party libraries:
 
 Standard Widget Toolkit (SWT)
 Copyright (c) 2013 Eclipse Foundation
-http://www.eclipse.com/swt/
+http://www.eclipse.org/swt/
 
 Apache Commons Codec 1.9
 Copyright (c) 2002-2014 The Apache Software Foundation

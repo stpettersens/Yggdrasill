@@ -8,6 +8,15 @@
 		"binary": false
 	},
 	
+	"nphtml": {
+		
+		"mime": "text/html",
+		"name": "[HTML Document]",
+		"type": "document",
+		"parse": "text",
+		"binary": false
+	},
+	
 	"html": {
 	
 		"mime": "text/html",
