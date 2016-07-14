@@ -73,7 +73,7 @@ public class YggdrasillClient {
             text.setBounds(5, 35, 400, 25); // 5, 35, 400, 25
             text.setText(defaultPage);
 
-            /* # Use the network name established in YggdrasillServer to get a
+            /* Use the network name established in YggdrasillServer to get a
             proxy to an object implementing the Yggdrasill interface. */
             final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
 
