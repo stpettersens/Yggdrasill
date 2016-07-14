@@ -44,7 +44,7 @@ public class YggdrasillClient {
             //pointer = -1;
             
             Display display = new Display();
-            final Shell shell = new Shell(display);
+            final Shell shell = new Shell(display, 1);
             shell.setText(title);
             shell.setSize(700, 550);
             
@@ -101,7 +101,7 @@ public class YggdrasillClient {
             fileProperties.add(response.get(4));
             
             final Browser browser;
-            browser = new Browser(shell, SWT.BORDER);
+            browser = new Browser(shell, SWT.WEBKIT);
             browser.setText(html);
             browser.setBounds(5, 75, 670, 420);
            
