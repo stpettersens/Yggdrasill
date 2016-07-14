@@ -13,10 +13,10 @@ import java.rmi.RemoteException;
   * that extends java.rmi.Remote.
 */
 public interface Yggdrasill extends java.rmi.Remote {
-	/** 
+	/**
 	 * Signatures of the methods that remote server will offer to a client.
 	 * All remote methods must indicate they they may throw a
-	 * java.rmi.RemoteException which may occur due to a 
+	 * java.rmi.RemoteException which may occur due to a
 	 * networking problem.
 	 */
 	public List sendRespond(String httpRequest) throws RemoteException;

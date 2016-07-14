@@ -12,7 +12,6 @@ import com.google.common.primitives.Bytes;
 
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
-    
     public String decodeResponse(List response)
     {
         boolean binary = (boolean)response.get(1);
@@ -26,7 +25,7 @@ public class YggdrasillDecoder {
                 decoded += c;
             }
             return decoded;
-        }    
+        }
         else if(binary && type.equals("image")) {
             List bytes = new ArrayList();
             for(int i = 5; i < response.size(); i++) {
@@ -37,8 +36,8 @@ public class YggdrasillDecoder {
             byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
             String img = new String(encodedBytes);
             return String.format("<img src=\"data:%s;base64,%s\"/>", mimeType, img);
-        }    
-        else {           
+        }
+        else {
             return "not implemented!";
         }
     }

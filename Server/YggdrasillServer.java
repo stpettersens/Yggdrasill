@@ -12,7 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class YggdrasillServer {
 
-	public static void main(String args[]) 
+	public static void main(String args[])
 	{
 		try {
 			/* # Create the object to be accessed remotely using the interface */
@@ -27,7 +27,7 @@ public class YggdrasillServer {
 			/* # Confirm success with preparing the proxy */
 			System.out.println("Yggdrasill server ready...");
 
-			/* # Main method will now terminate, but the JVM holding Yggdrasill 
+			/* # Main method will now terminate, but the JVM holding Yggdrasill
 			and proxy objects will continue to run until killed. (Ctrl+C) */
 		}
 		catch(Exception e) {

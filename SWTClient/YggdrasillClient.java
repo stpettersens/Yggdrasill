@@ -19,7 +19,6 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.events.TraverseEvent;
 
 public class YggdrasillClient {
-    
     private static String title;
     private static String defaultPage;
     private static String html;
@@ -30,10 +29,8 @@ public class YggdrasillClient {
     //private static int pointer;
 
     @SuppressWarnings("unchecked")
-    public static void main(String args[]) 
-    {  
-        
-        try {   
+    public static void main(String args[]) {
+        try {
             title = "Yggdrasill Client - ";
             defaultPage = "/index.html";
             html = "";
@@ -42,40 +39,40 @@ public class YggdrasillClient {
             fileProperties = new ArrayList();
             serverLog = new ArrayList();
             //pointer = -1;
-            
+
             Display display = new Display();
             final Shell shell = new Shell(display);
             shell.setText(title);
             shell.setSize(700, 550);
-            
+
             ToolBar toolbar = new ToolBar(shell, SWT.NONE);
             toolbar.setBounds(5, 5, 350, 30);
-            
+
             ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
             backButton.setText("<");
-            
+
             ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
             goButton.setText("Go");
-            
+
             ToolItem fwdButton = new ToolItem(toolbar, SWT.PUSH);
             fwdButton.setText(">");
-            
+
             ToolItem viewSourceButton = new ToolItem(toolbar, SWT.PUSH);
             viewSourceButton.setText("View Source");
-            
+
             ToolItem filePropsButton = new ToolItem(toolbar, SWT.PUSH);
             filePropsButton.setText("File Properties");
-            
+
             ToolItem serverLogButton = new ToolItem(toolbar, SWT.PUSH);
             serverLogButton.setText("Server Log");
-            
+
             ToolItem aboutButton = new ToolItem(toolbar, SWT.PUSH);
             aboutButton.setText("About");
-            
+
             final Text text = new Text(shell, SWT.BORDER);
             text.setBounds(5, 35, 400, 25); // 5, 35, 400, 25
             text.setText(defaultPage);
-            
+
             /* # Use the network name established in YggdrasillServer to get a
             proxy to an object implementing the Yggdrasill interface. */
             final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
@@ -88,40 +85,40 @@ public class YggdrasillClient {
             serverLog.add(response.get(0));
             //pointer++;
             //System.out.println(pointer);
-            
+
             //System.out.println(response.get(0));
             final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
             html = yDecoder.decodeResponse(response);
             shell.setText(title + response.get(2));
             //System.out.println(output);
-            
+
             fileProperties.add(response.get(1));
             fileProperties.add(response.get(2));
             fileProperties.add(response.get(3));
             fileProperties.add(response.get(4));
-            
+
             final Browser browser;
             browser = new Browser(shell, SWT.NONE);
             browser.setText(html);
             browser.setBounds(5, 75, 670, 420);
-           
+
             text.addTraverseListener(new TraverseListener() {
                 public void keyTraversed(TraverseEvent event) {
-                    if(event.detail == SWT.TRAVERSE_RETURN) {                     
+                    if(event.detail == SWT.TRAVERSE_RETURN) {
                        try {
                             //pointer++;
-                            String page = text.getText();                       
+                            String page = text.getText();
                             String request = String.format("GET %s HTTP/1.1", page);
                             List response = yProxy.sendRespond(request);
                             serverLog.add("\n"+request+"\n");
                             serverLog.add(response.get(0));
-                            
+
                             fileProperties.clear();
                             fileProperties.add(response.get(1));
                             fileProperties.add(response.get(2));
                             fileProperties.add(response.get(3));
                             fileProperties.add(response.get(4));
-                            
+
                             html = yDecoder.decodeResponse(response);
                             shell.setText(title + response.get(2));
                             browser.setText(html);
@@ -134,7 +131,7 @@ public class YggdrasillClient {
                     }
                 }
             });
-          
+
             Listener listener = new Listener() {
                 public void handleEvent(Event event) {
                     ToolItem item = (ToolItem)event.widget;
@@ -147,13 +144,13 @@ public class YggdrasillClient {
                             List response = yProxy.sendRespond(request);
                             serverLog.add("\n"+request+"\n");
                             serverLog.add(response.get(0));
-                            
+
                             fileProperties.clear();
                             fileProperties.add(response.get(1));
                             fileProperties.add(response.get(2));
                             fileProperties.add(response.get(3));
                             fileProperties.add(response.get(4));
-                            
+
                             html = yDecoder.decodeResponse(response);
                             shell.setText(title + response.get(2));
                             browser.setText(html);
@@ -164,21 +161,21 @@ public class YggdrasillClient {
                         }
                     }
                     else if (string.equals("Go")) {
-                        try { 
+                        try {
                             String page = text.getText();
                             String request = String.format("GET %s HTTP/1.1", page);
                             List response = yProxy.sendRespond(request);
                             serverLog.add("\n"+request+"\n");
                             serverLog.add(response.get(0));
-                                   
+
                             fileProperties.clear();
                             fileProperties.add(response.get(1));
                             fileProperties.add(response.get(2));
                             fileProperties.add(response.get(3));
                             fileProperties.add(response.get(4));
-                            
+
                             html = yDecoder.decodeResponse(response);
-                            shell.setText(title + response.get(2));  
+                            shell.setText(title + response.get(2));
                             browser.setText(html);
                             history.add(page);
                             //System.out.println(history);
@@ -189,7 +186,7 @@ public class YggdrasillClient {
                         catch(RemoteException e) {
                             System.out.println("An error occurred whilst retrieving HTTP resource:");
                             System.out.println(e);
-                        }  
+                        }
                     }
                     else if (string.equals(">")) {
                         try {
@@ -200,13 +197,13 @@ public class YggdrasillClient {
                             List response = yProxy.sendRespond(request);
                             serverLog.add("\n"+request+"\n");
                             serverLog.add(response.get(0));
-                            
+
                             fileProperties.clear();
                             fileProperties.add(response.get(1));
                             fileProperties.add(response.get(2));
                             fileProperties.add(response.get(3));
                             fileProperties.add(response.get(4));
-                            
+
                             html = yDecoder.decodeResponse(response);
                             shell.setText(title + response.get(2));
                             browser.setText(html);
@@ -218,7 +215,7 @@ public class YggdrasillClient {
                         }
                     }
                     else if(string.equals("View Source")) {
-                        YggdrasillSourceDialog ysd = new YggdrasillSourceDialog(shell); 
+                        YggdrasillSourceDialog ysd = new YggdrasillSourceDialog(shell);
                         ysd.open(html);
                     }
                     else if(string.equals("File Properties")) {
@@ -243,15 +240,15 @@ public class YggdrasillClient {
             serverLogButton.addListener(SWT.Selection, listener);
             aboutButton.addListener(SWT.Selection, listener);
             shell.open();
-            
-            while(!shell.isDisposed()) 
+
+            while(!shell.isDisposed())
                 if(!display.readAndDispatch())
                     display.sleep();
             display.dispose();
-            
+
         }
         catch (Exception e) {
-            System.out.println("\nClient problem: " + e);           
+            System.out.println("\nClient problem: " + e);
         }
         //System.out.println("Client terminated");
     }

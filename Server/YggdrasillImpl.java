@@ -21,43 +21,43 @@ import org.jsoup.parser.*;
 
 /** Yggdrasill implementation **/
 @SuppressWarnings("unchecked")
-public class YggdrasillImpl implements Yggdrasill 
-{  
+public class YggdrasillImpl implements Yggdrasill
+{
     private List handleRequest(String http, String[] params)
     {
         List bytesList = new ArrayList();
         String request = params[0].substring(1) + params[1];
         String ext = params[1];
 
-   
+
         YggdrasillMimes yMimes = new YggdrasillMimes(ext);
         String mime = yMimes.getMime();
         String title = yMimes.getName();
         String type = yMimes.getType();
         String parse = yMimes.getParse();
         boolean binary = yMimes.getBinary();
-        
+
         switch(http) {
             case "GET":
                 if(!binary && parse.equals("markup")) {
                     try {
-                       File html = new File("www//" + request);    
+                       File html = new File("www//" + request);
                        Document doc = Jsoup.parse(html, "UTF-8", "");
                        title = "[" + doc.title() + "]";
                        String img = doc.select("img").attr("src");
                        byte[] imgBytes = Files.toByteArray(new File("www//" + img));
                        byte[] encImage = Base64.encodeBase64(imgBytes);
-                       
+
                        String iExt = Files.getFileExtension("www//" + img);
                        yMimes.setExt(iExt);
                        String iMime = yMimes.getMime();
                        String iImg = new String(encImage);
-                       
+
                        doc.select("img").attr("src", String.format("data:%s;base64,%s", iMime, iImg));
                        String strDoc = doc.html();
                        byte[] bytes = strDoc.getBytes();
                        if(bytes.length > 0) {
-                           Files.write(bytes, new File("www//_parsed_.html"));        
+                           Files.write(bytes, new File("www//_parsed_.html"));
                            Reader reader = new FileReader("www//_parsed_.html");
                            int data = reader.read();
                            while(data != -1) {
@@ -79,16 +79,16 @@ public class YggdrasillImpl implements Yggdrasill
                 }
                 else if(!binary && parse.equals("pretty")) {
                     try {
-                        String document = "";  
-                        List<String> file = Files.readLines(new File("www//" + request), Charsets.UTF_8);     
+                        String document = "";
+                        List<String> file = Files.readLines(new File("www//" + request), Charsets.UTF_8);
                         for(int i = 0; i < file.size(); i++) {
                             document += escapeXml(file.get(i)) + "\n";
-                        }    
+                        }
                         String output = String.format("<script src=\"https://google-code-prettify.googlecode.com/svn/loader/"
                         + "run_prettify.js\"></script>\n<pre class=\"prettyprint linenums\">%s</pre>", document);
                         byte[] bytes = output.getBytes();
                         if(bytes.length > 0) {
-                           Files.write(bytes, new File("www//_parsed_.html"));        
+                           Files.write(bytes, new File("www//_parsed_.html"));
                            Reader reader = new FileReader("www//_parsed_.html");
                            int data = reader.read();
                            while(data != -1) {
@@ -156,7 +156,7 @@ public class YggdrasillImpl implements Yggdrasill
                 type = yMimes.getType();
                 parse = yMimes.getParse();
                 binary = yMimes.getBinary();
-                
+
                 Reader reader = new FileReader("www//_notfound_.html");
                 int data = reader.read();
                 while(data != -1) {
@@ -176,20 +176,20 @@ public class YggdrasillImpl implements Yggdrasill
             bytesList.add(4, type);
         }
         System.out.println(bytesList.get(0));
-        
+
         return bytesList;
     }
-    
+
     /** Handle an HTTP request and respond to it **/
     public List sendRespond(String httpRequest)
     {
         System.out.println(httpRequest);
-        
+
         String httpCommand = "(^\\w{3,4}) (\\/{0,1}\\w*\\.{0,1})(\\w{0,20}) (HTTP/1.1)";
-        
+
         Pattern pattern = Pattern.compile(httpCommand);
         Matcher matcher = pattern.matcher(httpRequest);
-        
+
         String http = ""; String[] params = new String[3];
         while(matcher.find()) {
             http = matcher.group(1);
@@ -197,7 +197,7 @@ public class YggdrasillImpl implements Yggdrasill
             params[1] = matcher.group(3);
             params[2] = matcher.group(4);
         }
-        
+
         return handleRequest(http, params);
     }
 }

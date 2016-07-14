@@ -1,4 +1,5 @@
-/Client/doc
+/SWTClient/doc
+/SwingClient/doc
 /Server/doc
 /Client/*.class
 /Server/*.class

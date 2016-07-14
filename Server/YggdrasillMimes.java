@@ -11,14 +11,14 @@ import com.google.common.io.Files;
 import org.json.simple.JSONValue;
 import org.json.simple.JSONObject;
 
-public class YggdrasillMimes 
+public class YggdrasillMimes
 {
     private JSONObject mimes;
     private String extension;
-    
+
     private void readMimesFile()
     {
-        try 
+        try
         {
             String file = Files.toString(new File("www//mimes.json"), Charsets.UTF_8);
             this.mimes = (JSONObject)JSONValue.parse(file);
@@ -26,9 +26,9 @@ public class YggdrasillMimes
         catch(IOException ioe)
         {
             System.out.println(ioe);
-        }  
+        }
     }
-       
+
     private JSONObject getShard(String objectName)
     {
         String shardStr = "";
@@ -42,45 +42,45 @@ public class YggdrasillMimes
         }
         return (JSONObject)JSONValue.parse(shardStr);
     }
-        
-    private String getPart(String part) 
+
+    private String getPart(String part)
     {
-        String partStr = JSONValue.toJSONString(getShard(this.extension).get(part)); 
+        String partStr = JSONValue.toJSONString(getShard(this.extension).get(part));
         partStr = partStr.replaceAll("\\\\", ""); // Remove backslashes.
         return partStr.replaceAll("\"", ""); // Remove double quotes.
     }
-    
+
     public YggdrasillMimes(String ext)
     {
         setExt(ext);
         readMimesFile();
     }
-    
+
     public void setExt(String ext)
     {
         this.extension = ext;
     }
-    
+
     public String getMime()
     {
         return getPart("mime");
     }
-    
+
     public String getName()
     {
         return getPart("name");
     }
-    
-    public String getType() 
+
+    public String getType()
     {
         return getPart("type");
     }
-    
+
     public String getParse()
     {
         return getPart("parse");
     }
-    
+
     public boolean getBinary()
     {
         return Boolean.parseBoolean(getPart("binary"));
