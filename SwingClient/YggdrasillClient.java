@@ -5,6 +5,13 @@
 
     Copyright (c) 2014, 2016 Sam Saint-Pettersen.
 */
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -31,6 +38,7 @@ class Window extends JFrame implements ActionListener {
         ca.add(btnBack);
 
         JButton btnGo = new JButton("Go");
+        btnGo.addActionListener(this);
         ca.add(btnGo);
 
         JButton btnForward = new JButton(">");
@@ -52,10 +60,16 @@ class Window extends JFrame implements ActionListener {
         JTextField txtUri = new JTextField("/index.html", 60);
         ca.add(txtUri);
 
+        JTextArea browser = new JTextArea("Response appears here...", 30, 60);
+        ca.add(browser);
+
         setContentPane(ca);
     }
 
     public void actionPerformed(ActionEvent event) {
-      JOptionPane.showMessageDialog(null, "Yggdrasill Client (Swing)\nCopyright 2016 Sam Saint-Pettersen.", "Yddrasill Client", JOptionPane.INFORMATION_MESSAGE);
+      String command = event.getActionCommand();
+      if (command == "About") {
+        JOptionPane.showMessageDialog(null, "Yggdrasill Client (Swing)\nCopyright 2016 Sam Saint-Pettersen.", "Yddrasill Client", JOptionPane.INFORMATION_MESSAGE);
+      }
     }
 }
