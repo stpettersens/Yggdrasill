@@ -1,4 +1,16 @@
 #BlueJ class context
 comment0.params=args
 comment0.target=void\ main(java.lang.String[])
-numComments=1
+comment1.params=newTitle
+comment1.target=void\ setTitle(java.lang.String)
+comment2.params=
+comment2.target=java.lang.String\ getTitle()
+comment3.params=newPage
+comment3.target=void\ setPage(java.lang.String)
+comment4.params=
+comment4.target=java.lang.String\ getPage()
+comment5.params=newHtml
+comment5.target=void\ setHtml(java.lang.String)
+comment6.params=
+comment6.target=java.lang.String\ getHtml()
+numComments=7

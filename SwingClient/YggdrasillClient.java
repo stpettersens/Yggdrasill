@@ -7,6 +7,7 @@
 */
 import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
+import java.rmi.NotBoundException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -53,11 +54,12 @@ class Window extends JFrame implements ActionListener {
     private static Queue<String> history;
     private static List serverLog;
     private static List fileProperties;
+    private static JTextArea browser;
 
     public Window() {
         super("Yggdrasill Client");
         YggdrasillClient.setTitle("Yggdrasill Client -");
-        YggdrasillClient.setPage("/index.html");
+        YggdrasillClient.setPage("/index.html"); // /index.html
         YggdrasillClient.setHtml("");
         //history = new ArrayList();
         history = new LinkedList<String>();
@@ -100,7 +102,8 @@ class Window extends JFrame implements ActionListener {
         JTextField txtUri = new JTextField(YggdrasillClient.getPage(), 60);
         ca.add(txtUri);
 
-        JTextArea browser = new JTextArea("Response appears here...", 30, 60);
+        browser = new JTextArea("Response appears here...", 30, 60);
+        browser.setFont(new Font("monospaced", Font.PLAIN, 11));
         ca.add(browser);
 
         setContentPane(ca);
@@ -109,32 +112,39 @@ class Window extends JFrame implements ActionListener {
 
     private void lookUpUri() {
       try {
-        /* Use the network name established in YggdrasillServer to get a
-        proxy to an object implementing the Yggdrasill interface. */
-        final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
+          /* Use the network name established in YggdrasillServer to get a
+          proxy to an object implementing the Yggdrasill interface. */
+          final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
 
-        //System.out.println("\nYggdrasill client started...");
-        String request = String.format("GET %s HTTP/1.1", YggdrasillClient.getPage());
-        List response = yProxy.sendRespond(request);
-        history.add(YggdrasillClient.getPage());
-        serverLog.add(String.format("\n%s\n", request));
-        //pointer++;
-        //System.out.println(pointer);
+          //System.out.println("\nYggdrasill client started...");
+          String request = String.format("GET %s HTTP/1.1", YggdrasillClient.getPage());
+          List response = yProxy.sendRespond(request);
+          history.add(YggdrasillClient.getPage());
+          serverLog.add(String.format("\n%s\n", request));
+          //pointer++;
+          //System.out.println(pointer);
 
-        //System.out.println(response.get(0));
-        final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
-        YggdrasillClient.setHtml(yDecoder.decodeResponse(response));
-        //shell.setText(String.format("%s%s", title, response.get(2)));
+          //System.out.println(response.get(0));
+          final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
+          YggdrasillClient.setHtml(yDecoder.decodeResponse(response));
+          //shell.setText(String.format("%s%s", title, response.get(2)));
 
-        fileProperties.add(response.get(1));
-        fileProperties.add(response.get(2));
-        fileProperties.add(response.get(3));
-        fileProperties.add(response.get(4));
-    }
-    catch(RemoteException e) {
-      System.out.println("An error occurred whilst retrieving HTTP resource:");
-      System.out.println(e);
-    }
+          fileProperties.add(response.get(1));
+          fileProperties.add(response.get(2));
+          fileProperties.add(response.get(3));
+          fileProperties.add(response.get(4));
+
+          browser.setText(YggdrasillClient.getHtml());
+          System.out.println(YggdrasillClient.getHtml());
+      }
+      catch(NotBoundException nbe) {
+          System.out.println("An error occurred whilst setting up the proxy:");
+          System.out.println(nbe);
+      }
+      catch(RemoteException re) {
+          System.out.println("An error occurred whilst retrieving HTTP resource:");
+          System.out.println(re);
+      }
   }
 
   public void actionPerformed(ActionEvent event) {
