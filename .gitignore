@@ -1,5 +1,6 @@
 /SWTClient/doc
 /SwingClient/doc
+/SwingClient/cache
 /Server/doc
 /Client/*.class
 /Server/*.class

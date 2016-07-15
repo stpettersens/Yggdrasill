@@ -8,6 +8,8 @@
 import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.rmi.NotBoundException;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -54,7 +56,11 @@ class Window extends JFrame implements ActionListener {
     private static Queue<String> history;
     private static List serverLog;
     private static List fileProperties;
-    private static JTextArea browser;
+    //private static JTextArea browser;
+    private static JEditorPane browser;
+    private static JTextField txtUri;
+    private static Yggdrasill yProxy;
+    private static YggdrasillDecoder yDecoder;
 
     public Window() {
         super("Yggdrasill Client");
@@ -99,57 +105,91 @@ class Window extends JFrame implements ActionListener {
         btnAbout.addActionListener(this);
         ca.add(btnAbout);
 
-        JTextField txtUri = new JTextField(YggdrasillClient.getPage(), 60);
+        txtUri = new JTextField(YggdrasillClient.getPage(), 60);
         ca.add(txtUri);
 
-        browser = new JTextArea("Response appears here...", 30, 60);
+        /*browser = new JTextArea("Response appears here...", 140, 90);
         browser.setFont(new Font("monospaced", Font.PLAIN, 11));
-        ca.add(browser);
+        browser.setEditable(false);
+        browser.setLineWrap(true);
+        browser.setWrapStyleWord(true);*/
 
+        //panel.repaint();
+        
+        browser = new JEditorPane();
+        browser.setContentType("text/html");
+        browser.setEditable(false);
+
+        JScrollPane browserScroll = new JScrollPane(browser);
+        browserScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        browserScroll.setPreferredSize(new Dimension(660, 450));
+
+        ca.add(browserScroll);
         setContentPane(ca);
-        lookUpUri();
+        initialize();
+    }
+    
+    private void lookupUri() {
+        try {
+            YggdrasillClient.setPage(txtUri.getText());
+            String request = String.format("GET %s HTTP/1.1", YggdrasillClient.getPage());
+            List response = yProxy.sendRespond(request);
+            history.add(YggdrasillClient.getPage());
+            serverLog.add(String.format("\n%s\n", request));
+            //pointer++;
+            //System.out.println(pointer);
+
+            //System.out.println(response.get(0));
+            yDecoder = new YggdrasillDecoder();
+            YggdrasillClient.setHtml(yDecoder.decodeResponse(response, YggdrasillClient.getPage()));
+            //shell.setText(String.format("%s%s", title, response.get(2)));
+
+            fileProperties.add(response.get(1));
+            fileProperties.add(response.get(2));
+            fileProperties.add(response.get(3));
+            fileProperties.add(response.get(4));
+            
+            //JPanel panel = new JPanel(new BorderLayout());
+            //String img = String.format("cache/%s", YggdrasillClient.getPage());
+            //System.out.println(img);
+            //ImageIcon image = new ImageIcon(img);
+            //JLabel label = new JLabel("", image, JLabel.CENTER);
+            //panel.add(label, BorderLayout.CENTER);
+            browser.setText(yDecoder.processHtml(YggdrasillClient.getHtml()));
+            System.out.println(yDecoder.processHtml(YggdrasillClient.getHtml()));
+     
+        }
+        catch(RemoteException re) {
+            System.out.println("An error occurred whilst retrieving HTTP resource:");
+            System.out.println(re);
+        }
     }
 
-    private void lookUpUri() {
+    private void initialize() {      
       try {
           /* Use the network name established in YggdrasillServer to get a
           proxy to an object implementing the Yggdrasill interface. */
-          final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
+          yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
 
           //System.out.println("\nYggdrasill client started...");
-          String request = String.format("GET %s HTTP/1.1", YggdrasillClient.getPage());
-          List response = yProxy.sendRespond(request);
-          history.add(YggdrasillClient.getPage());
-          serverLog.add(String.format("\n%s\n", request));
-          //pointer++;
-          //System.out.println(pointer);
-
-          //System.out.println(response.get(0));
-          final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
-          YggdrasillClient.setHtml(yDecoder.decodeResponse(response));
-          //shell.setText(String.format("%s%s", title, response.get(2)));
-
-          fileProperties.add(response.get(1));
-          fileProperties.add(response.get(2));
-          fileProperties.add(response.get(3));
-          fileProperties.add(response.get(4));
-
-          browser.setText(YggdrasillClient.getHtml());
-          System.out.println(YggdrasillClient.getHtml());
-      }
-      catch(NotBoundException nbe) {
-          System.out.println("An error occurred whilst setting up the proxy:");
-          System.out.println(nbe);
+          lookupUri();
       }
       catch(RemoteException re) {
           System.out.println("An error occurred whilst retrieving HTTP resource:");
           System.out.println(re);
       }
+      catch(NotBoundException nbe) {
+          System.out.println("An error occurred whilst setting up the proxy:");
+          System.out.println(nbe);
+      }
   }
 
   public void actionPerformed(ActionEvent event) {
     String command = event.getActionCommand();
-    if (command == "About") {
+    if(command == "Go") {
+      System.out.println(YggdrasillClient.getHtml());
+    }
+    else if(command == "About") {
       JOptionPane.showMessageDialog(null, "Yggdrasill Client (Swing)\nCopyright 2016 Sam Saint-Pettersen.", "Yddrasill Client", JOptionPane.INFORMATION_MESSAGE);
     }
   }

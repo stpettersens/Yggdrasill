@@ -7,12 +7,14 @@
 */
 import java.util.List;
 import java.util.ArrayList;
-import org.apache.commons.codec.binary.Base64;
+import java.io.File;
+import java.io.IOException;
+import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
-    public String decodeResponse(List response)
+    public String decodeResponse(List response, String uri)
     {
         boolean binary = (boolean)response.get(1);
         String mimeType = (String)response.get(3);
@@ -33,12 +35,25 @@ public class YggdrasillDecoder {
             }
             List<Byte> bytesList = bytes;
             byte[] decodedBytes = Bytes.toArray(bytesList);
-            byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
+            try {
+                Files.write(decodedBytes, new File(String.format("cached/%s", uri)));
+            }
+            catch(IOException ioe) {
+                System.out.println("Problem caching image to file:");
+                System.out.println(ioe);
+            }
+            return "[image]";
+            /*byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
             String img = new String(encodedBytes);
-            return String.format("<img src=\"data:%s;base64,%s\"/>", mimeType, img);
+            return String.format("<img src=\"data:%s;base64,%s\"/>", mimeType, img);*/
         }
         else {
             return "not implemented!";
         }
+    }
+    
+    public String processHtml(String rawHtml) {
+        // TODO
+        return "<!-- HTML was processed by Swing client -->\n" + rawHtml;
     }
 }
