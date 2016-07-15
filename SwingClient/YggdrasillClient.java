@@ -17,14 +17,54 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class YggdrasillClient {
+    private static String title;
+    private static String currentPage;
+    private static String html;
+
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         Window w = new Window();
     }
+
+    public static void setTitle(String newTitle) {
+        title = newTitle;
+    }
+    public static String getTitle() {
+        return title;
+    }
+
+    public static void setPage(String newPage) {
+        currentPage = newPage;
+    }
+    public static String getPage() {
+        return currentPage;
+    }
+
+    public static void setHtml(String newHtml) {
+        html = newHtml;
+    }
+    public static String getHtml() {
+        return html;
+    }
 }
 
+@SuppressWarnings("unchecked")
 class Window extends JFrame implements ActionListener {
+    private static Queue<String> history;
+    private static List serverLog;
+    private static List fileProperties;
+
     public Window() {
         super("Yggdrasill Client");
+        YggdrasillClient.setTitle("Yggdrasill Client -");
+        YggdrasillClient.setPage("/index.html");
+        YggdrasillClient.setHtml("");
+        //history = new ArrayList();
+        history = new LinkedList<String>();
+        fileProperties = new ArrayList();
+        serverLog = new ArrayList();
+        //pointer = -1;
+
         setSize(700, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -57,19 +97,50 @@ class Window extends JFrame implements ActionListener {
         btnAbout.addActionListener(this);
         ca.add(btnAbout);
 
-        JTextField txtUri = new JTextField("/index.html", 60);
+        JTextField txtUri = new JTextField(YggdrasillClient.getPage(), 60);
         ca.add(txtUri);
 
         JTextArea browser = new JTextArea("Response appears here...", 30, 60);
         ca.add(browser);
 
         setContentPane(ca);
+        lookUpUri();
     }
 
-    public void actionPerformed(ActionEvent event) {
-      String command = event.getActionCommand();
-      if (command == "About") {
-        JOptionPane.showMessageDialog(null, "Yggdrasill Client (Swing)\nCopyright 2016 Sam Saint-Pettersen.", "Yddrasill Client", JOptionPane.INFORMATION_MESSAGE);
-      }
+    private void lookUpUri() {
+      try {
+        /* Use the network name established in YggdrasillServer to get a
+        proxy to an object implementing the Yggdrasill interface. */
+        final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
+
+        //System.out.println("\nYggdrasill client started...");
+        String request = String.format("GET %s HTTP/1.1", YggdrasillClient.getPage());
+        List response = yProxy.sendRespond(request);
+        history.add(YggdrasillClient.getPage());
+        serverLog.add(String.format("\n%s\n", request));
+        //pointer++;
+        //System.out.println(pointer);
+
+        //System.out.println(response.get(0));
+        final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
+        YggdrasillClient.setHtml(yDecoder.decodeResponse(response));
+        //shell.setText(String.format("%s%s", title, response.get(2)));
+
+        fileProperties.add(response.get(1));
+        fileProperties.add(response.get(2));
+        fileProperties.add(response.get(3));
+        fileProperties.add(response.get(4));
     }
+    catch(RemoteException e) {
+      System.out.println("An error occurred whilst retrieving HTTP resource:");
+      System.out.println(e);
+    }
+  }
+
+  public void actionPerformed(ActionEvent event) {
+    String command = event.getActionCommand();
+    if (command == "About") {
+      JOptionPane.showMessageDialog(null, "Yggdrasill Client (Swing)\nCopyright 2016 Sam Saint-Pettersen.", "Yddrasill Client", JOptionPane.INFORMATION_MESSAGE);
+    }
+  }
 }

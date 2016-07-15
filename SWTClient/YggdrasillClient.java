@@ -81,7 +81,7 @@ public class YggdrasillClient {
             String request = String.format("GET %s HTTP/1.1", defaultPage);
             List response = yProxy.sendRespond(request);
             history.add(defaultPage);
-            serverLog.add("\n"+request+"\n");
+            serverLog.add("\n"+request+"\n"); // TODO: Change to serverLog.add(String.format("\n%\n", request));
             serverLog.add(response.get(0));
             //pointer++;
             //System.out.println(pointer);
