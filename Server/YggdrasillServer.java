@@ -1,9 +1,9 @@
 //package
 /*
- 	Yggdrasill
- 	RMI-based distributed HTTP.
+    Yggdrasill
+    RMI-based distributed HTTP.
 
- 	Copyright (c) Sam Saint-Pettersen.
+    Copyright (c) Sam Saint-Pettersen.
 */
 //package io.stpettersen.yggdrasill.server;
 import java.rmi.registry.LocateRegistry;
@@ -12,26 +12,30 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class YggdrasillServer {
 
-	public static void main(String args[])
-	{
-		try {
-			/* # Create the object to be accessed remotely using the interface */
-			Yggdrasill y = new YggdrasillImpl();
+    public static void main(String args[])
+    {
+        try {
+            /* # Start rmiregistry service */
+            Process p = Runtime.getRuntime().exec("rmiregistry");
+            p.waitFor();
 
-			/* # Create a proxy object to supply to a remote client */
-			Remote yProxy = UnicastRemoteObject.exportObject(y, 0);
+            /* # Create the object to be accessed remotely using the interface */
+            Yggdrasill y = new YggdrasillImpl();
 
-			/* # Give the proxy object a network name */
-			LocateRegistry.getRegistry().rebind("YggdrasillService", yProxy);
+            /* # Create a proxy object to supply to a remote client */
+            Remote yProxy = UnicastRemoteObject.exportObject(y, 0);
 
-			/* # Confirm success with preparing the proxy */
-			System.out.println("Yggdrasill server ready...");
+            /* # Give the proxy object a network name */
+            LocateRegistry.getRegistry().rebind("YggdrasillService", yProxy);
 
-			/* # Main method will now terminate, but the JVM holding Yggdrasill
-			and proxy objects will continue to run until killed. (Ctrl+C) */
-		}
-		catch(Exception e) {
-			System.out.println("\nServer problem:" + e);
-		}
-	}
+            /* # Confirm success with preparing the proxy */
+            System.out.println("Yggdrasill server ready...");
+
+            /* # Main method will now terminate, but the JVM holding Yggdrasill
+            and proxy objects will continue to run until killed. (Ctrl+C) */
+        }
+        catch(Exception e) {
+            System.out.println("\nServer problem:" + e);
+        }
+    }
 }

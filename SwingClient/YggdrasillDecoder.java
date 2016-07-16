@@ -42,7 +42,7 @@ public class YggdrasillDecoder {
                 System.out.println("Problem caching image to file:");
                 System.out.println(ioe);
             }
-            return String.format("<img src=file:%s/cache/%s", System.getProperty("user.dir"), uri);
+            return String.format("<img src=\"file:%s/cache/%s\">", System.getProperty("user.dir"), uri);
         }
         else {
             return "not implemented!";

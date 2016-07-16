@@ -27,7 +27,7 @@ public class YggdrasillClient {
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
-        Window w = new Window();
+        ClientWindow w = new ClientWindow();
     }
 
     public static void setTitle(String newTitle) {
@@ -60,7 +60,7 @@ public class YggdrasillClient {
 }
 
 @SuppressWarnings("unchecked")
-class Window extends JFrame implements ActionListener {
+class ClientWindow extends JFrame implements ActionListener {
     private static Queue<String> history;
     private static List serverLog;
     private static List fileProperties;
@@ -70,7 +70,7 @@ class Window extends JFrame implements ActionListener {
     private static Yggdrasill yProxy;
     private static YggdrasillDecoder yDecoder;
 
-    public Window() {
+    public ClientWindow() {
         super("Yggdrasill Client");
         YggdrasillClient.setTitle("Yggdrasill Client -");
         YggdrasillClient.setPage("/index.html"); // /index.html
@@ -101,6 +101,7 @@ class Window extends JFrame implements ActionListener {
         ca.add(btnForward);
 
         JButton btnViewSource = new JButton("View Source");
+        btnViewSource.addActionListener(this);
         ca.add(btnViewSource);
 
         JButton btnFileProps = new JButton("File Properties");
@@ -116,16 +117,10 @@ class Window extends JFrame implements ActionListener {
         txtUri = new JTextField(YggdrasillClient.getPage(), 60);
         ca.add(txtUri);
 
-        /*browser = new JTextArea("Response appears here...", 140, 90);
-        browser.setFont(new Font("monospaced", Font.PLAIN, 11));
-        browser.setEditable(false);
-        browser.setLineWrap(true);
-        browser.setWrapStyleWord(true);*/
-
         browser = new JEditorPane();
         browser.setContentType("text/html");
         browser.setEditable(false);
-        
+
         /*browser = new JPanel(new BorderLayout());
         String img = "tyr.jpg"; //String.format("cache/%s", YggdrasillClient.getPage());
         System.out.println(String.format("Rendering image: %s", img));
@@ -161,7 +156,7 @@ class Window extends JFrame implements ActionListener {
             fileProperties.add(response.get(2));
             fileProperties.add(response.get(3));
             fileProperties.add(response.get(4));
-            
+
             browser.setText(yDecoder.processHtml(YggdrasillClient.getHtml()));
             //System.out.println(yDecoder.processHtml(YggdrasillClient.getHtml()));
 
@@ -199,6 +194,10 @@ class Window extends JFrame implements ActionListener {
     String command = event.getActionCommand();
     if(command.equals("Go")) {
         makeRequest();
+    }
+    else if(command.equals("View Source")) {
+        YggdrasillSourceDialog sourceDialog = new YggdrasillSourceDialog(this, YggdrasillClient.getHtml());
+        sourceDialog.setVisible(true);
     }
     else if(command.equals("About")) {
         displayAbout();
