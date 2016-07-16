@@ -25,11 +25,11 @@ public class YggdrasillSourceDialog extends JDialog {
         src.setEditable(false);
         src.setLineWrap(true);
         src.setWrapStyleWord(true);
-        
+
         JScrollPane srcScroll = new JScrollPane(src);
         srcScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         srcScroll.setPreferredSize(new Dimension(450, 250));
-        
+
         ca.add(srcScroll);
 
         setSize(500, 320);
