@@ -55,7 +55,7 @@ public class YggdrasillImpl implements Yggdrasill
 
                        doc.select("img").attr("src", String.format("data:%s;base64,%s", iMime, iImg));*/
                        
-                       /*Elements images = doc.getElementsByTag("img");
+                       Elements images = doc.getElementsByTag("img");
                        for (Element el: images) {
                            String img = el.attr("src");
                            byte[] imgBytes = Files.toByteArray(new File(String.format("www//%s", img))); 
@@ -64,7 +64,7 @@ public class YggdrasillImpl implements Yggdrasill
                            String iMime = yMimes.getMime();
                            String iImg = new String(encImage);
                            el.attr("src", String.format("data:%s;base64,%s", iMime, iImg));
-                       }*/
+                       }
                        
                        String strDoc = doc.html();
                        byte[] bytes = strDoc.getBytes();
