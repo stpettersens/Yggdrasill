@@ -44,7 +44,7 @@ public class YggdrasillImpl implements Yggdrasill
                        File html = new File("www//" + request);
                        Document doc = Jsoup.parse(html, "UTF-8", "");
                        title = "[" + doc.title() + "]";
-                       String img = doc.select("img").attr("src");
+                       /*String img = doc.select("img").attr("src");
                        byte[] imgBytes = Files.toByteArray(new File("www//" + img));
                        byte[] encImage = Base64.encodeBase64(imgBytes);
 
@@ -53,7 +53,19 @@ public class YggdrasillImpl implements Yggdrasill
                        String iMime = yMimes.getMime();
                        String iImg = new String(encImage);
 
-                       doc.select("img").attr("src", String.format("data:%s;base64,%s", iMime, iImg));
+                       doc.select("img").attr("src", String.format("data:%s;base64,%s", iMime, iImg));*/
+                       
+                       /*Elements images = doc.getElementsByTag("img");
+                       for (Element el: images) {
+                           String img = el.attr("src");
+                           byte[] imgBytes = Files.toByteArray(new File(String.format("www//%s", img))); 
+                           byte[] encImage = Base64.encodeBase64(imgBytes);
+                           yMimes.setExt(Files.getFileExtension(String.format("www//%s", img)));
+                           String iMime = yMimes.getMime();
+                           String iImg = new String(encImage);
+                           el.attr("src", String.format("data:%s;base64,%s", iMime, iImg));
+                       }*/
+                       
                        String strDoc = doc.html();
                        byte[] bytes = strDoc.getBytes();
                        if(bytes.length > 0) {

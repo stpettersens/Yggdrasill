@@ -23,6 +23,7 @@ public class YggdrasillClient {
     private static String title;
     private static String currentPage;
     private static String html;
+    private static String rawHtml;
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
@@ -49,6 +50,13 @@ public class YggdrasillClient {
     public static String getHtml() {
         return html;
     }
+
+    public static void setRawHtml(String newHtml) {
+        rawHtml = newHtml;
+    }
+    public static String getRawHtml() {
+        return rawHtml;
+    }
 }
 
 @SuppressWarnings("unchecked")
@@ -57,7 +65,7 @@ class Window extends JFrame implements ActionListener {
     private static List serverLog;
     private static List fileProperties;
     //private static JTextArea browser;
-    private static JEditorPane browser;
+    private static JEditorPane browser; // JPanel
     private static JTextField txtUri;
     private static Yggdrasill yProxy;
     private static YggdrasillDecoder yDecoder;
@@ -114,11 +122,16 @@ class Window extends JFrame implements ActionListener {
         browser.setLineWrap(true);
         browser.setWrapStyleWord(true);*/
 
-        //panel.repaint();
-        
         browser = new JEditorPane();
         browser.setContentType("text/html");
         browser.setEditable(false);
+        
+        /*browser = new JPanel(new BorderLayout());
+        String img = "tyr.jpg"; //String.format("cache/%s", YggdrasillClient.getPage());
+        System.out.println(String.format("Rendering image: %s", img));
+        ImageIcon image = new ImageIcon(img);
+        JLabel label = new JLabel("", image, JLabel.CENTER);
+        browser.add(label, BorderLayout.CENTER);*/
 
         JScrollPane browserScroll = new JScrollPane(browser);
         browserScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -128,8 +141,8 @@ class Window extends JFrame implements ActionListener {
         setContentPane(ca);
         initialize();
     }
-    
-    private void lookupUri() {
+
+    private void makeRequest() {
         try {
             YggdrasillClient.setPage(txtUri.getText());
             String request = String.format("GET %s HTTP/1.1", YggdrasillClient.getPage());
@@ -149,15 +162,9 @@ class Window extends JFrame implements ActionListener {
             fileProperties.add(response.get(3));
             fileProperties.add(response.get(4));
             
-            //JPanel panel = new JPanel(new BorderLayout());
-            //String img = String.format("cache/%s", YggdrasillClient.getPage());
-            //System.out.println(img);
-            //ImageIcon image = new ImageIcon(img);
-            //JLabel label = new JLabel("", image, JLabel.CENTER);
-            //panel.add(label, BorderLayout.CENTER);
             browser.setText(yDecoder.processHtml(YggdrasillClient.getHtml()));
-            System.out.println(yDecoder.processHtml(YggdrasillClient.getHtml()));
-     
+            //System.out.println(yDecoder.processHtml(YggdrasillClient.getHtml()));
+
         }
         catch(RemoteException re) {
             System.out.println("An error occurred whilst retrieving HTTP resource:");
@@ -165,14 +172,12 @@ class Window extends JFrame implements ActionListener {
         }
     }
 
-    private void initialize() {      
+    private void initialize() {
       try {
           /* Use the network name established in YggdrasillServer to get a
           proxy to an object implementing the Yggdrasill interface. */
           yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
-
-          //System.out.println("\nYggdrasill client started...");
-          lookupUri();
+          makeRequest();
       }
       catch(RemoteException re) {
           System.out.println("An error occurred whilst retrieving HTTP resource:");
@@ -184,13 +189,19 @@ class Window extends JFrame implements ActionListener {
       }
   }
 
+  private void displayAbout() {
+      JOptionPane.showMessageDialog(null,
+      "Yggdrasill Client (Swing)\nCopyright 2016 Sam Saint-Pettersen.",
+      "Yddrasill Client", JOptionPane.INFORMATION_MESSAGE);
+  }
+
   public void actionPerformed(ActionEvent event) {
     String command = event.getActionCommand();
-    if(command == "Go") {
-      System.out.println(YggdrasillClient.getHtml());
+    if(command.equals("Go")) {
+        makeRequest();
     }
-    else if(command == "About") {
-      JOptionPane.showMessageDialog(null, "Yggdrasill Client (Swing)\nCopyright 2016 Sam Saint-Pettersen.", "Yddrasill Client", JOptionPane.INFORMATION_MESSAGE);
+    else if(command.equals("About")) {
+        displayAbout();
     }
   }
 }

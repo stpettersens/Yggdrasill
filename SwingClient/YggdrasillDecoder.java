@@ -36,16 +36,13 @@ public class YggdrasillDecoder {
             List<Byte> bytesList = bytes;
             byte[] decodedBytes = Bytes.toArray(bytesList);
             try {
-                Files.write(decodedBytes, new File(String.format("cached/%s", uri)));
+                Files.write(decodedBytes, new File(String.format("cache/%s", uri)));
             }
             catch(IOException ioe) {
                 System.out.println("Problem caching image to file:");
                 System.out.println(ioe);
             }
-            return "[image]";
-            /*byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
-            String img = new String(encodedBytes);
-            return String.format("<img src=\"data:%s;base64,%s\"/>", mimeType, img);*/
+            return String.format("<img src=file:%s/cache/%s", System.getProperty("user.dir"), uri);
         }
         else {
             return "not implemented!";
