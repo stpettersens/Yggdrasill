@@ -73,7 +73,7 @@ class ClientWindow extends JFrame implements ActionListener {
     public ClientWindow() {
         super("Yggdrasill Client");
         YggdrasillClient.setTitle("Yggdrasill Client -");
-        YggdrasillClient.setPage("/tyr.jpg"); // /index.html
+        YggdrasillClient.setPage("/index.html");
         YggdrasillClient.setHtml("");
         //history = new ArrayList();
         history = new LinkedList<String>();
