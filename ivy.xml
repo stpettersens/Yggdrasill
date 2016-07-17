@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ivy-module version="2.0">
-    <info organisation="io.stpettersens.yggdrasill" module="yggdrasill"/>
+    <info organisation="io.stpettersen.yggdrasill" module="yggdrasill"/>
     <dependencies>
         <dependency org="com.google.guava" name="guava" rev="19.0"/>
         <dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1"/>
