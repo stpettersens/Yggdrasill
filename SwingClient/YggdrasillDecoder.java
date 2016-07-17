@@ -7,10 +7,13 @@
 */
 import java.util.List;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
+import org.apache.commons.codec.binary.Base64;
+import org.jsoup.*;
+import org.jsoup.nodes.*;
+import org.jsoup.select.*;
 
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
@@ -48,9 +51,25 @@ public class YggdrasillDecoder {
             return "not implemented!";
         }
     }
-    
+
     public String processHtml(String rawHtml) {
-        // TODO
-        return "<!-- HTML was processed by Swing client -->\n" + rawHtml;
+        Document doc = Jsoup.parse(rawHtml, "UTF-8");
+        Elements images = doc.getElementsByTag("img");
+        for(Element el: images) {
+            String img = el.attr("src");
+            String[] hb = img.split(",", 2);
+            byte[] decodedBytes = Base64.decodeBase64(hb[1]);
+            try {
+                Files.write(decodedBytes, new File(String.format("cache/%s", "dummy.jpg")));
+            }
+            catch(IOException ioe) {
+                System.out.println("Problem caching image to file:");
+                System.out.println(ioe);
+            }
+            finally {
+                el.attr("src", String.format("file://%s/cache/%s", System.getProperty("user.dir"), "dummy.jpg"));  
+            }
+         }
+         return doc.html();
     }
 }

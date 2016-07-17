@@ -6,6 +6,6 @@
 /Client/*.class
 /Server/*.class
 /Server/www/_parsed_.html
-/Libs/*.jar
+/lib/*.jar
 *.class
 *.jar

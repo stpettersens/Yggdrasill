@@ -73,7 +73,7 @@ class ClientWindow extends JFrame implements ActionListener {
     public ClientWindow() {
         super("Yggdrasill Client");
         YggdrasillClient.setTitle("Yggdrasill Client -");
-        YggdrasillClient.setPage("/index.html"); // /index.html
+        YggdrasillClient.setPage("/tyr.jpg"); // /index.html
         YggdrasillClient.setHtml("");
         //history = new ArrayList();
         history = new LinkedList<String>();
@@ -156,9 +156,13 @@ class ClientWindow extends JFrame implements ActionListener {
             fileProperties.add(response.get(2));
             fileProperties.add(response.get(3));
             fileProperties.add(response.get(4));
-
-            browser.setText(yDecoder.processHtml(YggdrasillClient.getHtml()));
-            //System.out.println(yDecoder.processHtml(YggdrasillClient.getHtml()));
+            
+            if (YggdrasillClient.getPage().endsWith(".html")) {
+                browser.setText(yDecoder.processHtml(YggdrasillClient.getHtml()));
+            }
+            else {
+                browser.setText(YggdrasillClient.getHtml());
+            }
 
         }
         catch(RemoteException re) {
