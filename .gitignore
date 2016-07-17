@@ -1,7 +1,6 @@
 /SWTClient/doc
 /SwingClient/doc
-/SwingClient/cache/*.jpg
-/SwingClient/cache/*.gif
+/SwingClient/cache/*
 /Server/doc
 /Client/*.class
 /Server/*.class

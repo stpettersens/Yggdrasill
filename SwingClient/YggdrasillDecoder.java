@@ -11,14 +11,14 @@ import java.io.*;
 import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.RandomStringUtils;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
-    public String decodeResponse(List response, String uri)
-    {
+    public String decodeResponse(List response, String uri) {
         boolean binary = (boolean)response.get(1);
         String mimeType = (String)response.get(3);
         String type = (String)response.get(4);
@@ -59,15 +59,16 @@ public class YggdrasillDecoder {
             String img = el.attr("src");
             String[] hb = img.split(",", 2);
             byte[] decodedBytes = Base64.decodeBase64(hb[1]);
+            String fn = RandomStringUtils.randomAscii(6);
             try {
-                Files.write(decodedBytes, new File(String.format("cache/%s", "dummy.jpg")));
+                Files.write(decodedBytes, new File(String.format("cache/%s", fn)));
             }
             catch(IOException ioe) {
                 System.out.println("Problem caching image to file:");
                 System.out.println(ioe);
             }
             finally {
-                el.attr("src", String.format("file://%s/cache/%s", System.getProperty("user.dir"), "dummy.jpg"));  
+                el.attr("src", String.format("file://%s/cache/%s", System.getProperty("user.dir"), fn));  
             }
          }
          return doc.html();
