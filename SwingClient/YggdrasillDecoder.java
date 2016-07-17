@@ -18,7 +18,7 @@ import org.jsoup.select.*;
 
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
-    public String decodeResponse(List response, String uri) {
+    public String decodeResponse(List response) {
         boolean binary = (boolean)response.get(1);
         String mimeType = (String)response.get(3);
         String type = (String)response.get(4);
@@ -38,14 +38,15 @@ public class YggdrasillDecoder {
             }
             List<Byte> bytesList = bytes;
             byte[] decodedBytes = Bytes.toArray(bytesList);
+            String fn = RandomStringUtils.randomNumeric(6);
             try {
-                Files.write(decodedBytes, new File(String.format("cache/%s", uri)));
+                Files.write(decodedBytes, new File(String.format("cache/%s", fn)));
             }
             catch(IOException ioe) {
                 System.out.println("Problem caching image to file:");
                 System.out.println(ioe);
             }
-            return String.format("<img src=\"file:%s/cache/%s\">", System.getProperty("user.dir"), uri);
+            return String.format("<img src=\"file:%s/cache/%s\">", System.getProperty("user.dir"), fn);
         }
         else {
             return "not implemented!";
@@ -59,7 +60,7 @@ public class YggdrasillDecoder {
             String img = el.attr("src");
             String[] hb = img.split(",", 2);
             byte[] decodedBytes = Base64.decodeBase64(hb[1]);
-            String fn = RandomStringUtils.randomAscii(6);
+            String fn = RandomStringUtils.randomNumeric(6);
             try {
                 Files.write(decodedBytes, new File(String.format("cache/%s", fn)));
             }

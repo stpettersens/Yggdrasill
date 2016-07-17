@@ -149,7 +149,7 @@ class ClientWindow extends JFrame implements ActionListener {
 
             //System.out.println(response.get(0));
             yDecoder = new YggdrasillDecoder();
-            YggdrasillClient.setHtml(yDecoder.decodeResponse(response, YggdrasillClient.getPage()));
+            YggdrasillClient.setHtml(yDecoder.decodeResponse(response));
             //shell.setText(String.format("%s%s", title, response.get(2)));
 
             fileProperties.add(response.get(1));
