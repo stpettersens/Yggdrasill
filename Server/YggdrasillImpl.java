@@ -53,6 +53,8 @@ public class YggdrasillImpl implements Yggdrasill
                            String iMime = yMimes.getMime();
                            String iImg = new String(encImage);
                            el.attr("src", String.format("data:%s;base64,%s", iMime, iImg));
+                           // Use redundant "name" HTML attribute to store reference to original file name.
+                           el.attr("name", img); 
                        }
 
                        String strDoc = doc.html();

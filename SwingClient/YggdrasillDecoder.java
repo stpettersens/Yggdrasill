@@ -13,14 +13,13 @@ import java.nio.file.Paths;
 import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.RandomStringUtils;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
-    public String decodeResponse(List response) {
+    public String decodeResponse(List response, String uri) {
         boolean binary = (boolean)response.get(1);
         String mimeType = (String)response.get(3);
         String type = (String)response.get(4);
@@ -40,15 +39,14 @@ public class YggdrasillDecoder {
             }
             List<Byte> bytesList = bytes;
             byte[] decodedBytes = Bytes.toArray(bytesList);
-            String fn = RandomStringUtils.randomNumeric(6);
             try {
-                Files.write(decodedBytes, new File(String.format("cache/%s", fn)));
+                Files.write(decodedBytes, new File(String.format("cache/%s", uri)));
             }
             catch(IOException ioe) {
                 System.out.println("Problem caching image to file:");
                 System.out.println(ioe);
             }
-            Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), fn));
+            Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), uri));
             return String.format("<img src=\"file:%s\">", path.toString().replace("\\", "/"));
         }
         else {
@@ -63,7 +61,7 @@ public class YggdrasillDecoder {
             String img = el.attr("src");
             String[] hb = img.split(",", 2);
             byte[] decodedBytes = Base64.decodeBase64(hb[1]);
-            String fn = RandomStringUtils.randomNumeric(6);
+            String fn = el.attr("name");
             try {
                 Files.write(decodedBytes, new File(String.format("cache/%s", fn)));
             }
@@ -72,6 +70,7 @@ public class YggdrasillDecoder {
                 System.out.println(ioe);
             }
             finally {
+                el.removeAttr("name");
                 Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), fn));
                 el.attr("src", String.format("file:%s", path.toString().replace("\\", "/")));  
             }

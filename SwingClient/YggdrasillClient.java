@@ -51,7 +51,7 @@ public class YggdrasillClient {
         return html;
     }
 
-    public static void setRawHtml(String newHtml) {
+    public static void SetServerHtml(String newHtml) {
         rawHtml = newHtml;
     }
     public static String getRawHtml() {
@@ -121,13 +121,6 @@ class ClientWindow extends JFrame implements ActionListener {
         browser.setContentType("text/html");
         browser.setEditable(false);
 
-        /*browser = new JPanel(new BorderLayout());
-        String img = "tyr.jpg"; //String.format("cache/%s", YggdrasillClient.getPage());
-        System.out.println(String.format("Rendering image: %s", img));
-        ImageIcon image = new ImageIcon(img);
-        JLabel label = new JLabel("", image, JLabel.CENTER);
-        browser.add(label, BorderLayout.CENTER);*/
-
         JScrollPane browserScroll = new JScrollPane(browser);
         browserScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         browserScroll.setPreferredSize(new Dimension(660, 450));
@@ -149,7 +142,7 @@ class ClientWindow extends JFrame implements ActionListener {
 
             //System.out.println(response.get(0));
             yDecoder = new YggdrasillDecoder();
-            YggdrasillClient.setHtml(yDecoder.decodeResponse(response));
+            YggdrasillClient.setHtml(yDecoder.decodeResponse(response, YggdrasillClient.getPage()));
             //shell.setText(String.format("%s%s", title, response.get(2)));
 
             fileProperties.add(response.get(1));
@@ -158,8 +151,11 @@ class ClientWindow extends JFrame implements ActionListener {
             fileProperties.add(response.get(4));
             
             if (YggdrasillClient.getPage().endsWith(".html")) {
-                YggdrasillClient.setRawHtml(YggdrasillClient.getHtml());
+                YggdrasillClient.SetServerHtml(YggdrasillClient.getHtml());
                 YggdrasillClient.setHtml(yDecoder.processHtml(YggdrasillClient.getHtml()));
+            }
+            else {
+                YggdrasillClient.SetServerHtml(YggdrasillClient.getHtml());
             }
             browser.setText(YggdrasillClient.getHtml());
         }

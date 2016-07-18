@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=response
-comment0.target=java.lang.String\ decodeResponse(java.util.List)
+comment0.params=response\ uri
+comment0.target=java.lang.String\ decodeResponse(java.util.List,\ java.lang.String)
 comment1.params=rawHtml
 comment1.target=java.lang.String\ processHtml(java.lang.String)
 numComments=2
