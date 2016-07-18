@@ -19,6 +19,22 @@ import org.jsoup.select.*;
 
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
+    
+    private String cacheFile(byte[] decodedBytes, String fn) {         
+        try {
+            File f = new File(String.format("cache/%s", fn));
+            if(!f.exists() && !f.isDirectory()) {
+                Files.write(decodedBytes, f);
+            }
+        }
+        catch(IOException ioe) {
+            System.out.println("Problem caching file:");
+            System.out.println(ioe);
+        }
+        Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), fn));
+        return String.format("file:%s", path.toString().replace("\\", "/"));
+    }
+    
     public String decodeResponse(List response, String uri) {
         boolean binary = (boolean)response.get(1);
         String mimeType = (String)response.get(3);
@@ -39,15 +55,7 @@ public class YggdrasillDecoder {
             }
             List<Byte> bytesList = bytes;
             byte[] decodedBytes = Bytes.toArray(bytesList);
-            try {
-                Files.write(decodedBytes, new File(String.format("cache/%s", uri)));
-            }
-            catch(IOException ioe) {
-                System.out.println("Problem caching image to file:");
-                System.out.println(ioe);
-            }
-            Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), uri));
-            return String.format("<img src=\"file:%s\">", path.toString().replace("\\", "/"));
+            return String.format("<img src=\"%s\">", cacheFile(decodedBytes, uri));
         }
         else {
             return "not implemented!";
@@ -62,18 +70,8 @@ public class YggdrasillDecoder {
             String[] hb = img.split(",", 2);
             byte[] decodedBytes = Base64.decodeBase64(hb[1]);
             String fn = el.attr("name");
-            try {
-                Files.write(decodedBytes, new File(String.format("cache/%s", fn)));
-            }
-            catch(IOException ioe) {
-                System.out.println("Problem caching image to file:");
-                System.out.println(ioe);
-            }
-            finally {
-                el.removeAttr("name");
-                Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), fn));
-                el.attr("src", String.format("file:%s", path.toString().replace("\\", "/")));  
-            }
+            el.removeAttr("name");
+            el.attr("src", cacheFile(decodedBytes, fn));  
          }
          return doc.html();
     }
