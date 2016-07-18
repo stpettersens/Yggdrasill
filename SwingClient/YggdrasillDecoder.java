@@ -11,8 +11,8 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import com.google.common.io.Files;
+import com.google.common.io.BaseEncoding;
 import com.google.common.primitives.Bytes;
-import org.apache.commons.codec.binary.Base64;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
@@ -20,11 +20,11 @@ import org.jsoup.select.*;
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
     
-    private String cacheFile(byte[] decodedBytes, String fn) {         
+    private String cacheFile(byte[] bytes, String fn) {         
         try {
             File f = new File(String.format("cache/%s", fn));
             if(!f.exists() && !f.isDirectory()) {
-                Files.write(decodedBytes, f);
+                Files.write(bytes, f);
             }
         }
         catch(IOException ioe) {
@@ -53,9 +53,7 @@ public class YggdrasillDecoder {
             for(int i = 5; i < response.size(); i++) {
                 bytes.add(response.get(i));
             }
-            List<Byte> bytesList = bytes;
-            byte[] decodedBytes = Bytes.toArray(bytesList);
-            return String.format("<img src=\"%s\">", cacheFile(decodedBytes, uri));
+            return String.format("<img src=\"%s\">", cacheFile(Bytes.toArray(bytes), uri));
         }
         else {
             return "not implemented!";
@@ -64,14 +62,14 @@ public class YggdrasillDecoder {
 
     public String processHtml(String rawHtml) {
         Document doc = Jsoup.parse(rawHtml, "UTF-8");
+        BaseEncoding base64 = BaseEncoding.base64();
         Elements images = doc.getElementsByTag("img");
         for(Element el: images) {
             String img = el.attr("src");
             String[] hb = img.split(",", 2);
-            byte[] decodedBytes = Base64.decodeBase64(hb[1]);
             String fn = el.attr("name");
             el.removeAttr("name");
-            el.attr("src", cacheFile(decodedBytes, fn));  
+            el.attr("src", cacheFile(base64.decode(hb[1]), fn));
          }
          return doc.html();
     }

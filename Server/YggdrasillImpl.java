@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
 import com.google.common.base.Charsets;
+import com.google.common.io.BaseEncoding;
 import com.google.common.io.Files;
-import org.apache.commons.codec.binary.Base64;
 import static org.apache.commons.lang.StringEscapeUtils.escapeXml;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
@@ -28,7 +28,6 @@ public class YggdrasillImpl implements Yggdrasill
         String request = params[0].substring(1) + params[1];
         String ext = params[1];
 
-
         YggdrasillMimes yMimes = new YggdrasillMimes(ext);
         String mime = yMimes.getMime();
         String title = yMimes.getName();
@@ -43,15 +42,15 @@ public class YggdrasillImpl implements Yggdrasill
                        File html = new File("www//" + request);
                        Document doc = Jsoup.parse(html, "UTF-8", "");
                        title = "[" + doc.title() + "]";
-
+                       
+                       BaseEncoding base64 = BaseEncoding.base64();
                        Elements images = doc.getElementsByTag("img");
                        for(Element el: images) {
                            String img = el.attr("src");
                            byte[] imgBytes = Files.toByteArray(new File(String.format("www//%s", img)));
-                           byte[] encImage = Base64.encodeBase64(imgBytes);
+                           String iImg = base64.encode(imgBytes);
                            yMimes.setExt(Files.getFileExtension(String.format("www//%s", img)));
                            String iMime = yMimes.getMime();
-                           String iImg = new String(encImage);
                            el.attr("src", String.format("data:%s;base64,%s", iMime, iImg));
                            // Use redundant "name" HTML attribute to store reference to original file name.
                            el.attr("name", img); 

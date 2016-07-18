@@ -7,7 +7,8 @@
 */
 import java.util.List;
 import java.util.ArrayList;
-import org.apache.commons.codec.binary.Base64;
+//import org.apache.commons.codec.binary.Base64;
+import com.google.common.io.BaseEncoding;
 import com.google.common.primitives.Bytes;
 
 @SuppressWarnings("unchecked")
@@ -31,10 +32,11 @@ public class YggdrasillDecoder {
             for(int i = 5; i < response.size(); i++) {
                 bytes.add(response.get(i));
             }
-            List<Byte> bytesList = bytes;
-            byte[] decodedBytes = Bytes.toArray(bytesList);
-            byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
-            String img = new String(encodedBytes);
+            //byte[] decodedBytes = Bytes.toArray(bytes);
+            //byte[] encodedBytes = Base64.encodeBase64(decodedBytes);
+            //String img = new String(encodedBytes);
+            BaseEncoding base64 = BaseEncoding.base64();
+            String img = base64.encode(Bytes.toArray(bytes));
             return String.format("<img src=\"data:%s;base64,%s\"/>", mimeType, img);
         }
         else {
