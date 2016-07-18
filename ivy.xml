@@ -7,6 +7,6 @@
         <dependency org="commons-codec" name="commons-codec" rev="1.9"/>
         <dependency org="commons-lang" name="commons-lang" rev="2.6"/>
         <dependency org="org.jsoup" name="jsoup" rev="1.9.2"/>
-	<dependency org="com.tascape.qa" name="th-lipermi" rev="1.0.0"/>
+        <dependency org="com.tascape.qa" name="th-lipermi" rev="1.0.0"/>
     </dependencies>
 </ivy-module>

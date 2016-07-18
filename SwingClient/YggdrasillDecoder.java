@@ -8,6 +8,8 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 import org.apache.commons.codec.binary.Base64;
@@ -46,7 +48,8 @@ public class YggdrasillDecoder {
                 System.out.println("Problem caching image to file:");
                 System.out.println(ioe);
             }
-            return String.format("<img src=\"file:%s/cache/%s\">", System.getProperty("user.dir"), fn);
+            Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), fn));
+            return String.format("<img src=\"file:%s\">", path.toString().replace("\\", "/"));
         }
         else {
             return "not implemented!";
@@ -69,7 +72,8 @@ public class YggdrasillDecoder {
                 System.out.println(ioe);
             }
             finally {
-                el.attr("src", String.format("file://%s/cache/%s", System.getProperty("user.dir"), fn));  
+                Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), fn));
+                el.attr("src", String.format("file:%s", path.toString().replace("\\", "/")));  
             }
          }
          return doc.html();

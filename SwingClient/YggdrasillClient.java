@@ -158,12 +158,10 @@ class ClientWindow extends JFrame implements ActionListener {
             fileProperties.add(response.get(4));
             
             if (YggdrasillClient.getPage().endsWith(".html")) {
-                browser.setText(yDecoder.processHtml(YggdrasillClient.getHtml()));
+                YggdrasillClient.setRawHtml(YggdrasillClient.getHtml());
+                YggdrasillClient.setHtml(yDecoder.processHtml(YggdrasillClient.getHtml()));
             }
-            else {
-                browser.setText(YggdrasillClient.getHtml());
-            }
-
+            browser.setText(YggdrasillClient.getHtml());
         }
         catch(RemoteException re) {
             System.out.println("An error occurred whilst retrieving HTTP resource:");
@@ -200,7 +198,8 @@ class ClientWindow extends JFrame implements ActionListener {
         makeRequest();
     }
     else if(command.equals("View Source")) {
-        YggdrasillSourceDialog sourceDialog = new YggdrasillSourceDialog(this, YggdrasillClient.getHtml());
+        YggdrasillSourceDialog sourceDialog = 
+        new YggdrasillSourceDialog(this, YggdrasillClient.getHtml(), YggdrasillClient.getRawHtml());
         sourceDialog.setVisible(true);
     }
     else if(command.equals("About")) {

@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class YggdrasillSourceDialog extends JDialog {
-    public YggdrasillSourceDialog(JFrame owner, String sourceCode) {
+    public YggdrasillSourceDialog(JFrame owner, String sourceCode, String rawSourceCode) {
         super(owner, "View Source", JDialog.DEFAULT_MODALITY_TYPE);
 
         Container ca = getContentPane();
