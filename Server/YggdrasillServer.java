@@ -5,33 +5,23 @@
 
     Copyright (c) Sam Saint-Pettersen.
 */
-import java.rmi.registry.LocateRegistry;
-import java.rmi.Remote;
-import java.rmi.server.UnicastRemoteObject;
+import net.sf.lipermi.net.Server;
+import net.sf.lipermi.handler.CallHandler;
 
 public class YggdrasillServer {
 
     public static void main(String args[])
     {
         try {
-            /* # Start rmiregistry service */
-            Process p = Runtime.getRuntime().exec("rmiregistry");
-            p.waitFor();
-
-            /* # Create the object to be accessed remotely using the interface */
-            Yggdrasill y = new YggdrasillImpl();
-
-            /* # Create a proxy object to supply to a remote client */
-            Remote yProxy = UnicastRemoteObject.exportObject(y, 0);
-
-            /* # Give the proxy object a network name */
-            LocateRegistry.getRegistry().rebind("YggdrasillService", yProxy);
-
-            /* # Confirm success with preparing the proxy */
+            Server server = new Server();
+            YggdrasillImpl yggdrasillService = new YggdrasillImpl();
+            
+            // A call handler is always needed.
+            CallHandler callHandler = new CallHandler();
+            callHandler.registerGlobal(Yggdrasill.class, yggdrasillService);
+            server.bind(4455, callHandler);
+            
             System.out.println("Yggdrasill server ready...");
-
-            /* # Main method will now terminate, but the JVM holding Yggdrasill
-            and proxy objects will continue to run until killed. (Ctrl+C) */
         }
         catch(Exception e) {
             System.out.println("\nServer problem:" + e);

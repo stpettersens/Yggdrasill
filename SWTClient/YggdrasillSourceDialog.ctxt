@@ -1,6 +1,4 @@
 #BlueJ class context
-comment0.params=parent
-comment0.target=YggdrasillSourceDialog(org.eclipse.swt.widgets.Shell)
-comment1.params=sourceCode
-comment1.target=void\ open(java.lang.String)
-numComments=2
+comment0.params=sourceCode
+comment0.target=void\ open(java.lang.String)
+numComments=1

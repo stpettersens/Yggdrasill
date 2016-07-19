@@ -5,6 +5,8 @@
 
     Copyright (c) 2014 Sam Saint-Pettersen.
 */
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -15,8 +17,6 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.browser.*;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.events.TraverseEvent;
-import net.sf.lipermi.net.Client;
-import net.sf.lipermi.handler.CallHandler;
 
 public class YggdrasillClient {
     private static String title;
@@ -72,13 +72,11 @@ public class YggdrasillClient {
             final Text text = new Text(shell, SWT.BORDER);
             text.setBounds(5, 35, 400, 25); // 5, 35, 400, 25
             text.setText(defaultPage);
-            
-            // A call handler is always needed!
-            CallHandler callHandler = new CallHandler();
-            // Connect to client.
-            Client client = new Client("localhost", 4455, callHandler);
-            Yggdrasill yProxy = (Yggdrasill)client.getGlobal(Yggdrasill.class);
-          
+
+            /* Use the network name established in YggdrasillServer to get a
+            proxy to an object implementing the Yggdrasill interface. */
+            final Yggdrasill yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
+
             //System.out.println("\nYggdrasill client started...");
             String request = String.format("GET %s HTTP/1.1", defaultPage);
             List response = yProxy.sendRespond(request);
@@ -126,7 +124,7 @@ public class YggdrasillClient {
                             browser.setText(html);
                             history.add(page);
                         }
-                        catch(Exception e)  {
+                        catch(RemoteException e)  {
                             System.out.println("An error occurred whilst retrieving HTTP resource:");
                             System.out.println(e);
                         }
@@ -157,7 +155,7 @@ public class YggdrasillClient {
                             shell.setText(title + response.get(2));
                             browser.setText(html);
                         }
-                        catch(Exception e)  {
+                        catch(RemoteException e)  {
                             System.out.println("An error occurred whilst retrieving HTTP resource:");
                             System.out.println(e);
                         }
@@ -185,7 +183,7 @@ public class YggdrasillClient {
                             //System.out.println(pointer);
                             //System.out.println(response.get(0));
                         }
-                        catch(Exception e) {
+                        catch(RemoteException e) {
                             System.out.println("An error occurred whilst retrieving HTTP resource:");
                             System.out.println(e);
                         }
@@ -211,7 +209,7 @@ public class YggdrasillClient {
                             browser.setText(html);
                             history.add(page);
                         }
-                        catch(Exception e)  {
+                        catch(RemoteException e)  {
                             System.out.println("An error occurred whilst retrieving HTTP resource:");
                             System.out.println(e);
                         }

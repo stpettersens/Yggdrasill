@@ -5,6 +5,9 @@
 
     Copyright (c) 2014, 2016 Sam Saint-Pettersen.
 */
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
+import java.rmi.NotBoundException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -15,8 +18,6 @@ import java.util.LinkedList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import net.sf.lipermi.net.Client;
-import net.sf.lipermi.handler.CallHandler;
 
 public class YggdrasillClient {
     private static String title;
@@ -158,24 +159,26 @@ class ClientWindow extends JFrame implements ActionListener {
             }
             browser.setText(YggdrasillClient.getHtml());
         }
-        catch(Exception e) {
+        catch(RemoteException re) {
             System.out.println("An error occurred whilst retrieving HTTP resource:");
-            System.out.println(e);
+            System.out.println(re);
         }
     }
 
     private void initialize() {
       try {
-          // A call handler is always needed!
-          CallHandler callHandler = new CallHandler();
-          // Connect to client.
-          Client client = new Client("localhost", 4455, callHandler);
-          yProxy = (Yggdrasill)client.getGlobal(Yggdrasill.class);
+          /* Use the network name established in YggdrasillServer to get a
+          proxy to an object implementing the Yggdrasill interface. */
+          yProxy = (Yggdrasill)LocateRegistry.getRegistry().lookup("YggdrasillService");
           makeRequest();
       }
-      catch(Exception e) {
+      catch(RemoteException re) {
+          System.out.println("An error occurred whilst retrieving HTTP resource:");
+          System.out.println(re);
+      }
+      catch(NotBoundException nbe) {
           System.out.println("An error occurred whilst setting up the proxy:");
-          System.out.println(e);
+          System.out.println(nbe);
       }
   }
 
