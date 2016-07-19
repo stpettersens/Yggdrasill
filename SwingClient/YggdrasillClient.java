@@ -23,39 +23,39 @@ public class YggdrasillClient {
     private static String title;
     private static String currentPage;
     private static String html;
-    private static String rawHtml;
+    private static String serverHtml;
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         ClientWindow w = new ClientWindow();
     }
 
-    public static void setTitle(String newTitle) {
+    static void setTitle(String newTitle) {
         title = newTitle;
     }
-    public static String getTitle() {
+    static String getTitle() {
         return title;
     }
 
-    public static void setPage(String newPage) {
+    static void setPage(String newPage) {
         currentPage = newPage;
     }
-    public static String getPage() {
+    static String getPage() {
         return currentPage;
     }
 
-    public static void setHtml(String newHtml) {
+    static void setHtml(String newHtml) {
         html = newHtml;
     }
-    public static String getHtml() {
+    static String getHtml() {
         return html;
     }
 
-    public static void SetServerHtml(String newHtml) {
-        rawHtml = newHtml;
+    static void setServerHtml(String newHtml) {
+        serverHtml = newHtml;
     }
-    public static String getRawHtml() {
-        return rawHtml;
+    static String getServerHtml() {
+        return serverHtml;
     }
 }
 
@@ -151,11 +151,11 @@ class ClientWindow extends JFrame implements ActionListener {
             fileProperties.add(response.get(4));
             
             if (YggdrasillClient.getPage().endsWith(".html")) {
-                YggdrasillClient.SetServerHtml(YggdrasillClient.getHtml());
+                YggdrasillClient.setServerHtml(YggdrasillClient.getHtml());
                 YggdrasillClient.setHtml(yDecoder.processHtml(YggdrasillClient.getHtml()));
             }
             else {
-                YggdrasillClient.SetServerHtml(YggdrasillClient.getHtml());
+                YggdrasillClient.setServerHtml(YggdrasillClient.getHtml());
             }
             browser.setText(YggdrasillClient.getHtml());
         }
@@ -195,7 +195,7 @@ class ClientWindow extends JFrame implements ActionListener {
     }
     else if(command.equals("View Source")) {
         YggdrasillSourceDialog sourceDialog = 
-        new YggdrasillSourceDialog(this, YggdrasillClient.getHtml(), YggdrasillClient.getRawHtml());
+        new YggdrasillSourceDialog(this, YggdrasillClient.getHtml(), YggdrasillClient.getServerHtml());
         sourceDialog.setVisible(true);
     }
     else if(command.equals("About")) {

@@ -20,8 +20,7 @@ import org.jsoup.select.*;
 
 /** Yggdrasill implementation **/
 @SuppressWarnings("unchecked")
-public class YggdrasillImpl implements Yggdrasill
-{
+public class YggdrasillImpl implements Yggdrasill {
     private List handleRequest(String http, String[] params)
     {
         List bytesList = new ArrayList();
@@ -75,8 +74,7 @@ public class YggdrasillImpl implements Yggdrasill
                        }
                     }
                     catch(IOException e) {
-                      //System.out.println("Exception non-binary 1");
-                      //System.out.println(e);
+                        System.out.println(e);
                     }
                 }
                 else if(!binary && parse.equals("pretty")) {
@@ -105,9 +103,8 @@ public class YggdrasillImpl implements Yggdrasill
                            bytesList.add(4, type);
                         }
                     }
-                    catch(IOException e)
-                    {
-                        // ...
+                    catch(IOException e) {
+                        System.out.println(e);
                     }
                 }
                 else if(!binary)
@@ -127,8 +124,7 @@ public class YggdrasillImpl implements Yggdrasill
                         bytesList.add(4, type);
                     }
                     catch(IOException e) {
-                        //System.out.println("Exception non-binary 1");
-                        //System.out.println(e);
+                        System.out.println(e);
                     }
                 }
                 else {
@@ -144,8 +140,7 @@ public class YggdrasillImpl implements Yggdrasill
                        bytesList.add(4, type);
                     }
                     catch(IOException e) {
-                       //System.out.println("Exception binary");
-                       //System.out.println(e);
+                        System.out.println(e);
                     }
                 }
              break;
@@ -168,8 +163,7 @@ public class YggdrasillImpl implements Yggdrasill
                 reader.close();
             }
             catch(IOException e) {
-                //System.out.println("Exception bytesList <= 2");
-                //System.out.println(e);
+                System.out.println(e);
             }
             bytesList.add(0, "HTTP/1.1 404 NOT FOUND\n");
             bytesList.add(1, binary);
