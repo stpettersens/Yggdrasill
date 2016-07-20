@@ -71,7 +71,7 @@ class ClientWindow extends JFrame implements ActionListener {
 
     public ClientWindow() {
         super("Yggdrasill Client");
-        YggdrasillClient.setTitle("Yggdrasill Client -");
+        YggdrasillClient.setTitle("Yggdrasill Client");
         YggdrasillClient.setPage("/index.html");
         YggdrasillClient.setHtml("");
         //history = new ArrayList();
@@ -136,13 +136,12 @@ class ClientWindow extends JFrame implements ActionListener {
             List response = yProxy.sendRespond(request);
             history.add(YggdrasillClient.getPage());
             serverLog.add(String.format("\n%s\n", request));
-            //pointer++;
-            //System.out.println(pointer);
 
-            //System.out.println(response.get(0));
             yDecoder = new YggdrasillDecoder();
             YggdrasillClient.setHtml(yDecoder.decodeResponse(response, YggdrasillClient.getPage()));
-            //shell.setText(String.format("%s%s", title, response.get(2)));
+
+            YggdrasillClient.setTitle(String.format("%s %s", "Yggdrasill Client -", response.get(2)));
+            setTitle(YggdrasillClient.getTitle());
 
             fileProperties.add(response.get(1));
             fileProperties.add(response.get(2));
