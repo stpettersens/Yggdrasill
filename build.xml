@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="yggdrasill" default="resolve">
-    <!-- target: resolve dependencies -->
+
+    <!-- Resolve dependencies with ivy -->
     <target name="resolve" description="Retrieve dependencies with ivy">
         <ivy:retrieve />
         <delete>
