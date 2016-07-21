@@ -24,7 +24,7 @@ public class YggdrasillServer {
             System.out.println("Yggdrasill server ready...");
         }
         catch(Exception e) {
-            System.out.println("\nServer problem:" + e);
+            System.out.println("\nServer problem:\n" + e);
         }
     }
 }
