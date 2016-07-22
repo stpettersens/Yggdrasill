@@ -107,6 +107,7 @@ class ClientWindow extends JFrame implements ActionListener {
         ca.add(btnFileProps);
 
         JButton btnServerLog = new JButton("Server Log");
+        btnServerLog.addActionListener(this);
         ca.add(btnServerLog);
 
         JButton btnAbout = new JButton("About");
@@ -135,7 +136,7 @@ class ClientWindow extends JFrame implements ActionListener {
             String request = String.format("GET %s HTTP/1.1", YggdrasillClient.getPage());
             List response = yProxy.sendRespond(request);
             history.add(YggdrasillClient.getPage());
-            serverLog.add(String.format("\n%s\n", request));
+            serverLog.add(String.format("\n%s\n%s", request, response.get(0)));
 
             yDecoder = new YggdrasillDecoder();
             YggdrasillClient.setHtml(yDecoder.decodeResponse(response, YggdrasillClient.getPage()));
@@ -196,6 +197,9 @@ class ClientWindow extends JFrame implements ActionListener {
     }
     else if(command.equals("File Properties")) {
         YggdrasillPropsDialog filePropsDialog = new YggdrasillPropsDialog(this, fileProperties);
+    }
+    else if(command.equals("Server Log")) {
+        YggdrasillServerLogDialog serverLogDialog = new YggdrasillServerLogDialog(this, serverLog);
     }
     else if(command.equals("About")) {
         displayAbout();
