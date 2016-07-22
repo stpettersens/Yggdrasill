@@ -30,7 +30,6 @@ public class YggdrasillServerLogDialog extends JDialog {
         String finalLog = "";
         for(int i = 0; i < serverLog.size(); i++) {
             finalLog += serverLog.get(i);
-            System.out.println(serverLog.get(i)); // TODO
         }
         log.setText(finalLog);
 
