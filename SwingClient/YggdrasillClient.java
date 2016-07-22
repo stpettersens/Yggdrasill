@@ -63,8 +63,7 @@ class ClientWindow extends JFrame implements ActionListener {
     private static Queue<String> history;
     private static List serverLog;
     private static List fileProperties;
-    //private static JTextArea browser;
-    private static JEditorPane browser; // JPanel
+    private static JEditorPane browser;
     private static JTextField txtUri;
     private static Yggdrasill yProxy;
     private static YggdrasillDecoder yDecoder;
@@ -104,6 +103,7 @@ class ClientWindow extends JFrame implements ActionListener {
         ca.add(btnViewSource);
 
         JButton btnFileProps = new JButton("File Properties");
+        btnFileProps.addActionListener(this);
         ca.add(btnFileProps);
 
         JButton btnServerLog = new JButton("Server Log");
@@ -143,6 +143,7 @@ class ClientWindow extends JFrame implements ActionListener {
             YggdrasillClient.setTitle(String.format("%s %s", "Yggdrasill Client -", response.get(2)));
             setTitle(YggdrasillClient.getTitle());
 
+            fileProperties.clear(); // Force clear of list first.
             fileProperties.add(response.get(1));
             fileProperties.add(response.get(2));
             fileProperties.add(response.get(3));
@@ -173,7 +174,7 @@ class ClientWindow extends JFrame implements ActionListener {
           makeRequest();
       }
       catch(Exception e) {
-          System.out.println("An error occurred whilst setting up the proxy:");
+          System.out.println("An error occurred whilst setting up the client:");
           System.out.println(e);
       }
   }
@@ -190,9 +191,11 @@ class ClientWindow extends JFrame implements ActionListener {
         makeRequest();
     }
     else if(command.equals("View Source")) {
-        YggdrasillSourceDialog sourceDialog = 
+        YggdrasillSourceDialog sourceDialog =
         new YggdrasillSourceDialog(this, YggdrasillClient.getHtml(), YggdrasillClient.getServerHtml());
-        sourceDialog.setVisible(true);
+    }
+    else if(command.equals("File Properties")) {
+        YggdrasillPropsDialog filePropsDialog = new YggdrasillPropsDialog(this, fileProperties);
     }
     else if(command.equals("About")) {
         displayAbout();

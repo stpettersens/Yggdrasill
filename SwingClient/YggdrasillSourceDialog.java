@@ -48,7 +48,8 @@ public class YggdrasillSourceDialog extends JDialog implements ActionListener {
         src.setWrapStyleWord(true);
 
         JScrollPane srcScroll = new JScrollPane(src);
-        srcScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        srcScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        srcScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         srcScroll.setPreferredSize(new Dimension(450, 250));
 
         ca.add(srcScroll);
