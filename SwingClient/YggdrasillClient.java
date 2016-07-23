@@ -180,12 +180,6 @@ class ClientWindow extends JFrame implements ActionListener {
       }
   }
 
-  private void displayAbout() {
-      JOptionPane.showMessageDialog(null,
-      "Yggdrasill Client (Swing)\nCopyright 2016 Sam Saint-Pettersen.",
-      "Yddrasill Client", JOptionPane.INFORMATION_MESSAGE);
-  }
-
   public void actionPerformed(ActionEvent event) {
     String command = event.getActionCommand();
     if(command.equals("Go")) {
@@ -202,7 +196,7 @@ class ClientWindow extends JFrame implements ActionListener {
         YggdrasillServerLogDialog serverLogDialog = new YggdrasillServerLogDialog(this, serverLog);
     }
     else if(command.equals("About")) {
-        displayAbout();
+        YggdrasillAboutDialog aboutDialog = new YggdrasillAboutDialog(this);
     }
   }
 }

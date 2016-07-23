@@ -24,7 +24,7 @@ Copyright (c) 2014 Google, Inc.
 https://github.com/google/code-prettify
 
 JSON.simple: A simple Java toolkit for JSON
-Copyright (c) 2012 Yidong Fang et al
+Copyright (c) 2012 Yidong Fang et al.
 https://github.com/fangyidong/json-simple
 
 jsoup: Java HTML Parser

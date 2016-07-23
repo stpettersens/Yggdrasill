@@ -3,7 +3,7 @@
         Yggdrasill
         RMI-based distributed HTTP.
 
-        Copyright (c) 2014. 2016 Sam Saint-Pettersen.
+        Copyright (c) 2014, 2016 Sam Saint-Pettersen.
 */
 import java.util.List;
 import javax.swing.*;
