@@ -19,8 +19,8 @@ import org.jsoup.select.*;
 
 @SuppressWarnings("unchecked")
 public class YggdrasillDecoder {
-    
-    private String cacheFile(byte[] bytes, String fn) {         
+
+    private String cacheFile(byte[] bytes, String fn) {
         try {
             File f = new File(String.format("cache/%s", fn));
             if(!f.exists() && !f.isDirectory()) {
@@ -34,7 +34,7 @@ public class YggdrasillDecoder {
         Path path = Paths.get(String.format("%s/cache/%s", System.getProperty("user.dir"), fn));
         return String.format("file:%s", path.toString().replace("\\", "/"));
     }
-    
+
     public String decodeResponse(List response, String uri) {
         boolean binary = (boolean)response.get(1);
         String mimeType = (String)response.get(3);
