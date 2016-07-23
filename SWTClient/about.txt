@@ -15,6 +15,11 @@ Standard Widget Toolkit (SWT)
 Copyright (c) 2016 Eclipse Foundation
 http://www.eclipse.org/swt
 
+Lipe RMI
+Copyright (c) 2006 Felipe Santos Andrade
+http://lipermi.sourceforge.net
+http://github.com/tascape/th-lipermi
+
 Apache Commons Lang 2.6
 Copyright (c) 2001-2014 The Apache Software Foundation
 https://github.com/apache/commons-lang

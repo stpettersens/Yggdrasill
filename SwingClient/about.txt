@@ -11,6 +11,11 @@ https://github.com/stpettersens/Yggdrasill
 
 Yggdrasill makes use of the following third-party libraries:
 
+Lipe RMI
+Copyright (c) 2006 Felipe Santos Andrade
+http://lipermi.sourceforge.net
+http://github.com/tascape/th-lipermi
+
 Apache Commons Lang 2.6
 Copyright (c) 2001-2014 The Apache Software Foundation
 https://github.com/apache/commons-lang
