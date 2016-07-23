@@ -3,7 +3,7 @@
 Yggdrasill
 RMI-based distributed HTTP.
 
-Copyright (c) 2014 Sam Saint-Pettersen.
+Copyright (c) 2014, 2016 Sam Saint-Pettersen.
 
 https://github.com/stpettersens/Yggdrasill
 
@@ -11,30 +11,23 @@ https://github.com/stpettersens/Yggdrasill
 
 Yggdrasill makes use of the following third-party libraries:
 
-Standard Widget Toolkit (SWT)
-Copyright (c) 2013 Eclipse Foundation
-http://www.eclipse.org/swt/
-
-Apache Commons Codec 1.9
-Copyright (c) 2002-2014 The Apache Software Foundation
-http://commons.apache.org/proper/commons-codec/
-
 Apache Commons Lang 2.6
 Copyright (c) 2001-2014 The Apache Software Foundation
-http://commons.apache.org/proper/commons-lang/
+https://github.com/apache/commons-lang
 
-Guava: Google Core Libraries for Java 1.6+
-Copyright (c) 2014 Google, Inc.
-https://code.google.com/p/guava-libraries/
+Guava: Google Core Libraries for Java 6+
+Copyright (c) 2014-2015 Google, Inc.
+https://github.com/google/guava
 
 google-code-prettify
 Copyright (c) 2014 Google, Inc.
-https://code.google.com/p/google-code-prettify/
+https://github.com/google/code-prettify
 
 JSON.simple: A simple Java toolkit for JSON
-Copyright (c) 2014 Yidong Fang et al
-http://code.google.com/p/json-simple/
+Copyright (c) 2012 Yidong Fang et al
+https://github.com/fangyidong/json-simple
 
 jsoup: Java HTML Parser
-Copyright (c) 2009-2013 Jonathan Hedley
-http://jsoup.org
+Copyright (c) 2009-2016 Jonathan Hedley
+http://github.com/jhy/jsoup
+
