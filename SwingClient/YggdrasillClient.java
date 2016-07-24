@@ -5,16 +5,16 @@
 
     Copyright (c) 2014, 2016 Sam Saint-Pettersen.
 */
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Queue;
 import java.util.LinkedList;
 import javax.swing.*;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import net.sf.lipermi.net.Client;
 import net.sf.lipermi.handler.CallHandler;
 
@@ -59,7 +59,7 @@ public class YggdrasillClient {
 }
 
 @SuppressWarnings("unchecked")
-class ClientWindow extends JFrame implements ActionListener {
+class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
     private static Queue<String> history;
     private static List serverLog;
     private static List fileProperties;
@@ -120,6 +120,7 @@ class ClientWindow extends JFrame implements ActionListener {
         browser = new JEditorPane();
         browser.setContentType("text/html");
         browser.setEditable(false);
+        browser.addHyperlinkListener(this);
 
         JScrollPane browserScroll = new JScrollPane(browser);
         browserScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -130,9 +131,9 @@ class ClientWindow extends JFrame implements ActionListener {
         initialize();
     }
 
-    private void makeRequest() {
+    private void makeRequest(String uri) {
         try {
-            YggdrasillClient.setPage(txtUri.getText());
+            YggdrasillClient.setPage(uri); txtUri.setText(uri);
             String request = String.format("GET %s HTTP/1.1", YggdrasillClient.getPage());
             List response = yProxy.sendRespond(request);
             history.add(YggdrasillClient.getPage());
@@ -166,37 +167,44 @@ class ClientWindow extends JFrame implements ActionListener {
     }
 
     private void initialize() {
-      try {
-          // A call handler is always needed!
-          CallHandler callHandler = new CallHandler();
-          // Connect to client.
-          Client client = new Client("localhost", 4455, callHandler);
-          yProxy = (Yggdrasill)client.getGlobal(Yggdrasill.class);
-          makeRequest();
-      }
-      catch(Exception e) {
-          System.out.println("An error occurred whilst setting up the client:");
-          System.out.println(e);
-      }
-  }
-
-  public void actionPerformed(ActionEvent event) {
-    String command = event.getActionCommand();
-    if(command.equals("Go")) {
-        makeRequest();
+        try {
+            // A call handler is always needed!
+            CallHandler callHandler = new CallHandler();
+            // Connect to client.
+            Client client = new Client("localhost", 4455, callHandler);
+            yProxy = (Yggdrasill)client.getGlobal(Yggdrasill.class);
+            makeRequest(txtUri.getText());
+        }
+        catch(Exception e) {
+            System.out.println("An error occurred whilst setting up the client:");
+            System.out.println(e);
+        }
     }
-    else if(command.equals("View Source")) {
-        YggdrasillSourceDialog sourceDialog =
-        new YggdrasillSourceDialog(this, YggdrasillClient.getHtml(), YggdrasillClient.getServerHtml());
+    
+    public void actionPerformed(ActionEvent event) {
+        String command = event.getActionCommand();
+        if(command.equals("Go")) {
+            makeRequest(txtUri.getText());
+        }
+        else if(command.equals("View Source")) {
+            YggdrasillSourceDialog sourceDialog = new YggdrasillSourceDialog(this, 
+            YggdrasillClient.getHtml(), 
+            YggdrasillClient.getServerHtml());
+        }
+        else if(command.equals("File Properties")) {
+            YggdrasillPropsDialog filePropsDialog = new YggdrasillPropsDialog(this, fileProperties);
+        }
+        else if(command.equals("Server Log")) {
+            YggdrasillServerLogDialog serverLogDialog = new YggdrasillServerLogDialog(this, serverLog);
+        }
+        else if(command.equals("About")) {
+            YggdrasillAboutDialog aboutDialog = new YggdrasillAboutDialog(this);
+        }
     }
-    else if(command.equals("File Properties")) {
-        YggdrasillPropsDialog filePropsDialog = new YggdrasillPropsDialog(this, fileProperties);
+  
+    public void hyperlinkUpdate(HyperlinkEvent event) {
+        if(event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+            makeRequest(event.getDescription());
+        }
     }
-    else if(command.equals("Server Log")) {
-        YggdrasillServerLogDialog serverLogDialog = new YggdrasillServerLogDialog(this, serverLog);
-    }
-    else if(command.equals("About")) {
-        YggdrasillAboutDialog aboutDialog = new YggdrasillAboutDialog(this);
-    }
-  }
 }
