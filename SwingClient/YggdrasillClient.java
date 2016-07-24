@@ -204,7 +204,9 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
   
     public void hyperlinkUpdate(HyperlinkEvent event) {
         if(event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-            makeRequest(event.getDescription());
+            String uri = event.getDescription();
+            if(uri.charAt(0) != '/') uri = "/" + uri; // All URIs should begin with "/".
+            makeRequest(uri);
         }
     }
 }

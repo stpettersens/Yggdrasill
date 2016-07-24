@@ -74,7 +74,7 @@ public class YggdrasillImpl implements Yggdrasill {
                        }
                     }
                     catch(IOException e) {
-                        System.out.println(e);
+                        // ...
                     }
                 }
                 else if(!binary && parse.equals("pretty")) {
@@ -104,7 +104,7 @@ public class YggdrasillImpl implements Yggdrasill {
                         }
                     }
                     catch(IOException e) {
-                        System.out.println(e);
+                        // ...
                     }
                 }
                 else if(!binary)
@@ -124,7 +124,7 @@ public class YggdrasillImpl implements Yggdrasill {
                         bytesList.add(4, type);
                     }
                     catch(IOException e) {
-                        System.out.println(e);
+                        // ...
                     }
                 }
                 else {
@@ -140,7 +140,7 @@ public class YggdrasillImpl implements Yggdrasill {
                        bytesList.add(4, type);
                     }
                     catch(IOException e) {
-                        System.out.println(e);
+                        // ...
                     }
                 }
              break;
