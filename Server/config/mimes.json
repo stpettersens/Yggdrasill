@@ -1,0 +1,108 @@
+{
+	"*": {
+		
+		"mime": "unknown",
+		"name": "[Unknown File]",
+		"type": "document",
+		"parse": "pretty",
+		"binary": false
+	},
+	
+	"html": {
+	
+		"mime": "text/html",
+		"name": "[HTML Document]",
+		"type": "document",
+		"parse": "markup",
+		"binary": false
+	},
+	
+	"xhtml": {
+		"mime": "application/xhtml+xml",
+		"name": "[XHTML Document]",
+		"type": "document",
+		"parse": "markup",
+		"binary": false
+	},
+	
+	"xml": {
+	
+		"mime": "application/xml",
+		"name": "[XML Document]",
+		"type": "document",
+		"parse": "pretty",
+		"binary": false
+	},
+
+	"txt": {
+	
+		"mime": "text/plain",
+		"name": "[Text Document]",
+		"type": "document",
+		"parse": "text",
+		"binary": false
+	},
+	
+	"java": {
+		
+		"mime": "text/x-java-source",
+		"name": "[Java Source File]",
+		"type": "document",
+		"parse": "pretty",
+		"binary": false
+	},
+	
+	"js": {
+		
+		"mime": "application/javascript",
+		"name": "[JavaScript File]",
+		"type": "document",
+		"parse": "pretty",
+		"binary": false
+	},
+	
+	"json": {
+		
+		"mime": "application/json",
+		"name": "[JSON Document]",
+		"type": "document",
+		"parse": "pretty",
+		"binary": false
+	},
+	
+	"jpg": {
+	
+		"mime": "image/jpg",
+		"name": "[JPEG Image]",
+		"type": "image",
+		"parse": "binary",
+		"binary": true
+	},
+	
+	"png": {
+	
+		"mime": "image/png",
+		"name": "[PNG Image]",
+		"type": "image",
+		"parse": "binary",
+		"binary": true
+	},
+	
+	"gif": {
+	
+		"mime": "image/gif",
+		"name": "[GIF Image]",
+		"type": "image",
+		"parse": "binary",
+		"binary": true
+	},
+	
+	"mp3": {
+	
+		"mime": "audio/mpeg",
+		"name": "[MP3 Audio File]",
+		"type": "audio",
+		"parse": "binary",
+		"binary": true
+	}
+}

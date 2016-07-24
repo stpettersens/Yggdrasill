@@ -20,7 +20,7 @@ public class YggdrasillMimes
     {
         try
         {
-            String file = Files.toString(new File("www//mimes.json"), Charsets.UTF_8);
+            String file = Files.toString(new File("config//mimes.json"), Charsets.UTF_8);
             this.mimes = (JSONObject)JSONValue.parse(file);
         }
         catch(IOException ioe)

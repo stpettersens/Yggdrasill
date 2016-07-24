@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mimes>
+	<mime type="unknown" extension="*">
+		<name>[Unknown File]</name>
+		<class>document</class>
+		<parse>pretty</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="text/html" extension="html">
+		<name>[HTML Document]</name>
+		<class>document</class>
+		<parse>markup</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="application/xhtml+xml" extension="xhtml">
+		<name>[XHTML Document]</name>
+		<class>document</class>
+		<parse>markup</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="application/xml" extension="xml">
+		<name>[XML Document</name>
+		<class>document</class>
+		<parse>pretty</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="text/plain" extension="txt">
+		<name>[Text Document]</name>
+		<class>document</class>
+		<parse>text</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="text/x-java-source" extension="java">
+		<name>[Java Source File]</name>
+		<class>document</class>
+		<parse>pretty</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="application/javascript" extension="js">
+		<name>[JavaScript File]</name>
+		<class>document</class>
+		<parse>pretty</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="application/json" extension="json">
+		<name>[JSON File]</name>
+		<class>document</class>
+		<parse>pretty</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="image/jpg" extension="jpg">
+		<name>[JPEG Image]</name>
+		<class>image</class>
+		<parse>binary</parse>
+		<binary>true</binary>
+	</mime>
+	<mime type="image/png" extension="png">
+		<name>[PNG Image]</name>
+		<class>image</class>
+		<parse>binary</parse>
+		<binary>true</binary>
+	</mime>
+	<mime type="image/gif" extension="gif">
+		<name>[GIF Image]</name>
+		<class>image</class>
+		<parse>binary</parse>
+		<binary>true</binary>
+	</mime>
+	<mime type="audio/mpeg" extension="mp3">
+		<name>[MP3 Audio File]</name>
+		<class>audio</class>
+		<parse>binary</parse>
+		<binary>true</binary>
+	</mime>
+</mimes>
