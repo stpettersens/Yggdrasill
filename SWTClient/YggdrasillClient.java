@@ -72,18 +72,18 @@ public class YggdrasillClient {
             final Text text = new Text(shell, SWT.BORDER);
             text.setBounds(5, 35, 400, 25); // 5, 35, 400, 25
             text.setText(defaultPage);
-            
+
             // A call handler is always needed!
             CallHandler callHandler = new CallHandler();
             // Connect to client.
             Client client = new Client("localhost", 4455, callHandler);
             Yggdrasill yProxy = (Yggdrasill)client.getGlobal(Yggdrasill.class);
-          
+
             //System.out.println("\nYggdrasill client started...");
             String request = String.format("GET %s HTTP/1.1", defaultPage);
             List response = yProxy.sendRespond(request);
             history.add(defaultPage);
-            serverLog.add("\n"+request+"\n"); // TODO: Change to serverLog.add(String.format("\n%\n", request));
+            serverLog.add(String.format("\n%s\n", request));
             serverLog.add(response.get(0));
             //pointer++;
             //System.out.println(pointer);
@@ -103,6 +103,19 @@ public class YggdrasillClient {
             browser = new Browser(shell, SWT.NONE);
             browser.setText(html);
             browser.setBounds(5, 75, 670, 420);
+
+            browser.addLocationListener(new LocationListener() {
+                public void changed(LocationEvent event) {
+                  if(event.top) {
+                      System.out.println(event.location); // TODO
+                      String foo = event.location.replace("about:", "");
+                      System.out.println(foo);
+                  }
+                }
+                public void changing(LocationEvent event) {
+                    System.out.println("Changing URI..."); // TODO
+                }
+            });
 
             text.addTraverseListener(new TraverseListener() {
                 public void keyTraversed(TraverseEvent event) {
@@ -252,6 +265,13 @@ public class YggdrasillClient {
         catch (Exception e) {
             System.out.println("\nClient problem: " + e);
         }
-        //System.out.println("Client terminated");
+    }
+
+    private void makeRequest(String uri) {
+        // TODO
+    }
+
+    private void initialize() {
+        // TODO
     }
 }

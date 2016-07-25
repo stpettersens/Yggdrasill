@@ -15,7 +15,7 @@ Copyright (c) 2016 Eclipse Foundation.
 http://www.eclipse.org/swt
 
 LipeRMI - a light weight Internet approach for RMI.
-Copyright (c) 2006  Felipe Santos Andrade.
+Copyright (c) 2006 Felipe Santos Andrade.
 https://github.com/tascape/th-lipermi
 
 Apache Commons Lang 2.6.
