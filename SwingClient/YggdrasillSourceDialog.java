@@ -54,7 +54,7 @@ public class YggdrasillSourceDialog extends JDialog implements ActionListener {
 
         ca.add(srcScroll);
 
-        setSize(500, 320);
+        setSize(500, 350);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
