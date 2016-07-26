@@ -21,7 +21,7 @@ public class YggdrasillAboutDialog extends JDialog {
         FlowLayout flm = new FlowLayout();
         ca.setLayout(flm);
         
-        JTextArea about = new JTextArea("", 450, 200);
+        JTextArea about = new JTextArea("", 450, 250);
         about.setFont(new Font("monospaced", Font.PLAIN, 11));
         about.setEditable(false);
         about.setLineWrap(true);
@@ -40,7 +40,7 @@ public class YggdrasillAboutDialog extends JDialog {
         JScrollPane aboutScroll = new JScrollPane(about);
         aboutScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         aboutScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        aboutScroll.setPreferredSize(new Dimension(450, 250));
+        aboutScroll.setPreferredSize(new Dimension(450, 270));
         
         ca.add(aboutScroll);
 

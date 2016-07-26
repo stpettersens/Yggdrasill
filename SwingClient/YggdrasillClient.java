@@ -59,7 +59,7 @@ public class YggdrasillClient {
 }
 
 @SuppressWarnings("unchecked")
-class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
+class ClientWindow extends JFrame implements ActionListener, KeyListener, HyperlinkListener {
     private static Queue<String> history;
     private static List serverLog;
     private static List fileProperties;
@@ -73,11 +73,9 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
         YggdrasillClient.setTitle("Yggdrasill Client");
         YggdrasillClient.setPage("/index.html");
         YggdrasillClient.setHtml("");
-        //history = new ArrayList();
         history = new LinkedList<String>();
         fileProperties = new ArrayList();
         serverLog = new ArrayList();
-        //pointer = -1;
 
         setSize(700, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,6 +113,7 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
         ca.add(btnAbout);
 
         txtUri = new JTextField(YggdrasillClient.getPage(), 60);
+        txtUri.addKeyListener(this);
         ca.add(txtUri);
 
         browser = new JEditorPane();
@@ -188,8 +187,7 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
         }
         else if(command.equals("View Source")) {
             YggdrasillSourceDialog sourceDialog = new YggdrasillSourceDialog(this,
-            YggdrasillClient.getHtml(),
-            YggdrasillClient.getServerHtml());
+            YggdrasillClient.getHtml(), YggdrasillClient.getServerHtml());
         }
         else if(command.equals("File Properties")) {
             YggdrasillPropsDialog filePropsDialog = new YggdrasillPropsDialog(this, fileProperties);
@@ -199,6 +197,19 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
         }
         else if(command.equals("About")) {
             YggdrasillAboutDialog aboutDialog = new YggdrasillAboutDialog(this);
+        }
+    }
+
+    public void keyTyped(KeyEvent event) {
+        // ...
+    }
+    public void keyReleased(KeyEvent event) {
+        // ...
+    }
+
+    public void keyPressed(KeyEvent event) {
+        if(event.getKeyCode() == 10) {
+            makeRequest(txtUri.getText());
         }
     }
 

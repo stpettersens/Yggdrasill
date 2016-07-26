@@ -56,7 +56,7 @@ public class YggdrasillDecoder {
             return String.format("<img src=\"%s\">", cacheFile(Bytes.toArray(bytes), uri));
         }
         else {
-            return "not implemented!";
+            return "Not implemented!";
         }
     }
 

@@ -41,7 +41,7 @@ public class YggdrasillSourceDialog extends JDialog implements ActionListener {
         rdoServerSrc.addActionListener(this);
         ca.add(rdoServerSrc);
         
-        src = new JTextArea(sourceCode, 450, 200);
+        src = new JTextArea(sourceCode, 450, 250);
         src.setFont(new Font("monospaced", Font.PLAIN, 11));
         src.setEditable(false);
         src.setLineWrap(true);
@@ -50,7 +50,7 @@ public class YggdrasillSourceDialog extends JDialog implements ActionListener {
         JScrollPane srcScroll = new JScrollPane(src);
         srcScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         srcScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        srcScroll.setPreferredSize(new Dimension(450, 250));
+        srcScroll.setPreferredSize(new Dimension(450, 270));
 
         ca.add(srcScroll);
 
