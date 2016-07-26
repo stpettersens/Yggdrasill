@@ -3,7 +3,7 @@
     Yggdrasill
     RMI-based distributed HTTP.
 
-    Copyright (c) 2014 Sam Saint-Pettersen.
+    Copyright (c) 2014, 2016 Sam Saint-Pettersen.
 */
 import java.util.List;
 import java.util.ArrayList;
@@ -20,28 +20,29 @@ import net.sf.lipermi.handler.CallHandler;
 
 public class YggdrasillClient {
     private static String title;
-    private static String defaultPage;
+    private static String currentPage;
     private static String html;
-    //private static List history;
     private static Queue<String> history;
     private static List serverLog;
     private static List fileProperties;
-    //private static int pointer;
+    private static Text txtUri;
+    private static Yggdrasill yProxy;
+    private static YggdrasillDecoder yDecoder;
+    private static Shell shell;
+    private static Browser browser;
 
     @SuppressWarnings("unchecked")
     public static void main(String args[]) {
         try {
             title = "Yggdrasill Client - ";
-            defaultPage = "/index.html";
+            currentPage = "/index.html";
             html = "";
-            //history = new ArrayList();
             history = new LinkedList<String>();
             fileProperties = new ArrayList();
             serverLog = new ArrayList();
-            //pointer = -1;
 
             Display display = new Display();
-            final Shell shell = new Shell(display);
+            shell = new Shell(display);
             shell.setText(title);
             shell.setSize(700, 550);
 
@@ -69,80 +70,30 @@ public class YggdrasillClient {
             ToolItem aboutButton = new ToolItem(toolbar, SWT.PUSH);
             aboutButton.setText("About");
 
-            final Text text = new Text(shell, SWT.BORDER);
-            text.setBounds(5, 35, 400, 25); // 5, 35, 400, 25
-            text.setText(defaultPage);
+            txtUri = new Text(shell, SWT.BORDER);
+            txtUri.setBounds(5, 35, 400, 25); // 5, 35, 400, 25
+            txtUri.setText(currentPage);
 
-            // A call handler is always needed!
-            CallHandler callHandler = new CallHandler();
-            // Connect to client.
-            Client client = new Client("localhost", 4455, callHandler);
-            Yggdrasill yProxy = (Yggdrasill)client.getGlobal(Yggdrasill.class);
-
-            //System.out.println("\nYggdrasill client started...");
-            String request = String.format("GET %s HTTP/1.1", defaultPage);
-            List response = yProxy.sendRespond(request);
-            history.add(defaultPage);
-            serverLog.add(String.format("\n%s\n", request));
-            serverLog.add(response.get(0));
-            //pointer++;
-            //System.out.println(pointer);
-
-            //System.out.println(response.get(0));
-            final YggdrasillDecoder yDecoder = new YggdrasillDecoder();
-            html = yDecoder.decodeResponse(response);
-            shell.setText(title + response.get(2));
-            //System.out.println(output);
-
-            fileProperties.add(response.get(1));
-            fileProperties.add(response.get(2));
-            fileProperties.add(response.get(3));
-            fileProperties.add(response.get(4));
-
-            final Browser browser;
             browser = new Browser(shell, SWT.NONE);
-            browser.setText(html);
             browser.setBounds(5, 75, 670, 420);
 
+            initialize();
+
             browser.addLocationListener(new LocationListener() {
-                public void changed(LocationEvent event) {
-                  if(event.top) {
-                      System.out.println(event.location); // TODO
-                      String foo = event.location.replace("about:", "");
-                      System.out.println(foo);
-                  }
-                }
                 public void changing(LocationEvent event) {
-                    System.out.println("Changing URI..."); // TODO
+                    String uri = event.location.replace("about:", "");
+                    if(uri.charAt(0) != '/') uri = "/" + uri; // All URIs should begin with "/".
+                    makeRequest(uri, true);
+                }
+                public void changed(LocationEvent event) {
+                    // ...
                 }
             });
 
-            text.addTraverseListener(new TraverseListener() {
+            txtUri.addTraverseListener(new TraverseListener() {
                 public void keyTraversed(TraverseEvent event) {
                     if(event.detail == SWT.TRAVERSE_RETURN) {
-                       try {
-                            //pointer++;
-                            String page = text.getText();
-                            String request = String.format("GET %s HTTP/1.1", page);
-                            List response = yProxy.sendRespond(request);
-                            serverLog.add("\n"+request+"\n");
-                            serverLog.add(response.get(0));
-
-                            fileProperties.clear();
-                            fileProperties.add(response.get(1));
-                            fileProperties.add(response.get(2));
-                            fileProperties.add(response.get(3));
-                            fileProperties.add(response.get(4));
-
-                            html = yDecoder.decodeResponse(response);
-                            shell.setText(title + response.get(2));
-                            browser.setText(html);
-                            history.add(page);
-                        }
-                        catch(Exception e)  {
-                            System.out.println("An error occurred whilst retrieving HTTP resource:");
-                            System.out.println(e);
-                        }
+                        makeRequest(txtUri.getText(), true);
                     }
                 }
             });
@@ -152,82 +103,13 @@ public class YggdrasillClient {
                     ToolItem item = (ToolItem)event.widget;
                     String string = item.getText();
                     if (string.equals("<")) {
-                        try {
-                            String page = history.remove();
-                            text.setText(page);
-                            String request = String.format("GET %s HTTP/1.1", page);
-                            List response = yProxy.sendRespond(request);
-                            serverLog.add("\n"+request+"\n");
-                            serverLog.add(response.get(0));
-
-                            fileProperties.clear();
-                            fileProperties.add(response.get(1));
-                            fileProperties.add(response.get(2));
-                            fileProperties.add(response.get(3));
-                            fileProperties.add(response.get(4));
-
-                            html = yDecoder.decodeResponse(response);
-                            shell.setText(title + response.get(2));
-                            browser.setText(html);
-                        }
-                        catch(Exception e)  {
-                            System.out.println("An error occurred whilst retrieving HTTP resource:");
-                            System.out.println(e);
-                        }
+                        makeRequest(history.remove(), false);
                     }
                     else if (string.equals("Go")) {
-                        try {
-                            String page = text.getText();
-                            String request = String.format("GET %s HTTP/1.1", page);
-                            List response = yProxy.sendRespond(request);
-                            serverLog.add("\n"+request+"\n");
-                            serverLog.add(response.get(0));
-
-                            fileProperties.clear();
-                            fileProperties.add(response.get(1));
-                            fileProperties.add(response.get(2));
-                            fileProperties.add(response.get(3));
-                            fileProperties.add(response.get(4));
-
-                            html = yDecoder.decodeResponse(response);
-                            shell.setText(title + response.get(2));
-                            browser.setText(html);
-                            history.add(page);
-                            //System.out.println(history);
-                            //pointer++;
-                            //System.out.println(pointer);
-                            //System.out.println(response.get(0));
-                        }
-                        catch(Exception e) {
-                            System.out.println("An error occurred whilst retrieving HTTP resource:");
-                            System.out.println(e);
-                        }
+                        makeRequest(txtUri.getText(), true);
                     }
                     else if (string.equals(">")) {
-                        try {
-                            //pointer++;
-                            String page = history.peek();
-                            text.setText(page);
-                            String request = String.format("GET %s HTTP/1.1", page);
-                            List response = yProxy.sendRespond(request);
-                            serverLog.add("\n"+request+"\n");
-                            serverLog.add(response.get(0));
-
-                            fileProperties.clear();
-                            fileProperties.add(response.get(1));
-                            fileProperties.add(response.get(2));
-                            fileProperties.add(response.get(3));
-                            fileProperties.add(response.get(4));
-
-                            html = yDecoder.decodeResponse(response);
-                            shell.setText(title + response.get(2));
-                            browser.setText(html);
-                            history.add(page);
-                        }
-                        catch(Exception e)  {
-                            System.out.println("An error occurred whilst retrieving HTTP resource:");
-                            System.out.println(e);
-                        }
+                        makeRequest(history.peek(), true);
                     }
                     else if(string.equals("View Source")) {
                         YggdrasillSourceDialog ysd = new YggdrasillSourceDialog(shell);
@@ -260,18 +142,55 @@ public class YggdrasillClient {
                 if(!display.readAndDispatch())
                     display.sleep();
             display.dispose();
+       }
+       catch (Exception e) {
+           //System.out.println("\nClient problem: " + e);
+       }
+    }
 
+    private static void makeRequest(String uri, boolean addHistory) {
+        if (uri.equals("/blank")) { // Do not make a request for about:blank.
+            txtUri.setText(currentPage);
+            return;
         }
-        catch (Exception e) {
-            System.out.println("\nClient problem: " + e);
+        try {
+            txtUri.setText(uri);
+            currentPage = uri;
+            String request = String.format("GET %s HTTP/1.1", uri);
+            List response = yProxy.sendRespond(request);
+            if(addHistory) history.add(uri);
+            serverLog.add(String.format("\n%s\n%s", request, response.get(0)));
+
+            yDecoder = new YggdrasillDecoder();
+            html = yDecoder.decodeResponse(response);
+            shell.setText(String.format("Yggdrasill Client - %s", response.get(2)));
+
+            fileProperties.clear(); // Force clear of list first.
+            fileProperties.add(response.get(1));
+            fileProperties.add(response.get(2));
+            fileProperties.add(response.get(3));
+            fileProperties.add(response.get(4));
+
+            browser.setText(html);
+        }
+        catch(Exception e) {
+            System.out.println("An error occurred whilst retrieving HTTP resource:");
+            System.out.println(e);
         }
     }
 
-    private void makeRequest(String uri) {
-        // TODO
-    }
-
-    private void initialize() {
-        // TODO
+    private static void initialize() {
+        try {
+            // A call handler is always needed!
+            CallHandler callHandler = new CallHandler();
+            // Connect to client.
+            Client client = new Client("localhost", 4455, callHandler);
+            yProxy = (Yggdrasill)client.getGlobal(Yggdrasill.class);
+            makeRequest(txtUri.getText(), true);
+        }
+        catch(Exception e) {
+            //System.out.println("An error occurred whilst setting up the client:");
+            //System.out.println(e);
+        }
     }
 }

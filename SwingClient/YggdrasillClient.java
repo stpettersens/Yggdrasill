@@ -142,7 +142,7 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
             yDecoder = new YggdrasillDecoder();
             YggdrasillClient.setHtml(yDecoder.decodeResponse(response, YggdrasillClient.getPage()));
 
-            YggdrasillClient.setTitle(String.format("%s %s", "Yggdrasill Client -", response.get(2)));
+            YggdrasillClient.setTitle(String.format("Yggdrasill Client - %s", response.get(2)));
             setTitle(YggdrasillClient.getTitle());
 
             fileProperties.clear(); // Force clear of list first.
@@ -150,7 +150,7 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
             fileProperties.add(response.get(2));
             fileProperties.add(response.get(3));
             fileProperties.add(response.get(4));
-            
+
             if (YggdrasillClient.getPage().endsWith(".html")) {
                 YggdrasillClient.setServerHtml(YggdrasillClient.getHtml());
                 YggdrasillClient.setHtml(yDecoder.processHtml(YggdrasillClient.getHtml()));
@@ -180,15 +180,15 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
             System.out.println(e);
         }
     }
-    
+
     public void actionPerformed(ActionEvent event) {
         String command = event.getActionCommand();
         if(command.equals("Go")) {
             makeRequest(txtUri.getText());
         }
         else if(command.equals("View Source")) {
-            YggdrasillSourceDialog sourceDialog = new YggdrasillSourceDialog(this, 
-            YggdrasillClient.getHtml(), 
+            YggdrasillSourceDialog sourceDialog = new YggdrasillSourceDialog(this,
+            YggdrasillClient.getHtml(),
             YggdrasillClient.getServerHtml());
         }
         else if(command.equals("File Properties")) {
@@ -201,7 +201,7 @@ class ClientWindow extends JFrame implements ActionListener, HyperlinkListener {
             YggdrasillAboutDialog aboutDialog = new YggdrasillAboutDialog(this);
         }
     }
-  
+
     public void hyperlinkUpdate(HyperlinkEvent event) {
         if(event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
             String uri = event.getDescription();
