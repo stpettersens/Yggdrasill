@@ -18,7 +18,7 @@ import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
-/** Yggdrasill implementation **/
+/** Yggdrasill implementation. **/
 @SuppressWarnings("unchecked")
 public class YggdrasillImpl implements Yggdrasill {
     private List handleRequest(String http, String[] params)
@@ -27,7 +27,7 @@ public class YggdrasillImpl implements Yggdrasill {
         String request = params[0].substring(1) + params[1];
         String ext = params[1];
 
-        YggdrasillMimes yMimes = new YggdrasillMimes(ext);
+        YggdrasillMimes yMimes = new YggdrasillMimesJson(ext);
         String mime = yMimes.getMime();
         String title = yMimes.getName();
         String type = yMimes.getType();
@@ -176,7 +176,7 @@ public class YggdrasillImpl implements Yggdrasill {
         return bytesList;
     }
 
-    /** Handle an HTTP request and respond to it **/
+    /** Handle an HTTP request and respond to it. **/
     public List sendRespond(String httpRequest)
     {
         System.out.println(httpRequest);

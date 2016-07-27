@@ -1,8 +1,8 @@
 #BlueJ class context
-comment0.params=ext
-comment0.target=YggdrasillMimes(java.lang.String)
-comment1.params=
-comment1.target=void\ readMimesFile()
+comment0.params=
+comment0.target=void\ readMimesFile()
+comment1.params=ext
+comment1.target=YggdrasillMimesXml(java.lang.String)
 comment2.params=ext
 comment2.target=void\ setExt(java.lang.String)
 comment3.params=
