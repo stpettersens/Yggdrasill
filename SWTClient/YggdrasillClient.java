@@ -18,10 +18,12 @@ import org.eclipse.swt.events.TraverseEvent;
 import net.sf.lipermi.net.Client;
 import net.sf.lipermi.handler.CallHandler;
 
+@SuppressWarnings("unchecked")
 public class YggdrasillClient {
     private static String title;
     private static String currentPage;
     private static String html;
+    private static String serverHtml;
     private static Queue<String> history;
     private static List serverLog;
     private static List fileProperties;
@@ -31,7 +33,6 @@ public class YggdrasillClient {
     private static Shell shell;
     private static Browser browser;
 
-    @SuppressWarnings("unchecked")
     public static void main(String args[]) {
         try {
             title = "Yggdrasill Client - ";
@@ -101,31 +102,31 @@ public class YggdrasillClient {
             Listener listener = new Listener() {
                 public void handleEvent(Event event) {
                     ToolItem item = (ToolItem)event.widget;
-                    String string = item.getText();
-                    if (string.equals("<")) {
+                    String command = item.getText();
+                    if(command.equals("<")) {
                         makeRequest(history.remove(), false);
                     }
-                    else if (string.equals("Go")) {
+                    else if(command.equals("Go")) {
                         makeRequest(txtUri.getText(), true);
                     }
-                    else if (string.equals(">")) {
+                    else if(command.equals(">")) {
                         makeRequest(history.peek(), true);
                     }
-                    else if(string.equals("View Source")) {
-                        YggdrasillSourceDialog ysd = new YggdrasillSourceDialog(shell);
-                        ysd.open(html);
+                    else if(command.equals("View Source")) {
+                        YggdrasillSourceDialog sourceDialog = new YggdrasillSourceDialog(shell);
+                        sourceDialog.open(html, serverHtml);
                     }
-                    else if(string.equals("File Properties")) {
-                        YggdrasillPropsDialog ypd = new YggdrasillPropsDialog(shell);
-                        ypd.open(fileProperties);
+                    else if(command.equals("File Properties")) {
+                        YggdrasillPropsDialog propertiesDialog = new YggdrasillPropsDialog(shell);
+                        propertiesDialog.open(fileProperties);
                     }
-                    else if(string.equals("Server Log")) {
-                        YggdrasillServerLogDialog ysld = new YggdrasillServerLogDialog(shell);
-                        ysld.open(serverLog);
+                    else if(command.equals("Server Log")) {
+                        YggdrasillServerLogDialog serverLogDialog = new YggdrasillServerLogDialog(shell);
+                        serverLogDialog.open(serverLog);
                     }
-                    else if(string.equals("About")) {
-                        YggdrasillAboutDialog yad = new YggdrasillAboutDialog(shell);
-                        yad.open();
+                    else if(command.equals("About")) {
+                        YggdrasillAboutDialog aboutDialog = new YggdrasillAboutDialog(shell);
+                        aboutDialog.open();
                     }
                 }
             };
@@ -144,25 +145,24 @@ public class YggdrasillClient {
             display.dispose();
        }
        catch (Exception e) {
-           //System.out.println("\nClient problem: " + e);
+            System.out.println("\nClient problem: " + e);
        }
     }
 
     private static void makeRequest(String uri, boolean addHistory) {
-        if (uri.equals("/blank")) { // Do not make a request for about:blank.
+        if(uri.equals("/blank")) { // Do not make a request for about:blank.
             txtUri.setText(currentPage);
             return;
         }
         try {
-            txtUri.setText(uri);
-            currentPage = uri;
-            String request = String.format("GET %s HTTP/1.1", uri);
+            txtUri.setText(uri); currentPage = uri;
+            String request = String.format("GET %s HTTP/1.1", currentPage);
             List response = yProxy.sendRespond(request);
-            if(addHistory) history.add(uri);
+            if(addHistory) history.add(currentPage);
             serverLog.add(String.format("\n%s\n%s", request, response.get(0)));
 
             yDecoder = new YggdrasillDecoder();
-            html = yDecoder.decodeResponse(response);
+            html = yDecoder.decodeResponse(response, currentPage);
             shell.setText(String.format("Yggdrasill Client - %s", response.get(2)));
 
             fileProperties.clear(); // Force clear of list first.
@@ -171,6 +171,13 @@ public class YggdrasillClient {
             fileProperties.add(response.get(3));
             fileProperties.add(response.get(4));
 
+            if(currentPage.endsWith(".html")) {
+                serverHtml = html;
+                html = yDecoder.processHtml(serverHtml);
+            }
+            else {
+                serverHtml = html;
+            }
             browser.setText(html);
         }
         catch(Exception e) {
@@ -189,8 +196,8 @@ public class YggdrasillClient {
             makeRequest(txtUri.getText(), true);
         }
         catch(Exception e) {
-            //System.out.println("An error occurred whilst setting up the client:");
-            //System.out.println(e);
+            System.out.println("An error occurred whilst setting up the client:");
+            System.out.println(e);
         }
     }
 }

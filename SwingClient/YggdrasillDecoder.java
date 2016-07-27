@@ -60,8 +60,8 @@ public class YggdrasillDecoder {
         }
     }
 
-    public String processHtml(String rawHtml) {
-        Document doc = Jsoup.parse(rawHtml, "UTF-8");
+    public String processHtml(String serverHtml) {
+        Document doc = Jsoup.parse(serverHtml, "UTF-8");
         BaseEncoding base64 = BaseEncoding.base64();
         Elements images = doc.getElementsByTag("img");
         for(Element el: images) {

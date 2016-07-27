@@ -3,7 +3,7 @@
 
     <!-- Resolve dependencies with ivy -->
     <target name="resolve" description="Retrieve dependencies with ivy">
-        <ivy:retrieve />
+        <ivy:retrieve/>
         <delete>
           <fileset dir="lib" includes="*-sources.jar"/>
           <fileset dir="lib" includes="*-javadoc.jar"/>

@@ -150,7 +150,7 @@ class ClientWindow extends JFrame implements ActionListener, KeyListener, Hyperl
             fileProperties.add(response.get(3));
             fileProperties.add(response.get(4));
 
-            if (YggdrasillClient.getPage().endsWith(".html")) {
+            if(YggdrasillClient.getPage().endsWith(".html")) {
                 YggdrasillClient.setServerHtml(YggdrasillClient.getHtml());
                 YggdrasillClient.setHtml(yDecoder.processHtml(YggdrasillClient.getHtml()));
             }

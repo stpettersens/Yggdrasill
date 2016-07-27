@@ -1,6 +1,8 @@
 #BlueJ class context
 comment0.params=parent
 comment0.target=YggdrasillSourceDialog(org.eclipse.swt.widgets.Shell)
-comment1.params=sourceCode
-comment1.target=void\ open(java.lang.String)
-numComments=2
+comment1.params=sourceCode\ serverSourceCode
+comment1.target=void\ open(java.lang.String,\ java.lang.String)
+comment2.params=event
+comment2.target=void\ widgetSelected(org.eclipse.swt.events.SelectionEvent)
+numComments=3
