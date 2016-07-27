@@ -9,16 +9,17 @@
 public abstract class YggdrasillMimes {
     protected String extension;
     
-    YggdrasillMimes(String ext) {
+    public YggdrasillMimes(String ext) {
         setExt(ext);
         readMimesFile();
     }
     
     protected abstract void readMimesFile();
     
-    public void setExt(String ext) {
+    public final void setExt(String ext) {
         this.extension = ext;
     }
+
     public abstract String getMime();
     public abstract String getName();
     public abstract String getType();

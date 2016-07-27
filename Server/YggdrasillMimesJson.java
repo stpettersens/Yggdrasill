@@ -46,10 +46,6 @@ public class YggdrasillMimesJson extends YggdrasillMimes {
         super(ext);
     }
 
-    public void setExt(String ext) {
-        this.extension = ext;
-    }
-
     public String getMime() {
         return getPart("mime");
     }

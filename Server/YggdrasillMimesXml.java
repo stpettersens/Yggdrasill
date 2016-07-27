@@ -16,10 +16,6 @@ public class YggdrasillMimesXml extends YggdrasillMimes {
         super(ext);
     }
     
-    public void setExt(String ext) {
-        
-    }
-    
     public String getMime() {
         return "TODO";
     }
