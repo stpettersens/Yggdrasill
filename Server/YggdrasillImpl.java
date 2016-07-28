@@ -27,7 +27,7 @@ public class YggdrasillImpl implements Yggdrasill {
     public YggdrasillImpl(String config) {
         CONFIG_TYPE = config;
     }
-    
+
     private List handleRequest(String http, String[] params)
     {
         List bytesList = new ArrayList();
@@ -42,13 +42,13 @@ public class YggdrasillImpl implements Yggdrasill {
         else if(CONFIG_TYPE.equals("xml")) {
             yMimes = new YggdrasillMimesXml(ext);
         }
-        yMimes.tellConfiguration();
         
         String mime = yMimes.getMime();
         String title = yMimes.getName();
         String type = yMimes.getType();
         String parse = yMimes.getParse();
         boolean binary = yMimes.getBinary();
+        String config = yMimes.tellConfiguration();
 
         switch(http) {
             case "GET":
@@ -87,6 +87,7 @@ public class YggdrasillImpl implements Yggdrasill {
                            bytesList.add(2, title);
                            bytesList.add(3, mime);
                            bytesList.add(4, type);
+                           bytesList.add(5, config);
                        }
                     }
                     catch(IOException e) {
@@ -117,6 +118,7 @@ public class YggdrasillImpl implements Yggdrasill {
                            bytesList.add(2, title);
                            bytesList.add(3, mime);
                            bytesList.add(4, type);
+                           bytesList.add(5, config);
                         }
                     }
                     catch(IOException e) {
@@ -138,6 +140,7 @@ public class YggdrasillImpl implements Yggdrasill {
                         bytesList.add(2, title);
                         bytesList.add(3, mime);
                         bytesList.add(4, type);
+                        bytesList.add(5, config);
                     }
                     catch(IOException e) {
                         // ...
@@ -154,6 +157,7 @@ public class YggdrasillImpl implements Yggdrasill {
                        bytesList.add(2, title);
                        bytesList.add(3, mime);
                        bytesList.add(4, type);
+                       bytesList.add(5, config);
                     }
                     catch(IOException e) {
                         // ...
@@ -186,6 +190,7 @@ public class YggdrasillImpl implements Yggdrasill {
             bytesList.add(2, title);
             bytesList.add(3, mime);
             bytesList.add(4, type);
+            bytesList.add(5, config);
         }
         System.out.println(bytesList.get(0));
 
@@ -215,6 +220,7 @@ public class YggdrasillImpl implements Yggdrasill {
     
     public void sendDummyRequest(String uri) {
         List response = sendRespond(String.format("GET %s HTTP/1.1", uri));
-        System.out.println(String.format("%s -> %s -> %s", response.get(1), response.get(2), response.get(3)));
+        System.out.println(String.format("%s -> %s -> %s -> %s (%s).", 
+        response.get(1), response.get(2), response.get(3), response.get(4), response.get(5)));
     }
 }

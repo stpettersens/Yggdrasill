@@ -41,7 +41,7 @@ public class YggdrasillDecoder {
         String type = (String)response.get(4);
         if(!binary && type.equals("document")) {
             String decoded = "";
-            for(int i = 5; i < response.size(); i++) {
+            for(int i = 6; i < response.size(); i++) {
                 int b = (int)response.get(i);
                 char c = (char)b;
                 decoded += c;

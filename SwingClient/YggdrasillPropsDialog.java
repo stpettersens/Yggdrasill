@@ -28,8 +28,8 @@ public class YggdrasillPropsDialog extends JDialog {
         props.setWrapStyleWord(true);
         
         props.setText(
-        String.format("Title / name:\t\t%s\nMIME type:\t\t\t%s\nCategory:\t\t\t%s\nIs binary?\t\t\t%s",
-        fileProps.get(1), fileProps.get(2), fileProps.get(3), fileProps.get(0)));
+        String.format("Title / name:\t\t%s\nMIME type:\t\t\t%s\nCategory:\t\t\t%s\nIs binary?\t\t\t%s\n\nMIMEs configuration:\t\t%s",
+        fileProps.get(1), fileProps.get(2), fileProps.get(3), fileProps.get(0), fileProps.get(4)));
         
         JScrollPane propsScroll = new JScrollPane(props);
         propsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

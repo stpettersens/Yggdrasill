@@ -24,7 +24,7 @@ public abstract class YggdrasillMimes {
     }
     
     public final String tellConfiguration() {
-        return String.format("Using %s MIMEs configuration.", this.configuration);
+        return this.configuration;
     }
 
     public abstract String getMime();
