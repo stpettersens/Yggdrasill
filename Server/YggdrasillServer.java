@@ -11,9 +11,17 @@ import net.sf.lipermi.handler.CallHandler;
 public class YggdrasillServer {
 
     public static void main(String args[]) {
+        
+        String CONFIG_TYPE = "xml";
+        
         try {
             Server server = new Server();
-            YggdrasillImpl yggdrasillService = new YggdrasillImpl();
+            
+            if(args.length > 0) {
+                CONFIG_TYPE = args[0];
+            }
+            
+            YggdrasillImpl yggdrasillService = new YggdrasillImpl(CONFIG_TYPE);
             
             // A call handler is always needed.
             CallHandler callHandler = new CallHandler();

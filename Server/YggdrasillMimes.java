@@ -7,6 +7,7 @@
 */
 
 public abstract class YggdrasillMimes {
+
     protected String extension;
     
     public YggdrasillMimes(String ext, String config) {

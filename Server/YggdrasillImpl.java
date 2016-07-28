@@ -24,6 +24,10 @@ public class YggdrasillImpl implements Yggdrasill {
     
     private static String CONFIG_TYPE = "xml";
     
+    public YggdrasillImpl(String config) {
+        CONFIG_TYPE = config;
+    }
+    
     private List handleRequest(String http, String[] params)
     {
         List bytesList = new ArrayList();
