@@ -21,13 +21,24 @@ import org.jsoup.select.*;
 /** Yggdrasill implementation. **/
 @SuppressWarnings("unchecked")
 public class YggdrasillImpl implements Yggdrasill {
+    
+    private static String CONFIG_TYPE = "xml";
+    
     private List handleRequest(String http, String[] params)
     {
         List bytesList = new ArrayList();
         String request = params[0].substring(1) + params[1];
         String ext = params[1];
 
-        YggdrasillMimes yMimes = new YggdrasillMimesJson(ext);
+        YggdrasillMimes yMimes = null;
+        
+        if(CONFIG_TYPE.equals("json")) {
+            yMimes = new YggdrasillMimesJson(ext);
+        }
+        else if(CONFIG_TYPE.equals("xml")) {
+            yMimes = new YggdrasillMimesXml(ext);
+        }
+        
         String mime = yMimes.getMime();
         String title = yMimes.getName();
         String type = yMimes.getType();
@@ -195,5 +206,10 @@ public class YggdrasillImpl implements Yggdrasill {
         }
 
         return handleRequest(http, params);
+    }
+    
+    public void sendDummyRequest() {
+        List response = sendRespond("GET /index.html HTTP/1.1");
+        System.out.println(String.format("%s -> %s -> %s", response.get(1), response.get(2), response.get(3)));
     }
 }

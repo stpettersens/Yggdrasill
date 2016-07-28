@@ -12,6 +12,7 @@ import org.json.simple.JSONValue;
 import org.json.simple.JSONObject;
 
 public class YggdrasillMimesJson extends YggdrasillMimes {
+
     private JSONObject mimes;
 
     protected void readMimesFile() {
@@ -20,6 +21,7 @@ public class YggdrasillMimesJson extends YggdrasillMimes {
             this.mimes = (JSONObject)JSONValue.parse(file);
         }
         catch(IOException ioe) {
+            System.out.println("Problem loading mimes.json configuration:");
             System.out.println(ioe);
         }
     }

@@ -4,4 +4,6 @@ comment0.target=java.util.List\ handleRequest(java.lang.String,\ java.lang.Strin
 comment1.params=httpRequest
 comment1.target=java.util.List\ sendRespond(java.lang.String)
 comment1.text=Handle\ an\ HTTP\ request\ and\ respond\ to\ it.\ *
-numComments=2
+comment2.params=
+comment2.target=void\ sendDummyRequest()
+numComments=3
