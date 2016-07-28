@@ -42,6 +42,7 @@ public class YggdrasillImpl implements Yggdrasill {
         else if(CONFIG_TYPE.equals("xml")) {
             yMimes = new YggdrasillMimesXml(ext);
         }
+        yMimes.tellConfiguration();
         
         String mime = yMimes.getMime();
         String title = yMimes.getName();

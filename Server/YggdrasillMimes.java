@@ -8,11 +8,11 @@
 
 public abstract class YggdrasillMimes {
 
+    private String configuration;
     protected String extension;
     
     public YggdrasillMimes(String ext, String config) {
-        System.out.println(
-        String.format("Using %s MIMEs configuration.", config));
+        this.configuration = config;
         setExt(ext);
         readMimesFile();
     }
@@ -21,6 +21,10 @@ public abstract class YggdrasillMimes {
     
     public final void setExt(String ext) {
         this.extension = ext;
+    }
+    
+    public final String tellConfiguration() {
+        return String.format("Using %s MIMEs configuration.", this.configuration);
     }
 
     public abstract String getMime();
