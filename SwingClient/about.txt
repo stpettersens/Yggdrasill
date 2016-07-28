@@ -10,7 +10,7 @@ https://github.com/stpettersens/Yggdrasill
 
 Yggdrasill makes use of the following third-party libraries:
 
-LipeRMI - a light weight Internet approach for RMI.
+LipeRMI - A light weight Internet approach for RMI.
 Copyright (c) 2006 Felipe Santos Andrade.
 https://github.com/tascape/th-lipermi
 
@@ -29,6 +29,10 @@ https://github.com/google/code-prettify
 JSON.simple: A simple Java toolkit for JSON.
 Copyright (c) 2012 Yidong Fang et al.
 https://github.com/fangyidong/json-simple
+
+dom4j: The flexible XML framework for Java.
+Copyright (c) 2001-2016 MetaStuff, Ltd. and DOM4J contributors.
+https://github.com/dom4j/dom4j
 
 jsoup: Java HTML Parser.
 Copyright (c) 2009-2016 Jonathan Hedley.

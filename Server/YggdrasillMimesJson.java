@@ -45,7 +45,7 @@ public class YggdrasillMimesJson extends YggdrasillMimes {
     }
 
     public YggdrasillMimesJson(String ext) {
-        super(ext);
+        super(ext, "JSON");
     }
 
     public String getMime() {

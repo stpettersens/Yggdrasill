@@ -9,7 +9,9 @@
 public abstract class YggdrasillMimes {
     protected String extension;
     
-    public YggdrasillMimes(String ext) {
+    public YggdrasillMimes(String ext, String config) {
+        System.out.println(
+        String.format("Using %s MIMEs configuration.", config));
         setExt(ext);
         readMimesFile();
     }

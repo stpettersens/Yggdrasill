@@ -208,8 +208,8 @@ public class YggdrasillImpl implements Yggdrasill {
         return handleRequest(http, params);
     }
     
-    public void sendDummyRequest() {
-        List response = sendRespond("GET /index.html HTTP/1.1");
+    public void sendDummyRequest(String uri) {
+        List response = sendRespond(String.format("GET %s HTTP/1.1", uri));
         System.out.println(String.format("%s -> %s -> %s", response.get(1), response.get(2), response.get(3)));
     }
 }
