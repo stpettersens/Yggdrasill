@@ -27,9 +27,65 @@
   - parse: pretty
   - binary: false
 ---
+  - extension: txt
+  - mime: text/plain
+  - name: "[Text Document]"
+  - type: document
+  - parse: text
+  - binary: false
+---
+  - extension: java
+  - mime: "txt/x-java-source"
+  - name: "[Java Source File]"
+  - type: document
+  - parse: pretty
+  - binary: false
+---
+  - extension: js
+  - mime: application/javascript
+  - name: "[JavaScript File]"
+  - type: document
+  - parse: pretty
+  - binary: false
+---
+  - extension: json
+  - mime: application/json
+  - name: "[JSON Document]"
+  - type: document
+  - parse: pretty
+  - binary: false
+---
+  - extension: yml
+  - mime: "application/x-yaml"
+  - name: "[YAML Document]"
+  - type: document
+  - parse: pretty
+  - binary: false
+---
   - extension: jpg
   - mime: image/jpg
   - name: "[JPEG Image]"
   - type: image
+  - parse: binary
+  - binary: true
+---
+  - extension: png
+  - mime: image/png
+  - name: "[PNG Image]"
+  - type: image
+  - parse: binary
+  - binary: true
+---
+  - extension: gif
+  - mime: image/gif
+  - name: "[GIF Image]"
+  - type: image
+  - parse: binary
+  - binary: true
+---
+  - extension: mp3
+  - mime: audio/mpeg
+  - name: "[MP3 Audio File]"
+  - type: audio
   - parse: binary
   - binary: true
