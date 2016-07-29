@@ -1,0 +1,35 @@
+---
+  - extension: "*"
+  - mime: unknown
+  - name: "[Unknown File]"
+  - type: document
+  - parse: pretty
+  - binary: false
+---
+  - extension: html
+  - mime: text/html
+  - name: "[HTML Document]"
+  - type: document
+  - parse: markup
+  - binary: false
+---
+  - extension: xhtml
+  - mime: "application/xhtml+xml"
+  - name: "[XHTML Document]"
+  - type: document
+  - parse: markup
+  - binary: false
+---
+  - extension: xml
+  - mime: application/xml
+  - name: "[XML Document]"
+  - type: document
+  - parse: pretty
+  - binary: false
+---
+  - extension: jpg
+  - mime: image/jpg
+  - name: "[JPEG Image]"
+  - type: image
+  - parse: binary
+  - binary: true

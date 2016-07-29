@@ -17,8 +17,8 @@ public class YggdrasillMimesJson extends YggdrasillMimes {
 
     protected void readMimesFile() {
         try {
-            String file = Files.toString(new File("config//mimes.json"), Charsets.UTF_8);
-            this.mimes = (JSONObject)JSONValue.parse(file);
+            String doc = Files.toString(new File("config//mimes.json"), Charsets.UTF_8);
+            this.mimes = (JSONObject)JSONValue.parse(doc);
         }
         catch(IOException ioe) {
             System.out.println("Problem loading mimes.json configuration:");

@@ -35,12 +35,14 @@ public class YggdrasillImpl implements Yggdrasill {
         String ext = params[1];
 
         YggdrasillMimes yMimes = null;
-        
         if(CONFIG_TYPE.equals("json")) {
             yMimes = new YggdrasillMimesJson(ext);
         }
         else if(CONFIG_TYPE.equals("xml")) {
             yMimes = new YggdrasillMimesXml(ext);
+        }
+        else if(CONFIG_TYPE.equals("yaml")) {
+            yMimes = new YggdrasillMimesYaml(ext);
         }
         
         String mime = yMimes.getMime();

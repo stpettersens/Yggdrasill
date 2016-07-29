@@ -38,6 +38,10 @@ dom4j: The flexible XML framework for Java.
 Copyright (c) 2001-2016 MetaStuff, Ltd. and DOM4J contributors.
 https://github.com/dom4j/dom4j
 
+SnakeYAML: YAML parser and emitter for Java.
+Copyright (c) 2008-2016 Andrey Somov et al.
+http://www.snakeyaml.org
+
 jsoup: Java HTML Parser.
 Copyright (c) 2009-2016 Jonathan Hedley.
 https://github.com/jhy/jsoup

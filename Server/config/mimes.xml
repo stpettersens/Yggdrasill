@@ -43,7 +43,13 @@
 		<binary>false</binary>
 	</mime>
 	<mime type="application/json" extension="json">
-		<name>[JSON File]</name>
+		<name>[JSON Document]</name>
+		<class>document</class>
+		<parse>pretty</parse>
+		<binary>false</binary>
+	</mime>
+	<mime type="application/x-yaml" extension="yml">
+		<name>[YAML Document]</name>
 		<class>document</class>
 		<parse>pretty</parse>
 		<binary>false</binary>

@@ -71,6 +71,7 @@ public class YggdrasillMimesXml extends YggdrasillMimes {
     }
     
     public boolean getBinary() {
-        return Boolean.parseBoolean(attribs.get(this.extension).get(3).toString());
+        return Boolean.parseBoolean(
+        attribs.get(this.extension).get(3).toString());
     }
 }

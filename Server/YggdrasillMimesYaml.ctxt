@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=
+comment0.target=void\ readMimesFile()
+comment1.params=ext
+comment1.target=YggdrasillMimesYaml(java.lang.String)
+comment2.params=
+comment2.target=java.lang.String\ getMime()
+comment3.params=
+comment3.target=java.lang.String\ getName()
+comment4.params=
+comment4.target=java.lang.String\ getType()
+comment5.params=
+comment5.target=java.lang.String\ getParse()
+comment6.params=
+comment6.target=boolean\ getBinary()
+numComments=7

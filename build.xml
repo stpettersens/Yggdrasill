@@ -8,6 +8,8 @@
           <fileset dir="lib" includes="*-sources.jar"/>
           <fileset dir="lib" includes="*-javadoc.jar"/>
           <fileset dir="lib" includes="*annotations*.jar"/>
+          <fileset dir="lib" includes="hamcrest*.jar"/>
+          <fileset dir="lib" includes="jaxen*.jar"/>
         </delete>
     </target>
 </project>
