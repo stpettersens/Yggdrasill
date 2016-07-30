@@ -50,7 +50,7 @@ public class YggdrasillDecoder {
         }
         else if(binary && type.equals("image")) {
             List bytes = new ArrayList();
-            for(int i = 5; i < response.size(); i++) {
+            for(int i = 6; i < response.size(); i++) {
                 bytes.add(response.get(i));
             }
             return String.format("<img src=\"%s\">", cacheFile(Bytes.toArray(bytes), uri));

@@ -29,9 +29,9 @@ public class YggdrasillPropsDialog extends Dialog {
         text.setBounds(5, 35, 400, 420);
 
         text.setText(
-        String.format("Title / name:\t\t\t\t%s\nMIME type:\t\t\t\t%s\nCategory:\t\t\t\t\t%s\nIs binary?\t\t\t\t\t%s",
-        fileProps.get(1), fileProps.get(2), fileProps.get(3), fileProps.get(0))
-        );
+        String.format("Title / name:\t\t\t\t%s\nMIME type:\t\t\t\t%s\nCategory:\t\t\t\t\t%s\nIs binary?\t\t\t\t\t%s"
+        + "\n\n\n\nUsing %s MIMEs configuration.",
+        fileProps.get(1), fileProps.get(2), fileProps.get(3), fileProps.get(0), fileProps.get(4)));
 
         shell.pack();
         shell.open();

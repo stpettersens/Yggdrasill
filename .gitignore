@@ -1,9 +1,9 @@
 /SWTClient/doc
 /SwingClient/doc
 /SwingClient/cache/*
+/SWTClient/doc
+/SWTClient/cache/*
 /Server/doc
-/Client/*.class
-/Server/*.class
 /Server/www/_parsed_.html
 /lib/*.jar
 *.class
