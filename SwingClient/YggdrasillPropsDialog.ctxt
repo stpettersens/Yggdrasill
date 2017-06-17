@@ -1,4 +1,5 @@
 #BlueJ class context
-comment0.params=owner\ fileProps
-comment0.target=YggdrasillPropsDialog(javax.swing.JFrame,\ java.util.List)
-numComments=1
+comment0.target=YggdrasillPropsDialog
+comment1.params=owner\ fileProps
+comment1.target=YggdrasillPropsDialog(javax.swing.JFrame,\ java.util.List)
+numComments=2

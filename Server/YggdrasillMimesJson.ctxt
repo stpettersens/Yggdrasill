@@ -1,8 +1,7 @@
 #BlueJ class context
-comment0.params=
-comment0.target=void\ readMimesFile()
-comment1.params=objectName
-comment1.target=org.json.simple.JSONObject\ getShard(java.lang.String)
+comment0.target=YggdrasillMimesJson
+comment1.params=
+comment1.target=void\ readMimesFile()
 comment2.params=part
 comment2.target=java.lang.String\ getPart(java.lang.String)
 comment3.params=ext

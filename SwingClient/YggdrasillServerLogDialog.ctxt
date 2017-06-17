@@ -1,4 +1,5 @@
 #BlueJ class context
-comment0.params=owner\ serverLog
-comment0.target=YggdrasillServerLogDialog(javax.swing.JFrame,\ java.util.List)
-numComments=1
+comment0.target=YggdrasillServerLogDialog
+comment1.params=owner\ serverLog
+comment1.target=YggdrasillServerLogDialog(javax.swing.JFrame,\ java.util.List)
+numComments=2

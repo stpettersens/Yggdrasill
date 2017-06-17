@@ -1,8 +1,9 @@
 #BlueJ class context
-comment0.params=bytes\ fn
-comment0.target=java.lang.String\ cacheFile(byte[],\ java.lang.String)
-comment1.params=response\ uri
-comment1.target=java.lang.String\ decodeResponse(java.util.List,\ java.lang.String)
-comment2.params=serverHtml
-comment2.target=java.lang.String\ processHtml(java.lang.String)
-numComments=3
+comment0.target=YggdrasillDecoder
+comment1.params=bytes\ fn
+comment1.target=java.lang.String\ cacheFile(byte[],\ java.lang.String)
+comment2.params=response\ uri
+comment2.target=java.lang.String\ decodeResponse(java.util.List,\ java.lang.String)
+comment3.params=serverHtml
+comment3.target=java.lang.String\ processHtml(java.lang.String)
+numComments=4

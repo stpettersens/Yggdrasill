@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="yggdrasill" default="resolve">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="yggdrasill" default="init">
 
+	<description>Ant buildfile to build Yggdrasill</description>
+	
+	<!-- Targets -->
+	<!--<target name="build" depends="package" description="Build complete project"/>-->
+	
     <!-- Resolve dependencies with ivy -->
     <target name="resolve" description="Retrieve dependencies with ivy">
         <ivy:retrieve/>
@@ -12,4 +17,61 @@
           <fileset dir="lib" includes="jaxen*.jar"/>
         </delete>
     </target>
+    
+    <!-- Initialize variables for paths and files -->
+    <target name="init">
+    	<!-- Paths -->
+    	<property name="client.pkg.dir" location="${basedir}/src/client/io/stpettersens/yggdrasill/client"/>
+		<property name="server.pkg.dir" location="${basedir}/src/server/io/stpettersens/yggdrasill/server"/>
+		<property name="client.src.dir" location="${basedir}/src/client"/>
+		<property name="server.src.dir" location="${basedir}/src/server"/>
+		<property name="lib.dir" location="${basedir}/lib"/>
+		<property name="build.dir" location="${basedir}/ant_build"/>
+		<property name="dist.dir" location="${basedir}/dist/"/>
+		
+		<!-- Libraries -->
+		<property name="commons-lang" location="${lib.dir}/commons-lang-2.6.jar"/>
+		<property name="dom4j" location="${lib.dir}/dom4j-2.0.0.jar"/>
+		<property name="guava" location="${lib.dir}/guava-19.0.jar"/>
+		<property name="json-simple" location="${lib.dir}/json-simple-1.1.1.jar"/>
+		<property name="jsoup" location="${lib.dir}/jsoup-1.9.2.jar"/>
+		<property name="snakeyaml" location="${lib.dir}/snakeyaml-1.17.jar"/>
+		<property name="lipermi" location="${lib.dir}/th-lipermi-1.0.0.jar"/>
+		
+		<!-- Targets -->
+		<property name="target.abs" location="Yggdrasill"/>
+		<property name="client.target.mf" location="${basedir}/src/ClientManifest.mf"/>
+		<property name="server.target.mf" location="${basedir}/src/ServerManifest.mf"/>
+		<property name="client.target.jar" location="${basedir}/${target.abs}Client.jar"/>
+		<property name="server.target.jar" location="${basedir}/${target.abs}Server.jar"/>
+		<property name="client.cjar.mf" value="io.stpettersens.yggdrasill.client.YggdrasillClient"/>
+		<property name="server.cjar.mf" value="io.stpettersens.yggdrasill.server.YggdrasillServer"/>
+		<property name="client.exe.mf" location="${dist.dir}/client_exe.xml"/>
+		<property name="server.exe.mf" location="${dist.dir}/server_exe.xml"/>
+		<property name="nsis.mf" location="${dist.dir}/yggdrasill_setup.nsi"/>
+		
+		<!-- Add libraries to classpath -->
+		<path id="project.cp">
+			<pathelement location="${commons-lang}"/>
+			<pathelement location="${dom4j}"/>
+			<pathelement location="${guava}"/>
+			<pathelement location="${json-simple}"/>
+			<pathelement location="${jsoup}"/>
+			<pathelement location="${snakeyaml}"/>
+			<pathelement location="${lipermi}"/>
+		</path>
+		
+		<!-- Scan folders for changes since last build and store status in variable -->
+		<uptodate property="build.uptodate" targetfile="${build.dir}/build.done">
+			<srcfiles dir="${src.dir}" includes="**"/>
+		</uptodate>
+	</target>
+	
+	<target name="compile" description="Compile source code to classes" 
+	depends="init" unless="build.uptodate">
+		<echo message="Compiling Yggdrasill Server..."/>
+		<mkdir dir="${build.dir}"/>
+		<javac includeantruntime="false" classpath="${toString:project.cp}"
+		srcdir="${server.src.dir}" destdir="${build.dir}"/>
+	</target>
 </project>

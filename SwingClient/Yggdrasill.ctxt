@@ -1,4 +1,6 @@
 #BlueJ class context
-comment0.params=httpRequest
-comment0.target=java.util.List\ sendRespond(java.lang.String)
-numComments=1
+comment0.target=Yggdrasill
+comment0.text=\r\n\ \tYggdrasill\r\n\ \tRMI-based\ distributed\ HTTP.\r\n\r\n\ \tCopyright\ (c)\ 2014,\ 2016\ Sam\ Saint-Pettersen.\r\n
+comment1.params=httpRequest
+comment1.target=java.util.List\ sendRespond(java.lang.String)
+numComments=2
