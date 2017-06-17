@@ -6,5 +6,6 @@
 /Server/doc
 /Server/www/_parsed_.html
 /lib/*.jar
+/ant_build
 *.class
 *.jar

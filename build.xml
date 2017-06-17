@@ -39,7 +39,7 @@
 		<property name="lipermi" location="${lib.dir}/th-lipermi-1.0.0.jar"/>
 		
 		<!-- Targets -->
-		<property name="target.abs" location="Yggdrasill"/>
+		<property name="target.abs" value="Yggdrasill"/>
 		<property name="client.target.mf" location="${basedir}/src/ClientManifest.mf"/>
 		<property name="server.target.mf" location="${basedir}/src/ServerManifest.mf"/>
 		<property name="client.target.jar" location="${basedir}/${target.abs}Client.jar"/>
@@ -67,11 +67,18 @@
 		</uptodate>
 	</target>
 	
-	<target name="compile" description="Compile source code to classes" 
-	depends="init" unless="build.uptodate">
+	<target name="compile" description="Compile source code to classes" depends="init" unless="build.uptodate">
 		<echo message="Compiling Yggdrasill Server..."/>
 		<mkdir dir="${build.dir}"/>
 		<javac includeantruntime="false" classpath="${toString:project.cp}"
 		srcdir="${server.src.dir}" destdir="${build.dir}"/>
+	</target>
+
+	<target name="package" description="Package the classes into a Jar" depends="compile" unless="build.uptodate">
+		<echo message="Packaging Yggdrasill Server (std Jar)..."/>
+		<jar manifest="${server.target.mf}" destfile="${server.target.jar}">
+			<fileset dir="${build.dir}"/>
+		</jar>
+		<touch file="${build.dir}/build.done"/><!-- Mark build as up-to-date -->
 	</target>
 </project>
