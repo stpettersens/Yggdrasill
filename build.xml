@@ -63,7 +63,7 @@
 		
 		<!-- Scan folders for changes since last build and store status in variable -->
 		<uptodate property="build.uptodate" targetfile="${build.dir}/build.done">
-			<srcfiles dir="${src.dir}" includes="**"/>
+			<srcfiles dir="${server.src.dir}" includes="**"/>
 		</uptodate>
 	</target>
 	
