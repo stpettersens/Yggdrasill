@@ -26,7 +26,8 @@
 		<property name="client.src.dir" location="${basedir}/src/client"/>
 		<property name="server.src.dir" location="${basedir}/src/server"/>
 		<property name="lib.dir" location="${basedir}/lib"/>
-		<property name="build.dir" location="${basedir}/ant_build"/>
+		<property name="client.build.dir" location="${basedir}/ant_client_build"/>
+		<property name="server.build.dir" location="${basedir}/ant_server_build"/>
 		<property name="dist.dir" location="${basedir}/dist/"/>
 		
 		<!-- Libraries -->
@@ -60,25 +61,27 @@
 			<pathelement location="${snakeyaml}"/>
 			<pathelement location="${lipermi}"/>
 		</path>
-		
-		<!-- Scan folders for changes since last build and store status in variable -->
-		<uptodate property="build.uptodate" targetfile="${build.dir}/build.done">
-			<srcfiles dir="${server.src.dir}" includes="**"/>
-		</uptodate>
 	</target>
 	
-	<target name="compile" description="Compile source code to classes" depends="init" unless="build.uptodate">
-		<echo message="Compiling Yggdrasill Server..."/>
-		<mkdir dir="${build.dir}"/>
+	<target name="compile" description="Compile source code to classes" depends="init">
+		<echo message="Compiling Yggdrasill Client (Swing)..."/>
+		<mkdir dir="${client.build.dir}"/>
 		<javac includeantruntime="false" classpath="${toString:project.cp}"
-		srcdir="${server.src.dir}" destdir="${build.dir}"/>
+		srcdir="${client.src.dir}" destdir="${client.build.dir}"/>
+		<echo message="Compiling Yggdrasill Server..."/>
+		<mkdir dir="${server.build.dir}"/>
+		<javac includeantruntime="false" classpath="${toString:project.cp}"
+		srcdir="${server.src.dir}" destdir="${server.build.dir}"/>
 	</target>
 
-	<target name="package" description="Package the classes into a Jar" depends="compile" unless="build.uptodate">
+	<target name="package" description="Package the classes into Jars" depends="compile">
+		<echo message="Packaging Yggdrasill Client (std Jar)..."/>
+		<jar manifest="${client.target.mf}" destfile="${client.target.jar}">
+			<fileset dir="${client.build.dir}"/>
+		</jar>
 		<echo message="Packaging Yggdrasill Server (std Jar)..."/>
 		<jar manifest="${server.target.mf}" destfile="${server.target.jar}">
-			<fileset dir="${build.dir}"/>
+			<fileset dir="${server.build.dir}"/>
 		</jar>
-		<touch file="${build.dir}/build.done"/><!-- Mark build as up-to-date -->
 	</target>
 </project>

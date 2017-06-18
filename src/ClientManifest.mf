@@ -1,1 +1,2 @@
-Main-Class: io.stpettersens.yggdrasill.server.YggdrasillClient
+Main-Class: io.stpettersens.yggdrasill.client.YggdrasillClient
+Class-Path: lib/guava-19.0.jar lib/jsoup-1.9.2.jar lib/th-lipermi-1.0.0.jar
