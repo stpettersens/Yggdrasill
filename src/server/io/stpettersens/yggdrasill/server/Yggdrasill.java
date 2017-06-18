@@ -1,4 +1,4 @@
-package io.stpettersens.yggdrasill.server;
+//package io.stpettersens.yggdrasill.server;
 /*
  	Yggdrasill
  	RMI-based distributed HTTP.
